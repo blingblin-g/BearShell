@@ -16,6 +16,7 @@ int		main(void)
 	pid_t	child;
 	pid_t	pid;
 	int		state;
+	
 	// prompt = make_prompt(environ);
 	child = 1;
 	while (1)
@@ -24,7 +25,7 @@ int		main(void)
 		{
 			if (execve(command, new_argv, environ) == -1)
 			{
-				fprintf(stderr, "error: %s\n", strerror(errno));
+				fprintf(stderr, "error: haha! %s\n", strerror(errno));
 				return (1);
 			}
 		}
