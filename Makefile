@@ -6,7 +6,7 @@
 #    By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/10 22:46:22 by sooyoon           #+#    #+#              #
-#    Updated: 2020/11/10 23:39:19 by sooyoon          ###   ########.fr        #
+#    Updated: 2020/11/11 23:31:39 by sooyoon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,9 @@ LIB		=	-L ./Libft -lft
 CFLAGS	=	-Wall -Wextra -Werror
 LIB_SRC	=	./Libft
 SRCS	=	./srcs/get_next_line.c	\
-			./srcs/main.c
+			./srcs/main.c	\
+			./srcs/echo.c	\
+			./srcs/search_env.c
 
 OBJS	=	$(SRCS:.c=.o)
 
