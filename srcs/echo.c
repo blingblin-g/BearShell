@@ -15,11 +15,11 @@ void	print_arr(char **arr) // input after pointer calc
 int		echo(char **argv)
 {
 	if (ft_strncmp(argv[1], "-n", 3))
-		print_arr(argv);// no new line && need to handle quote and double quote
+		print_arr(argv + 1);// no new line && need to handle quote and double quote
 	else
 	{
-		print_arr(argv);
+		print_arr(argv + 2);
 		write(1, "\n", 1);
 	}// join all && need a white space between them
-	return 0;
+	return (0);
 }
