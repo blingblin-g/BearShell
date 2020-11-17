@@ -30,6 +30,8 @@ char	*get_env_item(char *key);
 int		echo(char **argv);
 t_list	*create_env_list();
 t_info	*get_info();
-void	export(char *key, char *value);
+void	export(char *argv);
+void	print_str(void *str);
+void	env();
 
 #endif

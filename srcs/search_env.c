@@ -41,6 +41,7 @@ t_list	*create_env_list()
 	int		i;
 
 	i = 0;
+	env_list = NULL;
 	while (environ[i])
 	{
 		ft_lstadd_back(&env_list, ft_lstnew(ft_strdup(environ[i])));

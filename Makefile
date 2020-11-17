@@ -12,15 +12,16 @@
 
 NAME	=	minishell
 CC		=	gcc
-INC		=	-I ./include -I ./Libft
-LIB		=	-L ./Libft -lft
+INC		=	-I ./include -I ./libft
+LIB		=	-L ./libft -lft
 CFLAGS	=	-Wall -Wextra -Werror
-LIB_SRC	=	./Libft
+LIB_SRC	=	./libft
 SRCS	=	./srcs/get_next_line.c	\
 			./srcs/echo.c	\
 			./srcs/search_env.c	\
 			./srcs/util.c	\
 			./srcs/export.c	\
+			./srcs/env.c	\
 			./srcs/test.c
 			# ./srcs/main.c
 

@@ -1,10 +1,5 @@
 #include "mini.h"
 
-void	print_str(void *str)
-{
-	printf("[%s]\n", (char *)str);
-}
-
 int		main(void)
 {
     // char	*inputs1[30] = {"echo123123", "test write"};
@@ -21,7 +16,12 @@ int		main(void)
 	// printf("%s   : result=>[%s]\n", buf, result);
 
 	// ft_lstiter(list, print_str);
-	get_info()->env_list = create_env_list();
-	export("chlim", "rockpell");
+
+	// get_info()->env_list = create_env_list();
+	// char *str = ft_strdup("chlim=rockpell");
+	// char *str2 = ft_strdup("chlim=sooyoon");
+	// export(str);
+	// export(str2);
+	// ft_lstiter(get_info()->env_list, print_str);
     return (0);
 }

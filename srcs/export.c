@@ -1,13 +1,35 @@
 #include "mini.h"
 
-static void	print_str(void *str)
+int		find_chr(char *str, char ch)
 {
-	printf("%s\n", (char *)str);
+	int		i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == ch)
+			return (i);
+		i++;
+	}
+	return (-1);
 }
 
-void export(char *key, char *value)
+void	export(char *argv)
 {
-	key = 0;
-	value = 0;
-	ft_lstiter(get_info()->env_list, print_str);
+	t_list	*temp;
+	int		eq_index;
+
+	temp = get_info()->env_list;
+	eq_index = find_chr(argv, '=');
+	while (temp)
+	{
+		if (!ft_strncmp(argv, temp->content, eq_index))
+		{
+			free(temp->content);
+			temp->content = argv;
+			return ;
+		}
+		temp = temp->next;
+	}
+	ft_lstadd_back(&get_info()->env_list, ft_lstnew(argv));
 }
