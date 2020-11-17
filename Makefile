@@ -22,6 +22,7 @@ SRCS	=	./srcs/get_next_line.c	\
 			./srcs/util.c	\
 			./srcs/export.c	\
 			./srcs/env.c	\
+			./srcs/unset.c	\
 			./srcs/test.c
 			# ./srcs/main.c
 

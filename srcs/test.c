@@ -17,11 +17,13 @@ int		main(void)
 
 	// ft_lstiter(list, print_str);
 
-	// get_info()->env_list = create_env_list();
-	// char *str = ft_strdup("chlim=rockpell");
+	get_info()->env_list = create_env_list();
+	char *str = ft_strdup("USES_VSCODE_SERVER_SPAWN=true");
 	// char *str2 = ft_strdup("chlim=sooyoon");
 	// export(str);
 	// export(str2);
-	// ft_lstiter(get_info()->env_list, print_str);
+
+	unset(str);
+	ft_lstiter(get_info()->env_list, print_str);
     return (0);
 }

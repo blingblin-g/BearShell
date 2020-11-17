@@ -32,6 +32,8 @@ t_list	*create_env_list();
 t_info	*get_info();
 void	export(char *argv);
 void	print_str(void *str);
+int		find_chr(char *str, char ch);
 void	env();
+void	unset(char *argv);
 
 #endif

@@ -1,19 +1,5 @@
 #include "mini.h"
 
-int		find_chr(char *str, char ch)
-{
-	int		i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == ch)
-			return (i);
-		i++;
-	}
-	return (-1);
-}
-
 void	export(char *argv)
 {
 	t_list	*temp;
