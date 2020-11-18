@@ -28,6 +28,7 @@ int		main(void)
 				fprintf(stderr, "error: haha! %s\n", strerror(errno));
 				return (1);
 			}
+			printf("command == [%s\n]", command);
 		}
 		if (child != 0)
 		{

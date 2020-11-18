@@ -18,12 +18,15 @@ int		main(void)
 	// ft_lstiter(list, print_str);
 
 	get_info()->env_list = create_env_list();
-	char *str = ft_strdup("USES_VSCODE_SERVER_SPAWN=true");
-	// char *str2 = ft_strdup("chlim=sooyoon");
+	char *str = ft_strdup("HOME=/Users/sooyoon");
+	char *str2 = ft_strdup("chlim=sooyoon");
 	// export(str);
-	// export(str2);
-
+	export(str2);
+	env();
+	printf("\n======================\n");
 	unset(str);
 	ft_lstiter(get_info()->env_list, print_str);
+	free(str);
+	free(str2);
     return (0);
 }

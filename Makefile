@@ -6,13 +6,13 @@
 #    By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/10 22:46:22 by sooyoon           #+#    #+#              #
-#    Updated: 2020/11/16 23:12:29 by sooyoon          ###   ########.fr        #
+#    Updated: 2020/11/18 21:45:36 by sooyoon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minishell
 CC		=	gcc
-INC		=	-I ./include -I ./libft
+INC		=	-I ./include -I ./libft -g -fsanitize=address
 LIB		=	-L ./libft -lft
 CFLAGS	=	-Wall -Wextra -Werror
 LIB_SRC	=	./libft

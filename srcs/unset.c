@@ -12,19 +12,13 @@ void	unset(char *argv)
 	{
 		if (!ft_strncmp(argv, tmp_node->content, eq_index))
 		{
-			if (tmp_node->next == NULL)
-			{
-				free(tmp_node->content);
-				free(tmp_node);
-				pre_node->next = NULL;
-			}
-			else
-			{
+			if (tmp_node->next)
 				pre_node->next = tmp_node->next;
-				free(tmp_node->content);
-				free(tmp_node);
-			}
-			free(argv);
+			else
+				pre_node->next = NULL;
+			free(tmp_node->content);
+			free(tmp_node);
+			// free(argv);
 			return ;
 		}
 		pre_node = tmp_node;
