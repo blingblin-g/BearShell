@@ -1,8 +1,5 @@
 #include "mini.h"
 
-
-
-
 void		print_arr(char **arr)
 {
 	int		i;
@@ -16,9 +13,33 @@ void		print_arr(char **arr)
 	}
 }
 
+char *sort(char *arr)
+{
+    int i = 0;
+    int j = 0;
+    char tmp = 0;
+
+    while (arr[i])
+    {
+        // 그니까 배열에서 맨 첫번째가 가만히 있어요
+        // 그 다음 애가 이전꺼랑 비교하면서 더 크면 옆으로 옮기는거임
+        // 일단 arr[i] 옆에꺼랑 비교한다
+        j = i - 1;
+        tmp = arr[i];
+        while (j >= 0 && arr[j] > tmp) // j 줄일거니까 0 될때까지 j가 i보다 크면
+        {
+            arr[j + 1] = arr[j]; // 자리를 옮긴다
+            j--; // 계속 줄여
+        }
+        arr[j + 1] = tmp;
+        i++;
+    }
+}
+
 char	**sort_env(char **env)
 {
 	// sooyoon is going to implement by selection sort
+
 }
 
 char	**export_only()
