@@ -18,15 +18,16 @@ int		main(void)
 	// ft_lstiter(list, print_str);
 
 	get_info()->env_list = create_env_list();
-	char *str = ft_strdup("HOME=/Users/sooyoon");
-	char *str2 = ft_strdup("chlim=sooyoon");
-	// export(str);
-	export(str2);
-	env();
-	printf("\n======================\n");
-	unset(str);
-	ft_lstiter(get_info()->env_list, print_str);
-	free(str);
-	free(str2);
+	// char *str = ft_strdup("HOME=/Users/sooyoon");
+	// char *str2 = ft_strdup("chlim=sooyoon");
+	// // export(str);
+	// export(str2);
+	// env();
+	// printf("\n======================\n");
+	// unset(str);
+	// ft_lstiter(get_info()->env_list, print_str);
+	// free(str);
+	// free(str2);
+	export(NULL);
     return (0);
 }
