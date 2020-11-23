@@ -6,21 +6,23 @@
 #    By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/10 22:46:22 by sooyoon           #+#    #+#              #
-#    Updated: 2020/11/16 23:12:29 by sooyoon          ###   ########.fr        #
+#    Updated: 2020/11/18 21:45:36 by sooyoon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minishell
 CC		=	gcc
-INC		=	-I ./include -I ./Libft
-LIB		=	-L ./Libft -lft
+INC		=	-I ./include -I ./libft -g -fsanitize=address
+LIB		=	-L ./libft -lft
 CFLAGS	=	-Wall -Wextra -Werror
-LIB_SRC	=	./Libft
+LIB_SRC	=	./libft
 SRCS	=	./srcs/get_next_line.c	\
 			./srcs/echo.c	\
 			./srcs/search_env.c	\
 			./srcs/util.c	\
 			./srcs/export.c	\
+			./srcs/env.c	\
+			./srcs/unset.c	\
 			./srcs/test.c
 			# ./srcs/main.c
 

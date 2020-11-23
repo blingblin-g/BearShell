@@ -1,6 +1,6 @@
 #include "mini.h"
 
-void	print_arr(char **arr) // input after pointer calc
+static void	print_arr(char **arr) // input after pointer calc
 {
 	while (*arr)
 	{
@@ -12,7 +12,7 @@ void	print_arr(char **arr) // input after pointer calc
 }
 
 	// if (ft_strncmp(argv[0], "echo", 5)
-int		echo(char **argv)
+int			echo(char **argv)
 {
 	if (ft_strncmp(argv[1], "-n", 3))
 		print_arr(argv + 1);// no new line && need to handle quote and double quote
