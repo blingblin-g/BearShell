@@ -20,10 +20,27 @@
 #include <string.h>
 #include "libft.h"
 
+/*
+* boolean
+*/
+
+# define FALSE 0
+# define TRUE 1
+
+/*
+* need to add error
+*/
+
 typedef struct	s_info
 {
 	t_list		*env_list;
 }				t_info;
+
+typedef struct	s_pars
+{
+	int			sing_q;
+	int			double_q;
+}				t_pars;
 
 int		get_next_line(int fd, char **line);
 char	*get_env_item(char *key);
