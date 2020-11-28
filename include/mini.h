@@ -95,5 +95,7 @@ t_pro	*new_prolst(char *raw, int type);
 t_pro	*last_prolst(t_pro *lst);
 void	add_back_prolst(t_pro **lst, t_pro *new);
 void	print_prolst(t_pro *lst);
+void	free_prolst(t_pro **lst);
+char	*free_strtrim(char **s, char const *set);
 
 #endif
