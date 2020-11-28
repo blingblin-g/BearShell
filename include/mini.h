@@ -31,16 +31,50 @@
 * need to add error
 */
 
+# define ERROR 0
+# define NOT_FOUND -1
+# define SUCCESS 1
+
+# define PIPE 1
+# define INPUT 2
+# define OUTPUT 3
+# define APPEND 4
+
 typedef struct	s_info
 {
 	t_list		*env_list;
 }				t_info;
 
-typedef struct	s_pars
+/*
+* cmd_lst : command list
+* pro_lst : process list
+*/
+
+// typedef struct	s_pro_lst
+// {
+// 	int			type;
+// 	t_list		*next;
+// 	t_list		*cmd_lst;
+// }				t_pro_lst;
+
+typedef struct		s_pro
 {
-	int			sing_q;
+	int				type;
+	char			*raw;
+	t_list			*cmd_lst;
+	struct s_pro	*next;
+}					t_pro;
+
+
+typedef struct	s_parse
+{
+	int			is_space;
+	int			single_q;
 	int			double_q;
-}				t_pars;
+	char		*line;
+	// t_list		*cmd_lst;
+	t_list		*pro_lst;
+}				t_parse;
 
 int		get_next_line(int fd, char **line);
 char	*get_env_item(char *key);
@@ -52,5 +86,7 @@ void	print_str(void *str);
 int		find_chr(char *str, char ch);
 void	env();
 void	unset(char *argv);
+int		is_single_quote_zone(t_parse *pars, int *i, char **content);
+int		main_parse(char *line);
 
 #endif

@@ -17,13 +17,14 @@ LIB		=	-L ./libft -lft
 CFLAGS	=	-Wall -Wextra -Werror
 LIB_SRC	=	./libft
 SRCS	=	./srcs/get_next_line.c	\
-			./srcs/echo.c	\
-			./srcs/search_env.c	\
-			./srcs/util.c	\
-			./srcs/export.c	\
-			./srcs/env.c	\
-			./srcs/unset.c	\
+			./srcs/parsing.c	\
 			./srcs/test.c
+			# ./srcs/echo.c	\
+			# ./srcs/search_env.c	\
+			# ./srcs/util.c	\
+			# ./srcs/export.c	\
+			# ./srcs/env.c	\
+			# ./srcs/unset.c	\
 			# ./srcs/main.c
 
 OBJS	=	$(SRCS:.c=.o)
