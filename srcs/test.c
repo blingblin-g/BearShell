@@ -2,9 +2,10 @@
 
 int		main(void)
 {
-	char *line = (char *)malloc(sizeof(char) * 50);
-	ft_memset(line, 0, 50);
-	char *text = "e'ch'o 'jinw'a'sooyoon' 'rockpell'";
+	char *line = (char *)malloc(sizeof(char) * 100);
+	ft_memset(line, 0, 100);
+	char *text = "            e'ch'o haha' you' fool | echo merong > result.txt ; cat result.txt | cat -e";
+	// char *text = "";
 	// char *content = (char *)malloc(sizeof(char) * 30);
 	int size = (int)ft_strlen(text);
 	for(int p = 0; p < size; p++)

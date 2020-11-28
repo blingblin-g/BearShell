@@ -39,6 +39,8 @@
 # define INPUT 2
 # define OUTPUT 3
 # define APPEND 4
+# define SEMI 5
+# define END 6
 
 typedef struct	s_info
 {
@@ -71,9 +73,10 @@ typedef struct	s_parse
 	int			is_space;
 	int			single_q;
 	int			double_q;
+	int			start;
 	char		*line;
 	// t_list		*cmd_lst;
-	t_list		*pro_lst;
+	t_pro		*pro_lst;
 }				t_parse;
 
 int		get_next_line(int fd, char **line);
@@ -88,5 +91,9 @@ void	env();
 void	unset(char *argv);
 int		is_single_quote_zone(t_parse *pars, int *i, char **content);
 int		main_parse(char *line);
+t_pro	*new_prolst(char *raw, int type);
+t_pro	*last_prolst(t_pro *lst);
+void	add_back_prolst(t_pro **lst, t_pro *new);
+void	print_prolst(t_pro *lst);
 
 #endif
