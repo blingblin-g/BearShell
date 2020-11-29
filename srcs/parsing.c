@@ -146,20 +146,19 @@ int	main_parse(char *line)
 	{
 		if (!pars.single_q && !pars.double_q)
 		{
-			if ((type = is_special_char(line[i])))
-			{
-				pro_lst = new_prolst(ft_substr(line, pars.start, i - pars.start), type);
-				if (type == OUTPUT && line[i] && line[i + 1] == '>')
-				{
-					type = APPEND;
-					pro_lst->type = type;
-					i++;
-				}
-				add_back_prolst(&pars.pro_lst, pro_lst);
-				pars.start = i + 1;
-			}
 			if (i == 0 || (i != 0 && line[i - 1] != '\\'))
 			{
+				if ((type = is_special_char(line[i])))
+				{
+					pro_lst = new_prolst(ft_substr(line, pars.start, i - pars.start), type);
+					if (type == OUTPUT && line[i] && line[i + 1] == '>')
+					{
+						pro_lst->type = APPEND;
+						i++;
+					}
+					add_back_prolst(&pars.pro_lst, pro_lst);
+					pars.start = i + 1;
+				}
 				if (line[i] == '\"')
 					pars.double_q = TRUE;
 				else if (line[i] == '\'')

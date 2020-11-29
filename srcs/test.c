@@ -2,15 +2,14 @@
 
 int		main(void)
 {
-	char *line = (char *)malloc(sizeof(char) * 100);
-	ft_memset(line, 0, 100);
-	char *text = "            e'ch'o haha' you' fool | echo merong > result.txt ; cat result.txt | cat -e";
-	// char *text = "";
-	// char *content = (char *)malloc(sizeof(char) * 30);
-	int size = (int)ft_strlen(text);
-	for(int p = 0; p < size; p++)
-		line[p] = text[p];
-	line[size] = 0;
-	main_parse(line);
+	char *line = ft_strdup("echo\\test");
+	// char *text = "            e'ch'o haha' you' fool | echo m\"ero\"ng > result.txt ; cat result.txt | cat -e";
+	// char *text = "echo '$chlim'$chlim\\|test | echo test";
+	// char *text = "echo//test";
+	// main_parse(line);
+	t_parse	pars;
+	printf("line: [%s]\n", line);
+	char *after_line = process_quotes(&pars, line);
+	printf("after process_quotes: [%s]\n", after_line);
 	return (0);
 }

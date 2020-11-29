@@ -19,6 +19,7 @@ LIB_SRC	=	./libft
 SRCS	=	./srcs/get_next_line.c	\
 			./srcs/parsing.c	\
 			./srcs/prolst_utils.c	\
+			./srcs/quotes_zone.c	\
 			./srcs/test.c
 			# ./srcs/echo.c	\
 			# ./srcs/search_env.c	\
