@@ -39,14 +39,19 @@ char	*process_quotes(t_parse *pars, char *content)
 						char *key = ft_substr(content, pars->start, i - pars->start);
 						result = free_join(result, get_env_item(key));
 						free(key);
+						pars->start = i;
 					}
-					i++;
+					else
+					{
+						result = free_join(result, ft_substr(content, pars->start, i - pars->start));
+						pars->start = i;
+					}
 					continue ;
 				}
 				result = free_join(result, ft_substr(content, pars->start, i - pars->start));
 				if (!content[i])
 					break ;
-				pars->start = i + 1;
+				pars->start = i;
 			}
 			// if (content[i] == '$') // $변수에 대한 처리를 해준다. $'"\를 만날때까지
 			// {
