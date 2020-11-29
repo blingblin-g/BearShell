@@ -20,9 +20,9 @@ SRCS	=	./srcs/get_next_line.c	\
 			./srcs/parsing.c	\
 			./srcs/prolst_utils.c	\
 			./srcs/quotes_zone.c	\
+			./srcs/search_env.c	\
 			./srcs/test.c
 			# ./srcs/echo.c	\
-			# ./srcs/search_env.c	\
 			# ./srcs/util.c	\
 			# ./srcs/export.c	\
 			# ./srcs/env.c	\

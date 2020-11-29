@@ -11,13 +11,14 @@ char	*process_quotes(t_parse *pars, char *content)
 {
 	size_t	i;
 	char	*result;
+	// char	*tmp;
 
 	i = 0;
 	pars->single_q = FALSE;
 	pars->double_q = FALSE;
 	pars->start = 0;
 	result = ft_strdup("");
-	while (TRUE)
+	while (i <= ft_strlen(content))
 	{
 		if (!pars->single_q && !pars->double_q)
 		{
@@ -25,6 +26,23 @@ char	*process_quotes(t_parse *pars, char *content)
 			{
 				if (i < ft_strlen(content) - 1 && content[i] == '\\' && content[i + 1] == '\\')
 					i++;
+				else if (content[i] == '$')
+				{			
+					i++;							// $`!@#$?'"-_ 사연이 많은 애들
+					// if (i < ft_strlen(content) - 1 && (tmp = builtin_dollor(content[i])))
+					// 	result = free_join(result, tmp);
+					if (ft_isalnum(content[i]))
+					{
+						pars->start = i;
+						while (!how2divide(content[i]))
+							i++;
+						char *key = ft_substr(content, pars->start, i - pars->start);
+						result = free_join(result, get_env_item(key));
+						free(key);
+					}
+					i++;
+					continue ;
+				}
 				result = free_join(result, ft_substr(content, pars->start, i - pars->start));
 				if (!content[i])
 					break ;
@@ -34,6 +52,7 @@ char	*process_quotes(t_parse *pars, char *content)
 			// {
 			// 	i++;
 			// 	if (content[i] != '\'' && content[i] != '\"')
+					// 본인은 사라져버림..
 			// 		// env에 있는 (변수) key값으로 넣어서 value값으로 치환;
 			// 		// 없으면 그냥 "\n"
 			// 	else if (content[i] == '<' , '[' '(' 등등 안되는 것들이면)
