@@ -89,7 +89,7 @@ void	print_str(void *str);
 int		find_chr(char *str, char ch);
 void	env();
 void	unset(char *argv);
-int		is_single_quote_zone(t_parse *pars, int *i, char **content);
+char	*get_single_quote_zone(char *content, size_t *i);
 int		main_parse(char *line);
 t_pro	*new_prolst(char *raw, int type);
 t_pro	*last_prolst(t_pro *lst);

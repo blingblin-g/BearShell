@@ -7,6 +7,29 @@ int		how2divide(char c)
 	return TRUE;
 }
 
+int		is_error(char c) // $ 다음 캐릭터를 넘겨줘요
+{
+	// 1. 에러인지 확인만 하는 거니까 통째로 해도 될 것 같거든요 지금 통자메이카 치킨 먹고 싶다
+	if (c == '\'' || c == '\"' || c == '(' || c == ')' || c == '\\')
+		return (TRUE);
+	return (FALSE);
+}
+
+	// 2. 사연이 있는지
+int		is_sayeon(char c, char **result)
+{//여기서 덥해서 value찾아와서 프리조인해서 붙여넣기
+	if (c == '?')
+		;// 얘는 종료상태
+	if (c == '$')
+		;// 얘는 PID
+	if (c == '-')
+		;// himBH
+	return (0);
+} // echo test1 test2 test3
+ // test $_
+	// 3. is_alnum을 제외한 변수인지
+
+
 char	*process_quotes(t_parse *pars, char *content)
 {
 	size_t	i;
@@ -53,48 +76,27 @@ char	*process_quotes(t_parse *pars, char *content)
 					break ;
 				pars->start = i;
 			}
-			// if (content[i] == '$') // $변수에 대한 처리를 해준다. $'"\를 만날때까지
-			// {
-			// 	i++;
-			// 	if (content[i] != '\'' && content[i] != '\"')
-					// 본인은 사라져버림..
-			// 		// env에 있는 (변수) key값으로 넣어서 value값으로 치환;
-			// 		// 없으면 그냥 "\n"
-			// 	else if (content[i] == '<' , '[' '(' 등등 안되는 것들이면)
-			// 	{
-			// 		// error를 띄운다;
-			// 	}
-			// 	else if (content[i] == '?')
-			// 		// 종료상태 저장했던 값을 넣어준다;
-			// 	else if (content[i] == '$')
-			// 		// PID값 출력
-			// 	else if (content[i] == 'P' ~ PPID)
-			// 		// PPID값 출력
-			// 	else
-			// 	{
-			// 		// 그대로 쓴다;
-			// 		// 단, if (quote가 또...)
-			// 			// quote를 빼고 가공해서 넣어준다;
-			// 	}
-			// }
-			// if (i == 0 || (i != 0 && content[i - 1] != '\\'))
-			// {
-			// 	if (content[i] == '\"')
-			// 	{
-			// 		pars->double_q = TRUE;
-			// 		pars->start = i;
-			// 	}
-			// 	else if (content[i] == '\'')
-			// 	{
-			// 		pars->single_q = TRUE;
-			// 		pars->start = i;
-			// 	}
-			// }
+			if (i == 0 || (i != 0 && content[i - 1] != '\\'))
+			{
+				if (content[i] == '\"')
+				{
+					pars->double_q = TRUE;
+					pars->start = i;
+				}
+				else if (content[i] == '\'')
+				{
+					pars->single_q = TRUE;
+					pars->start = i;
+				}
+			}
 		}
 		if (pars->single_q)
 		{
 			// ''빼고 그대로 출력해준다;
-
+			char	*sub_tmp = get_single_quote_zone(content, &i);
+			printf("sub_tmp: [%s]\n", sub_tmp);
+			pars->single_q = FALSE;
+			pars->start = i;
 		}
 		if (pars->double_q)
 		{
@@ -102,5 +104,29 @@ char	*process_quotes(t_parse *pars, char *content)
 		}
 		i++;
 	}
+	return (result);
+}
+
+size_t	search_pair_quotes(char c, char *line, size_t i) // return index of pair_quotes
+{
+	while (line[i])
+	{
+		if (line[i] == c)
+			return (i);
+		i++;
+	}
+	return (ERROR); // 다 돌았지만 못찾은거임. 즉 pair quote가 없는 것
+}
+
+char	*get_single_quote_zone(char *content, size_t *i)
+{
+	size_t	size;
+	char	*result;
+
+	if ((size = search_pair_quotes('\'', content, *i)) == ERROR)
+		return (0);
+	result = ft_substr(content, *i, size - *i);
+	// result = free_join(content, str);
+	*i = (size + 1);
 	return (result);
 }

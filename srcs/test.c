@@ -2,7 +2,7 @@
 
 int		main(void)
 {
-	char *line = ft_strdup("$PWD     $: $ $/     $PWD");
+	char *line = ft_strdup("$PWD     $: $ $/  'haha' you s'o    beautifu'l  $PWD");
 	// char *text = "            e'ch'o haha' you' fool | echo m\"ero\"ng > result.txt ; cat result.txt | cat -e";
 	// char *text = "echo '$chlim'$chlim\\|test | echo test";
 	// char *text = "echo//test";
