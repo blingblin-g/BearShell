@@ -19,6 +19,7 @@
 #include <errno.h>
 #include <string.h>
 #include "libft.h"
+#include <dirent.h>
 
 /*
 * boolean
@@ -42,9 +43,14 @@
 # define SEMI 5
 # define END 6
 
+typedef struct dirent	t_dir;
+
 typedef struct	s_info
 {
 	t_list		*env_list;
+	int			exit_status;
+	int			pid;
+	int			ppid;
 }				t_info;
 
 /*
@@ -63,10 +69,11 @@ typedef struct		s_pro
 {
 	int				type;
 	char			*raw;
+	t_list			*raw_lst;
+	t_list			*raw_cmds;
 	t_list			*cmd_lst;
 	struct s_pro	*next;
 }					t_pro;
-
 
 typedef struct	s_parse
 {
@@ -99,5 +106,6 @@ void	free_prolst(t_pro **lst);
 char	*free_strtrim(char **s, char const *set);
 char	*process_quotes(t_parse *pars, char *content);
 char	*free_join(char *s1, char *s2);
+char	*get_cmd(char *cmd);
 
 #endif

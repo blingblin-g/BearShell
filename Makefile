@@ -17,13 +17,14 @@ LIB		=	-L ./libft -lft
 CFLAGS	=	-Wall -Wextra -Werror
 LIB_SRC	=	./libft
 SRCS	=	./srcs/get_next_line.c	\
-			./srcs/parsing.c	\
-			./srcs/prolst_utils.c	\
-			./srcs/quotes_zone.c	\
 			./srcs/search_env.c	\
+			./srcs/get_cmd.c	\
 			./srcs/test.c
-			# ./srcs/echo.c	\
+			# ./srcs/parsing.c	\
 			# ./srcs/util.c	\
+			# ./srcs/prolst_utils.c	\
+			# ./srcs/quotes_zone.c	\
+			# ./srcs/echo.c	\
 			# ./srcs/export.c	\
 			# ./srcs/env.c	\
 			# ./srcs/unset.c	\
