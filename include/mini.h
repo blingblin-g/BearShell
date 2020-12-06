@@ -107,5 +107,6 @@ char	*free_strtrim(char **s, char const *set);
 char	*process_quotes(t_parse *pars, char *content);
 char	*free_join(char *s1, char *s2);
 char	*get_cmd(char *cmd);
+char	*get_double_quote_zone(char *content, size_t *i);
 
 #endif
