@@ -1,34 +1,5 @@
 #include "mini.h"
 
-char	*free_join(char *s1, char *s2)
-{
-	int	i;
-	int	len1;
-	int	len2;
-	char *result;
-
-	i = 0;
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	if (!(result = (char *)malloc(sizeof(char) * (len1 + len2 + 1))))
-		return(0);
-	while (i < len1)
-	{
-		result[i] = s1[i];
-		i++;
-	}
-	i = 0;
-	while (i < len2)
-	{
-		result[len1 + i] = s2[i];
-		i++;
-	}
-	result[len1 + len2] = 0;
-	free(s1);
-	free(s2);
-	return (result);
-}
-
 int		is_special_char(char c)
 {
 	if (c == '|')
@@ -48,7 +19,7 @@ void	input_content(t_pro *pro_lst, char *line, int i, int start)
 {
 	char	**tmp;
 
-	tmp = (char **)&ft_lstlast(pro_lst->cmd_lst)->content;
+	tmp = (char **)&ft_lstlast(pro_lst->raw_lst)->content;
 	*tmp = free_join(*tmp, ft_substr(line, start, i - start));
 	*tmp = free_strtrim(tmp, " ");
 }
@@ -64,7 +35,7 @@ int		search_quotes(char c, char *line, int i) // return index of pair_quotes
 	return (ERROR); // 다 돌았지만 못찾은거임. 즉 pair quote가 없는 것
 }
 
-int		input_cmd_lst(t_parse *pars, t_pro *pro_lst)
+int		input_raw_lst(t_parse *pars, t_pro *pro_lst)
 {
 	int		start;
 	char	*line;
@@ -73,7 +44,6 @@ int		input_cmd_lst(t_parse *pars, t_pro *pro_lst)
 	i = 0;
 	start = i;
 	line = pro_lst->raw;
-	printf("line: [%s]\n", line);
 	while (line[i])
 	{
 		if (!pars->single_q && !pars->double_q)
@@ -92,7 +62,7 @@ int		input_cmd_lst(t_parse *pars, t_pro *pro_lst)
 			if (pars->is_space)
 			{
 				input_content(pro_lst, line, i, start);
-				ft_lstadd_back(&pro_lst->cmd_lst, ft_lstnew(ft_strdup("")));
+				ft_lstadd_back(&pro_lst->raw_lst, ft_lstnew(ft_strdup("")));
 				pars->is_space = FALSE;
 				start = i;
 			}
@@ -116,12 +86,10 @@ int		input_cmd_lst(t_parse *pars, t_pro *pro_lst)
 		{
 			if (i != 0 && pars->single_q && line[i - 1] != '\\' && line[i] == '\'')
 			{
-
 				pars->single_q = FALSE;
 			}
 			else if (i != 0 && pars->double_q && line[i - 1] != '\\' && line[i] == '\"')
 			{
-				
 				pars->double_q = FALSE;
 			}
 		}
@@ -138,6 +106,7 @@ int	main_parse(char *line)
 	int		i;
 	t_parse	pars;
 	t_pro	*pro_lst;
+	t_list	*raw_lst;
 
 	i = 0;
 	pars.start = 0;
@@ -180,7 +149,19 @@ int	main_parse(char *line)
 	while (pro_lst)
 	{
 		pro_lst->raw = free_strtrim(&pro_lst->raw, " ");
-		input_cmd_lst(&pars, pro_lst);
+		input_raw_lst(&pars, pro_lst);
+		pro_lst = pro_lst->next;
+	}
+	pro_lst = pars.pro_lst;
+	while (pro_lst)
+	{
+		raw_lst = pro_lst->raw_lst;
+		while (raw_lst)
+		{
+			char	*after_parsing = process_quotes(&pars, raw_lst->content);
+			ft_lstadd_back(&(pro_lst->cmd_lst), ft_lstnew(after_parsing));
+			raw_lst = raw_lst->next;
+		}
 		pro_lst = pro_lst->next;
 	}
 	print_prolst(pars.pro_lst); // only 4 test

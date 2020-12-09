@@ -9,7 +9,8 @@ t_pro	*new_prolst(char *raw, int type)
 		return (0);
 	new->raw = raw;
 	new->type = type;
-	new->cmd_lst = ft_lstnew(ft_strdup(""));
+	new->raw_lst = ft_lstnew(ft_strdup(""));
+	new->cmd_lst = NULL;
 	new->next = 0;
 	return (new);
 }
@@ -34,7 +35,7 @@ void	add_back_prolst(t_pro **lst, t_pro *new)
 	new->next = 0;
 }
 /*
-* do not need to free prolst
+* do not need to free prolst outside
 */
 void	free_prolst(t_pro **lst)
 {
@@ -63,11 +64,18 @@ char	*free_strtrim(char **s, char const *set)
 // only for test
 void	print_prolst(t_pro *lst)
 {
+	t_list	*raw_lst;
 	t_list	*cmd_lst;
 
 	while (lst)
 	{
 		printf("type == [%d] : raw == [%s]\n", lst->type, lst->raw);
+		raw_lst = lst->raw_lst;
+		while (raw_lst)
+		{
+			printf("raw_lst == [%s]\n", raw_lst->content);
+			raw_lst = raw_lst->next;
+		}
 		cmd_lst = lst->cmd_lst;
 		while (cmd_lst)
 		{
