@@ -96,7 +96,7 @@ void print_str(void *str);
 int find_chr(char *str, char ch);
 void env();
 void unset(char *argv);
-int main_parse(char *line);
+int main_parse(char *line, t_parse *pars);
 t_pro *new_prolst(char *raw, int type);
 t_pro *last_prolst(t_pro *lst);
 void add_back_prolst(t_pro **lst, t_pro *new);

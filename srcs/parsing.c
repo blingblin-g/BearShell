@@ -100,71 +100,70 @@ int		input_raw_lst(t_parse *pars, t_pro *pro_lst)
 	return (SUCCESS);
 }
 
-int	main_parse(char *line)
+int	main_parse(char *line, t_parse *pars)
 {
 	int		type;
 	int		i;
-	t_parse	pars;
 	t_pro	*pro_lst;
 	t_list	*raw_lst;
 
 	i = 0;
-	pars.start = 0;
+	pars->start = 0;
 	type = 0;
 	while (line[i])
 	{
-		if (!pars.single_q && !pars.double_q)
+		if (!pars->single_q && !pars->double_q)
 		{
 			if (i == 0 || (i != 0 && line[i - 1] != '\\'))
 			{
 				if ((type = is_special_char(line[i])))
 				{
-					pro_lst = new_prolst(ft_substr(line, pars.start, i - pars.start), type);
+					pro_lst = new_prolst(ft_substr(line, pars->start, i - pars->start), type);
 					if (type == OUTPUT && line[i] && line[i + 1] == '>')
 					{
 						pro_lst->type = APPEND;
 						i++;
 					}
-					add_back_prolst(&pars.pro_lst, pro_lst);
-					pars.start = i + 1;
+					add_back_prolst(&pars->pro_lst, pro_lst);
+					pars->start = i + 1;
 				}
 				if (line[i] == '\"')
-					pars.double_q = TRUE;
+					pars->double_q = TRUE;
 				else if (line[i] == '\'')
-					pars.single_q = TRUE;
+					pars->single_q = TRUE;
 			}
 		}
 		else
 		{
-			if (i != 0 && pars.single_q && line[i - 1] != '\\' && line[i] == '\'')
-				pars.single_q = FALSE;
-			else if (i != 0 && pars.double_q && line[i - 1] != '\\' && line[i] == '\"')
-				pars.double_q = FALSE;
+			if (i != 0 && pars->single_q && line[i - 1] != '\\' && line[i] == '\'')
+				pars->single_q = FALSE;
+			else if (i != 0 && pars->double_q && line[i - 1] != '\\' && line[i] == '\"')
+				pars->double_q = FALSE;
 		}
 		i++;
 	}
-	pro_lst = new_prolst(ft_substr(line, pars.start, i - pars.start), type);
-	add_back_prolst(&pars.pro_lst, pro_lst);
-	pro_lst = pars.pro_lst;
+	pro_lst = new_prolst(ft_substr(line, pars->start, i - pars->start), type);
+	add_back_prolst(&pars->pro_lst, pro_lst);
+	pro_lst = pars->pro_lst;
 	while (pro_lst)
 	{
 		pro_lst->raw = free_strtrim(&pro_lst->raw, " ");
-		input_raw_lst(&pars, pro_lst);
+		input_raw_lst(pars, pro_lst);
 		pro_lst = pro_lst->next;
 	}
-	pro_lst = pars.pro_lst;
+	pro_lst = pars->pro_lst;
 	while (pro_lst)
 	{
 		raw_lst = pro_lst->raw_lst;
 		while (raw_lst)
 		{
-			char	*after_parsing = process_quotes(&pars, raw_lst->content);
+			char	*after_parsing = process_quotes(pars, raw_lst->content);
 			ft_lstadd_back(&(pro_lst->cmd_lst), ft_lstnew(after_parsing));
 			raw_lst = raw_lst->next;
 		}
 		pro_lst = pro_lst->next;
 	}
-	print_prolst(pars.pro_lst); // only 4 test
+	print_prolst(pars->pro_lst); // only 4 test
 	return (0);
 }
 

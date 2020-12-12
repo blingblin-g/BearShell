@@ -13,14 +13,23 @@
 
 int		main(void)
 {
+	t_parse pars;
 	// char *line = ft_strdup("$PWD     $: $ $/  'haha' you s'o    beautifu'l  $PWD");
 	// char *line = ft_strdup("            e'ch'o haha' you' fool | echo m\"ero\"ng > result.txt ; cat result.txt | cat -e");
 	// char *line = ft_strdup("dobule \'\"\'sq_in_dq\"\'\"dq_in_sq\"\\abc\\haha\\\\sooyoon$chlim$chlim$1haha $\\ $; $+ $?\"earlose tear\"$chlim\"lose");
 	// char *line = ft_strdup("\"$\"");
 	char *line = ft_strdup("echo '$chlim'$chlim\\|test | echo test >> echo redirection<echo input > echo output");
+	// t_parse pars; 이게 지금 지역변수로 선언돼있어서
 
-	main_parse(line);
-	
+	pars.single_q = FALSE;
+	pars.double_q = FALSE;
+	pars.pro_lst = NULL;
+	pars.line = NULL;
+	pars.is_space = FALSE;
+	pars.start = 0;
+	// pars.pro_lst->next = NULL;
+	main_parse(line, &pars);
+	// print_prolst(pars.pro_lst);
 	// t_parse	pars;
 	// printf("line: [%s]\n", line);
 	// char *after_line = process_quotes(&pars, line);
