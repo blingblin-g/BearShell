@@ -11,6 +11,43 @@
 // 	}
 // }
 
+void	init_pars(t_parse *pars)
+{
+	pars->single_q = FALSE;
+	pars->double_q = FALSE;
+	pars->pro_lst = NULL;
+	pars->line = NULL;
+	pars->is_space = FALSE;
+	pars->start = 0;
+}
+
+int		prolst_size(t_pro *lst)
+{
+	int	count;
+
+	count = 0;
+	while (lst)
+	{
+		count++;
+		lst = lst->next;
+	}
+	return count;
+}
+
+int		cmdlst_size(t_list *lst)
+{
+	int	count;
+
+	count = 0;
+	while (lst)
+	{
+		if (((char *)lst->content)[0]) // 배열인덱스가 나을지 포인터가 나을지 선택 바람.
+			count++;
+		lst = lst->next;
+	}
+	return (count);
+}
+
 int		main(void)
 {
 	t_parse pars;
@@ -18,17 +55,26 @@ int		main(void)
 	// char *line = ft_strdup("            e'ch'o haha' you' fool | echo m\"ero\"ng > result.txt ; cat result.txt | cat -e");
 	// char *line = ft_strdup("dobule \'\"\'sq_in_dq\"\'\"dq_in_sq\"\\abc\\haha\\\\sooyoon$chlim$chlim$1haha $\\ $; $+ $?\"earlose tear\"$chlim\"lose");
 	// char *line = ft_strdup("\"$\"");
-	char *line = ft_strdup("echo '$chlim'$chlim\\|test | echo test >> echo redirection<echo input > echo output");
+	// char *line = ft_strdup("echo '$chlim'$chlim\\|test | echo test >> echo redirection<echo input > echo output");
+	// char *line = ft_strdup("echo test | cat");
+	// char *line = ft_strdup("echo test | cat | cat | cat | cat");
+	// char *line = ft_strdup("echo haha > mkdir yoyo abc > mkdir2 hehe haha");
+	// char *line = ft_strdup("echo haha yoyo abc hehe haha > mkdir > mkdir2");
+	char *line = ft_strdup("echo -n haha ha hah ha ah ah ahah ahh 이렇게 들어오면 어덕할건데요 > echo test1 test2 test3 test4");
+	// int cmd_size;
+	int pro_size;
 	// t_parse pars; 이게 지금 지역변수로 선언돼있어서
+	// 먼저 세미콜론으로 파싱 => 세미리스트(지금은 pro_lst로 되있음) => | 파싱 => 파이프리스트
+	// => 파이프 리스트 안에 있는 리디렉션 처리 => 파이프 리스트는 실행시에 동시 실행되야함
+	// => 세미리스트는 그냥 순차적으로 실행
 
-	pars.single_q = FALSE;
-	pars.double_q = FALSE;
-	pars.pro_lst = NULL;
-	pars.line = NULL;
-	pars.is_space = FALSE;
-	pars.start = 0;
+	init_pars(&pars);
 	// pars.pro_lst->next = NULL;
 	main_parse(line, &pars);
+	pro_size = prolst_size(pars.pro_lst);
+	printf("pro_size: [%d]\n", pro_size);
+	// cmd_size = cmdlst_size();
+
 	// print_prolst(pars.pro_lst);
 	// t_parse	pars;
 	// printf("line: [%s]\n", line);

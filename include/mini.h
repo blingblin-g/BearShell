@@ -20,6 +20,7 @@
 #include <string.h>
 #include "libft.h"
 #include <dirent.h>
+#include <fcntl.h>
 
 /*
 * boolean
@@ -65,26 +66,29 @@ typedef struct s_info
 // 	t_list		*cmd_lst;
 // }				t_pro_lst;
 
-typedef struct s_pro
+typedef struct	s_pro
 {
-	int type;
-	char *raw;
-	t_list *raw_lst;
-	t_list *raw_cmds;
-	t_list *cmd_lst;
-	struct s_pro *next;
-} t_pro;
+	int			type;
+	int			fd_count;
+	char		*raw;
+	int			**fd; // fd 이차원 배열, fd[0]은 input 대상이이 들어온다. fd[1]은 output 대상이 들어온다., open으로 하나씩 열어놔야함
+	char		**argv; // 인자 배열
+	t_list		*raw_lst;
+	// char		**bayol;
+	t_list		*cmd_lst;
+	struct		s_pro *next;
+}				t_pro;
 
-typedef struct s_parse
+typedef struct	s_parse
 {
-	int is_space;
-	int single_q;
-	int double_q;
-	size_t start;
-	char *line;
+	int			is_space;
+	int			single_q;
+	int			double_q;
+	size_t		start;
+	char		*line;
 	// t_list		*cmd_lst;
-	t_pro *pro_lst;
-} t_parse;
+	t_pro		*pro_lst;
+}				t_parse;
 
 int get_next_line(int fd, char **line);
 char *get_env_item(char *key);
