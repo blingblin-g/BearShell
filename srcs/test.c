@@ -11,19 +11,9 @@
 // 	}
 // }
 
-void	init_pars(t_parse *pars)
+int prolst_size(t_pro *lst)
 {
-	pars->single_q = FALSE;
-	pars->double_q = FALSE;
-	pars->pro_lst = NULL;
-	pars->line = NULL;
-	pars->is_space = FALSE;
-	pars->start = 0;
-}
-
-int		prolst_size(t_pro *lst)
-{
-	int	count;
+	int count;
 
 	count = 0;
 	while (lst)
@@ -34,9 +24,9 @@ int		prolst_size(t_pro *lst)
 	return count;
 }
 
-int		cmdlst_size(t_list *lst)
+int cmdlst_size(t_list *lst)
 {
-	int	count;
+	int count;
 
 	count = 0;
 	while (lst)
@@ -48,19 +38,53 @@ int		cmdlst_size(t_list *lst)
 	return (count);
 }
 
-int		main(void)
+// only for test
+void	print_prolst(t_pro *lst)
+{
+	t_parse	pars;
+	t_list	*pipe_lst;
+
+	init_pars(&pars);
+	while (lst)
+	{
+		printf("type == [%d] : raw == [%s]\n", lst->type, lst->raw);
+		pipe_lst = lst->pipe_lst;
+		while (pipe_lst)
+		{
+			t_list	*redirection_lst;
+
+			redirection_lst = NULL;
+			printf("pipe_lst == [%s]\n", (char *)pipe_lst->content);
+			if (input_redirection_lst(&pars, pipe_lst->content, &redirection_lst))
+			{
+				// tmp_lst = redirection_lst;
+				// while (tmp_lst)
+				// {
+				// 	char	*after_parsing = process_quotes(&pars, tmp_lst->content);
+				// 	printf("after_parsing == [%s]\n", after_parsing);
+				// 	tmp_lst = tmp_lst->next;
+				// }
+				create_exec(&pars, redirection_lst);
+			}
+			pipe_lst = pipe_lst->next;
+		}
+		lst = lst->next;
+	}
+}
+
+int main(void)
 {
 	t_parse pars;
 	// char *line = ft_strdup("$PWD     $: $ $/  'haha' you s'o    beautifu'l  $PWD");
 	// char *line = ft_strdup("            e'ch'o haha' you' fool | echo m\"ero\"ng > result.txt ; cat result.txt | cat -e");
 	// char *line = ft_strdup("dobule \'\"\'sq_in_dq\"\'\"dq_in_sq\"\\abc\\haha\\\\sooyoon$chlim$chlim$1haha $\\ $; $+ $?\"earlose tear\"$chlim\"lose");
 	// char *line = ft_strdup("\"$\"");
-	// char *line = ft_strdup("echo '$chlim'$chlim\\|test | echo test >> echo redirection<echo input > echo output");
+	char *line = ft_strdup("echo '$chlim'$chlim\\|test ; echo test >> echo redirection<echo input > echo output");
 	// char *line = ft_strdup("echo test | cat");
-	// char *line = ft_strdup("echo test | cat | cat | cat | cat");
+	// char *line = ft_strdup("echo test| echo test> sample ; cat | cat | cat");
 	// char *line = ft_strdup("echo haha > mkdir yoyo abc > mkdir2 hehe haha");
 	// char *line = ft_strdup("echo haha yoyo abc hehe haha > mkdir > mkdir2");
-	char *line = ft_strdup("echo -n haha ha hah ha ah ah ahah ahh 이렇게 들어오면 어덕할건데요 > echo test1 test2 test3 test4");
+	// char *line = ft_strdup("echo haha > echo test1 '>'test2>test3;echo test>temp.txt");
 	// int cmd_size;
 	int pro_size;
 	// t_parse pars; 이게 지금 지역변수로 선언돼있어서
@@ -70,7 +94,9 @@ int		main(void)
 
 	init_pars(&pars);
 	// pars.pro_lst->next = NULL;
+	printf("line: [%s]\n", line);
 	main_parse(line, &pars);
+	print_prolst(pars.pro_lst); // only 4 test
 	pro_size = prolst_size(pars.pro_lst);
 	printf("pro_size: [%d]\n", pro_size);
 	// cmd_size = cmdlst_size();
@@ -93,7 +119,7 @@ int		main(void)
 	// if ((execve(cmd, arr, environ) == -1))
 	// 	printf("haha! you failed!\n");
 	// char	*text = ft_strdup("aaaa\\n");
-	
+
 	// size_t		i = 0;
 
 	// char	*result = get_double_quote_zone(line, &i);
@@ -102,10 +128,8 @@ int		main(void)
 	// char *result = out_of_quotes_zone(line, &i);
 	// printf("[%s]\n", result);
 
-
-
 	// printf("=================mild==============\n");
-	
+
 	// char **tests = malloc(sizeof(char *) * 30);
 	// tests[0] = ft_strdup("\'$USER\'");
 	// tests[1] = ft_strdup("\"$USER\"");
@@ -145,7 +169,7 @@ int		main(void)
 	// }
 
 	// printf("=================lot of spicy==============\n");
-	
+
 	// tests[19] = ft_strdup("ec\"\"\"ho\"\"\" hello");
 	// tests[20] = ft_strdup("ec\"ho\" hello");
 	// tests[21] = ft_strdup("ec\'ho\' hello");
