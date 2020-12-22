@@ -247,7 +247,7 @@ int		main_parse(char *line, t_parse *pars)
 	return (0);
 }
 
-int		setting_exec(t_exec	*exec_info, int lst_count, int fd_count)
+int		 init_exec(t_exec	*exec_info, int lst_count, int fd_count)
 {
 	if (!(exec_info->fd = (int **)malloc(sizeof(int *) * 3)))
 		return (ERROR);
@@ -298,20 +298,22 @@ t_exec	*create_exec(t_parse *pars, t_list *redir_lst)
 	if (!(exec_info = (t_exec *)malloc(sizeof(t_exec))))
 		return (NULL);
 	lst_count = ft_lstsize(redir_lst);
-	setting_exec(exec_info, lst_count, get_fd_count(redir_lst));
+	init_exec(exec_info, lst_count, get_fd_count(redir_lst));
 	while (redir_lst)
 	{
 		res = process_quotes(pars, redir_lst->content);
 		printf("after_parsing == [%s]\n", res);
 		if (res && (res[0] == '>' || res[0] == '<'))
 		{
+			// echo test > sample >> sample2 > sample3 >> sample4
+			// echo test >> sample > sample2 >> sample3 > sample4
 			// create_fds(exec_info, redir_lst, res);
-			redir_lst = redir_lst->next;
+			// redir_lst = redir_lst->next;
 		}
 		else
 		{
-			exec_info->argv[exec_info->argv_idx] = res;
-			exec_info->argv_idx++;
+			// exec_info->argv[exec_info->argv_idx] = res;
+			// exec_info->argv_idx++;
 		}
 		if (redir_lst)
 			redir_lst = redir_lst->next;

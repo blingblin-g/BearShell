@@ -57,13 +57,6 @@ void	print_prolst(t_pro *lst)
 			printf("pipe_lst == [%s]\n", (char *)pipe_lst->content);
 			if (input_redirection_lst(&pars, pipe_lst->content, &redirection_lst))
 			{
-				// tmp_lst = redirection_lst;
-				// while (tmp_lst)
-				// {
-				// 	char	*after_parsing = process_quotes(&pars, tmp_lst->content);
-				// 	printf("after_parsing == [%s]\n", after_parsing);
-				// 	tmp_lst = tmp_lst->next;
-				// }
 				create_exec(&pars, redirection_lst);
 			}
 			pipe_lst = pipe_lst->next;
@@ -79,7 +72,7 @@ int main(void)
 	// char *line = ft_strdup("            e'ch'o haha' you' fool | echo m\"ero\"ng > result.txt ; cat result.txt | cat -e");
 	// char *line = ft_strdup("dobule \'\"\'sq_in_dq\"\'\"dq_in_sq\"\\abc\\haha\\\\sooyoon$chlim$chlim$1haha $\\ $; $+ $?\"earlose tear\"$chlim\"lose");
 	// char *line = ft_strdup("\"$\"");
-	char *line = ft_strdup("echo '$chlim'$chlim\\|test ; echo test >> echo redirection<echo input > echo output");
+	char *line = ft_strdup("echo '$chlim' $chlim \\|test ;>$chlim echo test >> echo redirection<echo input > echo output >\\>\\<\\>>\\>>");
 	// char *line = ft_strdup("echo test | cat");
 	// char *line = ft_strdup("echo test| echo test> sample ; cat | cat | cat");
 	// char *line = ft_strdup("echo haha > mkdir yoyo abc > mkdir2 hehe haha");
