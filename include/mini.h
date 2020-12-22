@@ -42,7 +42,8 @@
 #define OUTPUT 3
 #define APPEND 4
 #define SEMI 5
-#define END 6
+#define SPACE 6
+#define END 7
 
 typedef struct dirent t_dir;
 
@@ -66,14 +67,20 @@ typedef struct s_info
 // 	t_list		*cmd_lst;
 // }				t_pro_lst;
 
+typedef struct	s_exec
+{
+	int			**fd; // fd 이차원 배열, fd[0]은 input 대상이이 들어온다. fd[1]은 output 대상이 들어온다., open으로 하나씩 열어놔야함
+	char		**argv; // 인자 배열
+	int			fd_idx;
+	int			argv_idx;
+}				t_exec;
+
 typedef struct	s_pro
 {
 	int			type;
-	int			fd_count;
 	char		*raw;
-	int			**fd; // fd 이차원 배열, fd[0]은 input 대상이이 들어온다. fd[1]은 output 대상이 들어온다., open으로 하나씩 열어놔야함
-	char		**argv; // 인자 배열
-	t_list		*raw_lst;
+	// t_list		*raw_lst;
+	t_list		*pipe_lst;
 	// char		**bayol;
 	t_list		*cmd_lst;
 	struct		s_pro *next;
@@ -82,8 +89,10 @@ typedef struct	s_pro
 typedef struct	s_parse
 {
 	int			is_space;
+	int			is_redirection;
 	int			single_q;
 	int			double_q;
+	int			fd_count;
 	size_t		start;
 	char		*line;
 	// t_list		*cmd_lst;
@@ -104,7 +113,6 @@ int main_parse(char *line, t_parse *pars);
 t_pro *new_prolst(char *raw, int type);
 t_pro *last_prolst(t_pro *lst);
 void add_back_prolst(t_pro **lst, t_pro *new);
-void print_prolst(t_pro *lst);
 void free_prolst(t_pro **lst);
 char *free_strtrim(char **s, char const *set);
 char *process_quotes(t_parse *pars, char *content);
@@ -114,5 +122,8 @@ char *get_single_quote_zone(char *content, size_t *start, size_t *i);
 char *get_double_quote_zone(char *content, size_t *start, size_t *i);
 char *find_var_name(char *content, size_t *i);
 char *out_of_quotes_zone(char *content, size_t *start, size_t *i);
+int		input_redirection_lst(t_parse *pars, char *raw, t_list **raw_lst);
+void	init_pars(t_parse *pars);
+t_exec	*create_exec(t_parse *pars, t_list	*redir_lst);
 
 #endif
