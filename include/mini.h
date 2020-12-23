@@ -71,7 +71,9 @@ typedef struct	s_exec
 {
 	int			**fd; // fd 이차원 배열, fd[0]은 input 대상이이 들어온다. fd[1]은 output 대상이 들어온다., open으로 하나씩 열어놔야함
 	char		**argv; // 인자 배열
-	int			fd_idx;
+	int			fd_count;
+	int			fd_input_idx;
+	int			fd_output_idx;
 	int			argv_idx;
 }				t_exec;
 

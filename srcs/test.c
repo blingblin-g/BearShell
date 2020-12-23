@@ -24,7 +24,7 @@ int prolst_size(t_pro *lst)
 	return count;
 }
 
-int cmdlst_size(t_list *lst)
+int		cmdlst_size(t_list *lst)
 {
 	int count;
 
@@ -38,11 +38,36 @@ int cmdlst_size(t_list *lst)
 	return (count);
 }
 
+void	print_exec_info(t_exec *exec_info)
+{
+	int	i = 0;
+
+	while (i < exec_info->argv_idx)
+	{
+		printf("argv[%d]: [%s]\n", i, exec_info->argv[i]);
+		i++;
+	}
+	i = 0;
+	while (i < exec_info->fd_input_idx)
+	{
+		printf("input_idx[%d]: [%d]\n", i, exec_info->fd[0][i]);
+		i++;
+	}
+	i = 0;
+	while (i < exec_info->fd_output_idx)
+	{
+		printf("output_idx[%d]: [%d]\n", i, exec_info->fd[1][i]);
+		i++;
+	}
+}
+
 // only for test
 void	print_prolst(t_pro *lst)
 {
 	t_parse	pars;
 	t_list	*pipe_lst;
+	t_list	*redirection_lst;
+	t_exec	*exec_info;
 
 	init_pars(&pars);
 	while (lst)
@@ -51,13 +76,12 @@ void	print_prolst(t_pro *lst)
 		pipe_lst = lst->pipe_lst;
 		while (pipe_lst)
 		{
-			t_list	*redirection_lst;
-
 			redirection_lst = NULL;
 			printf("pipe_lst == [%s]\n", (char *)pipe_lst->content);
 			if (input_redirection_lst(&pars, pipe_lst->content, &redirection_lst))
 			{
-				create_exec(&pars, redirection_lst);
+				exec_info = create_exec(&pars, redirection_lst);
+				print_exec_info(exec_info);
 			}
 			pipe_lst = pipe_lst->next;
 		}

@@ -222,47 +222,24 @@ int		main_parse(char *line, t_parse *pars)
 	}
 	pro_lst = pars->pro_lst;
 
-	// while (pro_lst)
-	// {
-	// 	pro_lst->raw = free_strtrim(&pro_lst->raw, " ");
-	// 	input_redirection_lst(pars, pro_lst->raw, &pro_lst->pipe_lst);
-	// 	pro_lst = pro_lst->next;
-	// }
-	// pro_lst = pars->pro_lst;
-
-	// while (pro_lst)
-	// {
-	// 	raw_lst = pro_lst->raw_lst;
-	// 	while (raw_lst)
-	// 	{
-	// 		char	*after_parsing = process_quotes(pars, raw_lst->content);
-	// 		ft_lstadd_back(&(pro_lst->cmd_lst), ft_lstnew(after_parsing));
-	// 		raw_lst = raw_lst->next;
-	// 	}
-	// 	pro_lst = pro_lst->next;
-	// }
-
-	// print_prolst(pars->pro_lst); // only 4 test
-	
 	return (0);
 }
 
 int		 init_exec(t_exec	*exec_info, int lst_count, int fd_count)
 {
-	if (!(exec_info->fd = (int **)malloc(sizeof(int *) * 3)))
+	if (!(exec_info->fd = (int **)malloc(sizeof(int *) * 2)))
 		return (ERROR);
-	exec_info->fd[2] = NULL;
-	if (!(exec_info->fd[0] = (int *)malloc(sizeof(int *) * (fd_count + 1))))
+	exec_info->fd_count = fd_count;
+	if (!(exec_info->fd[0] = (int *)malloc(sizeof(int *) * (fd_count))))
 		return (ERROR);
-	exec_info->fd[0][fd_count] = 0; 
-	if (!(exec_info->fd[1] = (int *)malloc(sizeof(int *) * (fd_count + 1))))
+	if (!(exec_info->fd[1] = (int *)malloc(sizeof(int *) * (fd_count))))
 		return (ERROR);
-	exec_info->fd[1][fd_count] = 0;
 	if (!(exec_info->argv = (char **)malloc(sizeof(char *) *
 		(lst_count - fd_count + 1))))
 		return (ERROR);
 	exec_info->argv[lst_count - fd_count] = 0;
-	exec_info->fd_idx = 0;
+	exec_info->fd_input_idx = 0;
+	exec_info->fd_output_idx = 0;
 	exec_info->argv_idx = 0;
 	return (SUCCESS);
 }
@@ -282,12 +259,30 @@ int		get_fd_count(t_list	*redir_lst)
 	return (count);
 }
 
-// void	create_fds(t_exec	*exec_info, t_parse *pars, t_list *redir_lst, char *redir_str)
-// {
-// 	char	*res;
+void	create_fds(t_exec *exec_info, char *redir_str, char *file_str)
+{
+	int	fd;
 
-// 	res = process_quotes(pars, redir_lst->content);
-// }
+	fd = 0;
+	if (!ft_strcmp(redir_str, ">"))
+	{
+		// printf("output fd: [%d], file_str: [%s]\n", fd, file_str);
+		fd = open(file_str, O_RDWR | O_TRUNC | O_CREAT, 00777);
+		exec_info->fd[1][exec_info->fd_output_idx++] = fd;
+	}
+	else if (!ft_strcmp(redir_str, ">>"))
+	{
+		// printf("append fd: [%d], file_str: [%s]\n", fd, file_str);
+		fd = open(file_str, O_RDWR | O_APPEND | O_CREAT, 00777);
+		exec_info->fd[1][exec_info->fd_output_idx++] = fd;
+	}
+	else if (!ft_strcmp(redir_str, "<"))
+	{
+		// printf("input fd: [%d], file_str: [%s]\n", fd, file_str);
+		fd = open(file_str, O_RDONLY, 00777);
+		exec_info->fd[0][exec_info->fd_input_idx++] = fd;
+	}
+}
 
 t_exec	*create_exec(t_parse *pars, t_list *redir_lst)
 {
@@ -305,18 +300,33 @@ t_exec	*create_exec(t_parse *pars, t_list *redir_lst)
 		printf("after_parsing == [%s]\n", res);
 		if (res && (res[0] == '>' || res[0] == '<'))
 		{
-			// echo test > sample >> sample2 > sample3 >> sample4
-			// echo test >> sample > sample2 >> sample3 > sample4
-			// create_fds(exec_info, redir_lst, res);
-			// redir_lst = redir_lst->next;
+			if (redir_lst->next)
+				create_fds(exec_info, res, process_quotes(pars, redir_lst->next->content));
+			redir_lst = redir_lst->next;
 		}
-		else
+		else if (ft_strcmp(res, ""))
 		{
-			// exec_info->argv[exec_info->argv_idx] = res;
-			// exec_info->argv_idx++;
+			exec_info->argv[exec_info->argv_idx] = res;
+			exec_info->argv_idx++;
 		}
 		if (redir_lst)
 			redir_lst = redir_lst->next;
 	}
 	return (exec_info);
+}
+
+void	free_exec_info(t_exec **exec_info)
+{
+	int		i;
+
+	i = 0;
+	free((*exec_info)->fd[0]);
+	free((*exec_info)->fd[1]);
+	free((*exec_info)->fd);
+	while ((*exec_info)->argv[i])
+	{
+		free((*exec_info)->argv[i]);
+		i++;
+	}
+	free((*exec_info)->argv);
 }
