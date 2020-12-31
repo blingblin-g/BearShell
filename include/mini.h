@@ -127,5 +127,7 @@ char *out_of_quotes_zone(char *content, size_t *start, size_t *i);
 int		input_redirection_lst(t_parse *pars, char *raw, t_list **raw_lst);
 void	init_pars(t_parse *pars);
 t_exec	*create_exec(t_parse *pars, t_list	*redir_lst);
+char	**get_environ();
+void	execute_cmd(t_exec *exec_info);
 
 #endif

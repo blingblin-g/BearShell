@@ -1,4 +1,6 @@
 #include "mini.h"
+#include <signal.h>
+#include <errno.h>
 
 // static void	print_arr(char **arr) // input after pointer calc
 // {
@@ -89,21 +91,43 @@ void	print_prolst(t_pro *lst)
 	}
 }
 
+void	interruptHandler(int sig)
+{
+	if (sig == SIGINT)
+	{
+		printf("this program will be exited...\n");
+		exit(0);
+	}
+	else if (sig == SIGQUIT)
+	{
+		printf("SIGQUIT!!!!!!\n");
+		exit(0);
+	}
+}
+
 int main(void)
 {
 	t_parse pars;
+	pid_t	child;
+	int		status;
+	t_list	*redirection_lst = NULL;
+	t_exec	*exec_info;
+
+	get_info()->env_list = create_env_list();
 	// char *line = ft_strdup("$PWD     $: $ $/  'haha' you s'o    beautifu'l  $PWD");
 	// char *line = ft_strdup("            e'ch'o haha' you' fool | echo m\"ero\"ng > result.txt ; cat result.txt | cat -e");
 	// char *line = ft_strdup("dobule \'\"\'sq_in_dq\"\'\"dq_in_sq\"\\abc\\haha\\\\sooyoon$chlim$chlim$1haha $\\ $; $+ $?\"earlose tear\"$chlim\"lose");
 	// char *line = ft_strdup("\"$\"");
-	char *line = ft_strdup("echo '$chlim' $chlim \\|test ;>$chlim echo test >> echo redirection<echo input > echo output >\\>\\<\\>>\\>>");
+	// char *line = ft_strdup("echo '$chlim' $chlim \\|test ;>chlim echo test >><><><<<<<<>> echo redirection<echo input > echo output < merong < chlim << haha");
+	// char *line = ft_strdup("fairy $\\$ \\$chlim echo : \"haha\"yo u 'ba'b o>\\<> hehe test > sooyoon > sooyoon >sooyoon");
 	// char *line = ft_strdup("echo test | cat");
 	// char *line = ft_strdup("echo test| echo test> sample ; cat | cat | cat");
 	// char *line = ft_strdup("echo haha > mkdir yoyo abc > mkdir2 hehe haha");
 	// char *line = ft_strdup("echo haha yoyo abc hehe haha > mkdir > mkdir2");
-	// char *line = ft_strdup("echo haha > echo test1 '>'test2>test3;echo test>temp.txt");
+	char *line = ft_strdup("echo haha > echo test1 '>'test2>test3");
 	// int cmd_size;
-	int pro_size;
+	// int pro_size;
+
 	// t_parse pars; 이게 지금 지역변수로 선언돼있어서
 	// 먼저 세미콜론으로 파싱 => 세미리스트(지금은 pro_lst로 되있음) => | 파싱 => 파이프리스트
 	// => 파이프 리스트 안에 있는 리디렉션 처리 => 파이프 리스트는 실행시에 동시 실행되야함
@@ -113,97 +137,41 @@ int main(void)
 	// pars.pro_lst->next = NULL;
 	printf("line: [%s]\n", line);
 	main_parse(line, &pars);
-	print_prolst(pars.pro_lst); // only 4 test
-	pro_size = prolst_size(pars.pro_lst);
-	printf("pro_size: [%d]\n", pro_size);
+	if (input_redirection_lst(&pars, line, &redirection_lst))
+	{
+		exec_info = create_exec(&pars, redirection_lst);
+		print_exec_info(exec_info);
+	}
+
+	child = fork();
+	if (child == 0)
+	{
+		execute_cmd(exec_info);
+		exit(0);
+	}
+	else if (child > 0)
+	{
+		printf("parent!!! wait pid: [%d]\n", child);
+		wait(&status);
+		printf("child status: [%d]\n", status);
+	}
+
+
+	// print_prolst(pars.pro_lst); // only 4 test
+	// pro_size = prolst_size(pars.pro_lst);
+	// printf("pro_size: [%d]\n", pro_size);
+
+
+	// char	**env_arr = get_environ();
+
+	// for(int i = 0; env_arr[i]; i++)
+	// {
+	// 	printf("env_arr[%d]: %s\n", i, env_arr[i]);
+	// }
+
+	// signal(SIGINT, interruptHandler);
+	// signal(SIGQUIT, interruptHandler);
+	// while(1);
 	// cmd_size = cmdlst_size();
-
-	// print_prolst(pars.pro_lst);
-	// t_parse	pars;
-	// printf("line: [%s]\n", line);
-	// char *after_line = process_quotes(&pars, line);
-	// printf("after process_quotes: [%s]\n", after_line);
-
-	// char	**path = ft_split(get_env_item("PATH"), ':');
-
-	// print_arr(path);
-
-	// extern char **environ;
-	// char	*cmd = get_cmd("echo");
-	// char	**arr = ft_split("echo -n haha", ' ');
-
-	// printf("cmd: [%s]\n", cmd);
-	// if ((execve(cmd, arr, environ) == -1))
-	// 	printf("haha! you failed!\n");
-	// char	*text = ft_strdup("aaaa\\n");
-
-	// size_t		i = 0;
-
-	// char	*result = get_double_quote_zone(line, &i);
-	// printf("[%s]\n", result);
-
-	// char *result = out_of_quotes_zone(line, &i);
-	// printf("[%s]\n", result);
-
-	// printf("=================mild==============\n");
-
-	// char **tests = malloc(sizeof(char *) * 30);
-	// tests[0] = ft_strdup("\'$USER\'");
-	// tests[1] = ft_strdup("\"$USER\"");
-	// tests[2] = ft_strdup("\"\'$USER\'\"");
-	// tests[3] = ft_strdup("\'\"$USER\"\'");
-	// tests[4] = ft_strdup("\'\'$USER\'\'");
-	// tests[5] = ft_strdup("\'\'\'$USER\'\'\'");
-	// tests[6] = ft_strdup("$USER=aaa");
-	// tests[7] = ft_strdup("$HELLO=aaa");
-
-	// for (int i = 0; i < 8; i++)
-	// {
-	// 	t_parse	pars;
-	// 	char *after_line = process_quotes(&pars, tests[i]);
-	// 	printf("[%d]============================[%s]\n", i, after_line);
-	// }
-
-	// printf("=================bit of spicy==============\n");
-
-	// tests[8] = ft_strdup("aa\"bb$USER\"cc");
-	// tests[9] = ft_strdup("aa\"bb$USER cc\"dd");
-	// tests[10] = ft_strdup("aa\"bb$USERcc\"dd");
-	// tests[11] = ft_strdup("\'qqq\\\'");
-	// tests[12] = ft_strdup("hello$USER_");
-	// tests[13] = ft_strdup("\"hello\\nman\"");
-	// tests[14] = ft_strdup("hello\\nman");
-	// tests[15] = ft_strdup("\"hello\\ man\"");
-	// tests[16] = ft_strdup("\"hello\'man\"");
-	// tests[17] = ft_strdup("\"hello\'man\\\"\"");
-	// tests[18] = ft_strdup("\'hello\"man\'");
-
-	// for (int i = 8; i < 19; i++)
-	// {
-	// 	t_parse	pars;
-	// 	char *after_line = process_quotes(&pars, tests[i]);
-	// 	printf("[%d]============================[%s]\n", i, after_line);
-	// }
-
-	// printf("=================lot of spicy==============\n");
-
-	// tests[19] = ft_strdup("ec\"\"\"ho\"\"\" hello");
-	// tests[20] = ft_strdup("ec\"ho\" hello");
-	// tests[21] = ft_strdup("ec\'ho\' hello");
-	// tests[22] = ft_strdup("ec\"\'ho\'\" hello");
-	// tests[23] = 0;
-
-	// for (int i = 19; i < 23; i++)
-	// {
-	// 	t_parse	pars;
-	// 	char *after_line = process_quotes(&pars, tests[i]);
-	// 	printf("[%d]============================[%s]\n", i, after_line);
-	// }
-
-	// t_parse	pars;
-	// char *line = ft_strdup("\'\'\'$USER\'\'\'");
-	// char *after_line = process_quotes(&pars, line);
-	// printf("line: [%s]\n", line);
-	// printf("[%s]\n", after_line);
 	return (0);
 }

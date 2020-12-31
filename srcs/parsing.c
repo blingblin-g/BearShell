@@ -132,7 +132,7 @@ int		input_redirection_lst(t_parse *pars, char *raw, t_list **raw_lst)
 	pars->start = i;
 	type = 0;
 	while (raw[i])
-	{
+	{ 
 		if (!pars->single_q && !pars->double_q)
 		{
 			if (i == 0 || (i != 0 && raw[i - 1] != '\\'))

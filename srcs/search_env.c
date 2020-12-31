@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include "libft.h"
+#include "mini.h"
 
 void	free_arr(char **arr)
 {
@@ -52,4 +51,26 @@ t_list	*create_env_list()
 		i++;
 	}
 	return (env_list);
+}
+
+char	**get_environ()
+{
+	t_list	*tmp_lst;
+	char	**environ;
+	size_t	size;
+	size_t	i;
+
+	size = ft_lstsize(get_info()->env_list);
+	if (!(environ = malloc(sizeof(char *) * (size + 1))))
+		return (NULL);
+	environ[size] = 0;
+	i = 0;
+	tmp_lst = get_info()->env_list;
+	while (tmp_lst)
+	{
+		environ[i] = tmp_lst->content;
+		i++;
+		tmp_lst = tmp_lst->next;
+	}
+	return (environ);
 }
