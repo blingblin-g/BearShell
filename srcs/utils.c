@@ -48,6 +48,17 @@ char	*free_join(char *s1, char *s2)
 	return (result);
 }
 
+void	print_arr(char **arr) // input after pointer calc
+{
+	while (*arr)
+	{
+		ft_putstr_fd(*arr, 1);
+		if (arr + 1 != 0)
+			write(1, " ", 1);
+		arr++;
+	}
+}
+
 t_info *get_info()
 {
 	static t_info info;

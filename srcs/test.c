@@ -124,7 +124,7 @@ int main(void)
 	// char *line = ft_strdup("echo test| echo test> sample ; cat | cat | cat");
 	// char *line = ft_strdup("echo haha > mkdir yoyo abc > mkdir2 hehe haha");
 	// char *line = ft_strdup("echo haha yoyo abc hehe haha > mkdir > mkdir2");
-	char *line = ft_strdup("echo haha > echo test1 '>'test2>test3");
+	char *line = ft_strdup("echo ~/ > echo ~d");
 	// int cmd_size;
 	// int pro_size;
 

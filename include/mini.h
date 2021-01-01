@@ -106,11 +106,11 @@ char *get_env_item(char *key);
 int echo(char **argv);
 t_list *create_env_list();
 t_info *get_info();
-void export(char *argv);
+int export(char *argv);
 void print_str(void *str);
 int find_chr(char *str, char ch);
-void env();
-void unset(char *argv);
+int env();
+int unset(char *argv);
 int main_parse(char *line, t_parse *pars);
 t_pro *new_prolst(char *raw, int type);
 t_pro *last_prolst(t_pro *lst);
@@ -129,5 +129,9 @@ void	init_pars(t_parse *pars);
 t_exec	*create_exec(t_parse *pars, t_list	*redir_lst);
 char	**get_environ();
 void	execute_cmd(t_exec *exec_info);
+void	print_arr(char **arr);
+int		cd(char *argv);
+int		pwd();
+void	free_exit();
 
 #endif
