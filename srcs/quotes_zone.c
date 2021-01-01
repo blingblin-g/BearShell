@@ -186,6 +186,24 @@ char *out_of_quotes_zone(char *content, size_t *i, size_t *end_i)
 	return (result);
 }
 
+void	process_home(char **content)
+{
+	char	*temp;
+	char	*home_path;
+
+	if ((*content)[0] == '~')
+	{
+		if ((*content)[1] == '/' || (*content)[1] == '\0')
+		{
+			home_path = get_env_item("HOME");
+			temp = ft_strjoin(home_path, (*content) + 1);
+			free(home_path);
+			free(*content);
+			*content = temp;
+		}
+	}
+}
+
 char *process_quotes(t_parse *pars, char *content)
 {
 	size_t i;
@@ -196,6 +214,7 @@ char *process_quotes(t_parse *pars, char *content)
 	pars->double_q = FALSE;
 	pars->start = 0;
 	result = ft_strdup("");
+	process_home(&content);
 	while (i <= ft_strlen(content))
 	{
 		if (!pars->single_q && !pars->double_q)
