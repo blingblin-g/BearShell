@@ -124,10 +124,9 @@ int main(void)
 	// char *line = ft_strdup("echo test| echo test> sample ; cat | cat | cat");
 	// char *line = ft_strdup("echo haha > mkdir yoyo abc > mkdir2 hehe haha");
 	// char *line = ft_strdup("echo haha yoyo abc hehe haha > mkdir > mkdir2");
-	char *line = ft_strdup("echo ~/ > echo ~d");
+	char *line = ft_strdup("unset PWD");
 	// int cmd_size;
 	// int pro_size;
-
 	// t_parse pars; 이게 지금 지역변수로 선언돼있어서
 	// 먼저 세미콜론으로 파싱 => 세미리스트(지금은 pro_lst로 되있음) => | 파싱 => 파이프리스트
 	// => 파이프 리스트 안에 있는 리디렉션 처리 => 파이프 리스트는 실행시에 동시 실행되야함

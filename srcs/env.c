@@ -46,7 +46,7 @@ void	export_only()
 		haha = haha->next;
 	}
 	sort_env_arr(env);
-	print_arr(env);
+	println_arr(env);
 }
 
 int		export(char *argv)
@@ -79,13 +79,20 @@ int		unset(char *argv)
 {
 	t_list	*tmp_node;
 	t_list	*pre_node;
-
+	size_t len;
+	
+	len = ft_strlen(argv);
+	pre_node = NULL;
 	tmp_node = get_info()->env_list;
 	while (tmp_node)
 	{
-		if (!ft_strncmp(argv, tmp_node->content, find_chr(argv, '=')))
+		if (!ft_strncmp(tmp_node->content, argv, len &&
+		 ((char *)tmp_node->content)[len] == '='))
 		{
-			pre_node->next = tmp_node->next;
+			if (pre_node == NULL)
+				get_info()->env_list = tmp_node->next;
+			else
+				pre_node->next = tmp_node->next;
 			free(tmp_node->content);
 			free(tmp_node);
 			return (TRUE);

@@ -133,5 +133,6 @@ void	print_arr(char **arr);
 int		cd(char *argv);
 int		pwd();
 void	free_exit();
+void	println_arr(char **arr);
 
 #endif

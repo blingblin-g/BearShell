@@ -1,24 +1,31 @@
 #include "mini.h"
 
+int		pwd()
+{
+	char	buf[2097152];
+	char	*working_directory;
+
+	working_directory = getcwd(buf, 2097152);
+	write(1, working_directory, ft_strlen(working_directory));
+	return (TRUE);
+}
+
 int		valid_path(char *path)
 {
 	DIR *directory;
 
 	if ((directory = opendir(path)))
 		return (closedir(directory));
-	return TRUE;
+	return (TRUE);
 }
 
-int		cd(char *argv)
+int		cd(char *path)
 {
-	char *path;
-
-	path = NULL;
-	if (argv == 0)
+	if (path == 0)
 		path = get_env_item("HOME");
-	if (valid_path(path))
+	else if (valid_path(path))
 		return(0);
-	return chdir(path);
+	return (!chdir(path));
 }
 
 int			echo(char **argv)
@@ -36,14 +43,4 @@ int			echo(char **argv)
 void free_exit() // memory free 관련 기능 추가하기
 {
 	exit(0);
-}
-
-int		pwd()
-{
-	char	buf[2097152];
-	char	*working_directory;
-
-	working_directory = getcwd(buf, 2097152);
-	write(1, working_directory, ft_strlen(working_directory));
-	return (TRUE);
 }

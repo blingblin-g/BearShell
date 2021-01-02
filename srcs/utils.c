@@ -16,7 +16,7 @@ int		find_chr(char *str, char ch)
 			return (i);
 		i++;
 	}
-	return (-1);
+	return (0);
 }
 
 char	*free_join(char *s1, char *s2)
@@ -55,6 +55,17 @@ void	print_arr(char **arr) // input after pointer calc
 		ft_putstr_fd(*arr, 1);
 		if (arr + 1 != 0)
 			write(1, " ", 1);
+		arr++;
+	}
+}
+
+void	println_arr(char **arr)
+{
+	while (*arr)
+	{
+		ft_putstr_fd(*arr, 1);
+		if (arr + 1 != 0)
+			write(1, "\n", 1);
 		arr++;
 	}
 }
