@@ -39,15 +39,21 @@ void	execute_cmd(t_exec *exec_info)
 {
 	char	*cmd;
 
+	if (exec_info->fd[0] != NULL && exec_info->fd[0][exec_info->input_count - 1] != 0)
+	{
+		exec_info->std[0] = dup(0);
+		dup2(exec_info->fd[0][exec_info->input_count - 1], 0); // 입력
+	}
+	if (exec_info->fd[1] != NULL && exec_info->fd[1][exec_info->output_count - 1] != 0)
+	{
+		exec_info->std[1] = dup(1);
+		dup2(exec_info->fd[1][exec_info->output_count - 1], 1); // 출력
+	}
 	if (!execute_builtin(exec_info->argv))
 	{
 		cmd = get_cmd(exec_info->argv[0]);
 		free(exec_info->argv[0]);
 		exec_info->argv[0] = cmd;
-		if (exec_info->fd[0][exec_info->fd_input_idx] != 0)
-			dup2(exec_info->fd[0][exec_info->fd_input_idx], 0); // 입력
-		if (exec_info->fd[1][exec_info->fd_output_idx] != 0)
-			dup2(exec_info->fd[1][exec_info->fd_output_idx], 1); // 출력
 		if (execve(cmd, exec_info->argv, get_environ()))
 		{
 			// error();

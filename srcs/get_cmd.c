@@ -14,7 +14,7 @@ char	*join_cmd_envpath(char	**path, char *command)
 		dp = opendir(path[i]);
 		while ((file = readdir(dp)))
 		{
-			if (!ft_strncmp(file->d_name, command, ft_strlen(command)))
+			if (!ft_strcmp(file->d_name, command))
 			{
 				tmp = ft_strjoin(path[i], "/");
 				tmp2 = ft_strjoin(tmp, command);

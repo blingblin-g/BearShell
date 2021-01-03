@@ -225,15 +225,23 @@ int		main_parse(char *line, t_parse *pars)
 	return (0);
 }
 
-int		 init_exec(t_exec	*exec_info, int lst_count, int fd_count)
+int		 init_exec(t_exec	*exec_info, int lst_count)
 {
-	if (!(exec_info->fd = (int **)malloc(sizeof(int *) * 2)))
-		return (ERROR);
-	exec_info->fd_count = fd_count;
-	if (!(exec_info->fd[0] = (int *)malloc(sizeof(int *) * (fd_count))))
-		return (ERROR);
-	if (!(exec_info->fd[1] = (int *)malloc(sizeof(int *) * (fd_count))))
-		return (ERROR);
+	int		fd_count;
+
+
+	fd_count = exec_info->input_count + exec_info->output_count;
+	printf("exec_info->input_count: [%d], exec_info->output_count: [%d]\n", exec_info->input_count, exec_info->output_count);
+	if (exec_info->input_count > 0)
+		if (!(exec_info->fd[0] = (int *)malloc(sizeof(int) * (exec_info->input_count))))
+			return (ERROR);
+	if (exec_info->output_count > 0)
+		if (!(exec_info->fd[1] = (int *)malloc(sizeof(int) * (exec_info->output_count))))
+			return (ERROR);
+	if (exec_info->input_count <= 0)
+		exec_info->fd[0] = NULL;
+	if (exec_info->output_count <= 0)
+		exec_info->fd[1] = NULL;
 	if (!(exec_info->argv = (char **)malloc(sizeof(char *) *
 		(lst_count - fd_count + 1))))
 		return (ERROR);
@@ -244,19 +252,21 @@ int		 init_exec(t_exec	*exec_info, int lst_count, int fd_count)
 	return (SUCCESS);
 }
 
-int		get_fd_count(t_list	*redir_lst)
+void	get_fd_count(t_list	*redir_lst, t_exec *exec_info)
 {
-	int count;
-
-	count = 0;
+	exec_info->input_count = 0;
+	exec_info->output_count = 0;
 	while (redir_lst)
 	{
-		if (redir_lst->content && (((char *)redir_lst->content)[0] == '>' ||
-			((char *)redir_lst->content)[0] == '<'))
-		count++;
+		if (redir_lst->content)
+		{
+			if (((char *)redir_lst->content)[0] == '>')
+				exec_info->output_count++;
+			if (((char *)redir_lst->content)[0] == '<')
+				exec_info->input_count++;
+		}
 		redir_lst = redir_lst->next;
 	}
-	return (count);
 }
 
 void	create_fds(t_exec *exec_info, char *redir_str, char *file_str)
@@ -268,6 +278,7 @@ void	create_fds(t_exec *exec_info, char *redir_str, char *file_str)
 	{
 		// printf("output fd: [%d], file_str: [%s]\n", fd, file_str);
 		fd = open(file_str, O_RDWR | O_TRUNC | O_CREAT, 00777);
+		printf("exec_info->fd[1]: [%p]\n", exec_info->fd[1]);
 		exec_info->fd[1][exec_info->fd_output_idx++] = fd;
 	}
 	else if (!ft_strcmp(redir_str, ">>"))
@@ -293,7 +304,8 @@ t_exec	*create_exec(t_parse *pars, t_list *redir_lst)
 	if (!(exec_info = (t_exec *)malloc(sizeof(t_exec))))
 		return (NULL);
 	lst_count = ft_lstsize(redir_lst);
-	init_exec(exec_info, lst_count, get_fd_count(redir_lst));
+	get_fd_count(redir_lst, exec_info);
+	init_exec(exec_info, lst_count);
 	while (redir_lst)
 	{
 		res = process_quotes(pars, redir_lst->content);

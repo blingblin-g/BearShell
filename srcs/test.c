@@ -124,7 +124,8 @@ int main(void)
 	// char *line = ft_strdup("echo test| echo test> sample ; cat | cat | cat");
 	// char *line = ft_strdup("echo haha > mkdir yoyo abc > mkdir2 hehe haha");
 	// char *line = ft_strdup("echo haha yoyo abc hehe haha > mkdir > mkdir2");
-	char *line = ft_strdup("unset PWD");
+	char *line = ft_strdup("");
+
 	// int cmd_size;
 	// int pro_size;
 	// t_parse pars; 이게 지금 지역변수로 선언돼있어서
@@ -145,7 +146,9 @@ int main(void)
 	child = fork();
 	if (child == 0)
 	{
+		printf("\n-----------------test-------------\n");
 		execute_cmd(exec_info);
+		printf("\n-----------------test-------------\n");
 		exit(0);
 	}
 	else if (child > 0)

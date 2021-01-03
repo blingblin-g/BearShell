@@ -7,9 +7,8 @@ int how2divide(char c)
 	return TRUE;
 }
 
-int is_error(char c) // $ 다음 캐릭터를 넘겨줘요
+int is_error(char c)
 {
-	// 1. 에러인지 확인ㅇㅋㅇㅋ
 	if (c == '\'' || c == '\"' || c == '(' || c == ')' || c == '\\')
 		return (TRUE);
 	return (FALSE);
@@ -37,13 +36,13 @@ int is_sayeon(char c)
 }
 
 void process_sayeon(char c, char **result)
-{ //여기서 덥해서 value찾아와서 프리조인해서 붙여넣기
+{
 	if (c == '?')
-		*result = free_join(*result, ft_itoa(get_info()->exit_status)); // 얘는 종료상태 이거 가져오는 애가 있거든요
+		*result = free_join(*result, ft_itoa(get_info()->exit_status));
 	if (c == '$')
-		*result = free_join(*result, ft_itoa(get_info()->pid)); // 얘는 PID
+		*result = free_join(*result, ft_itoa(get_info()->pid));
 	if (c == '-')
-		*result = free_join(*result, ft_strdup("himBH")); // himBH 이거요? 걍 write(1, "himBH", 5);
+		*result = free_join(*result, ft_strdup("himBH"));
 	if ((c > '0' && c <= '9') || c == '!' || c == '@' || c == '*')
 		;
 	if (c == '0')
@@ -94,7 +93,7 @@ char *get_double_quote_zone(char *content, size_t *start, size_t *i)
 	result = ft_strdup("");
 	while (*i <= ft_strlen(content))
 	{
-		if (!content[*i]) // double q가 닫히지 않았는데 null이 나왔으므로 에러 처리
+		if (!content[*i])
 			return (NULL);
 		if (content[*i] == '\\')
 		{
