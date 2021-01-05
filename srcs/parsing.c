@@ -278,7 +278,6 @@ void	create_fds(t_exec *exec_info, char *redir_str, char *file_str)
 	{
 		// printf("output fd: [%d], file_str: [%s]\n", fd, file_str);
 		fd = open(file_str, O_RDWR | O_TRUNC | O_CREAT, 00777);
-		printf("exec_info->fd[1]: [%p]\n", exec_info->fd[1]);
 		exec_info->fd[1][exec_info->fd_output_idx++] = fd;
 	}
 	else if (!ft_strcmp(redir_str, ">>"))

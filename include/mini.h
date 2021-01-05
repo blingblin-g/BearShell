@@ -22,6 +22,8 @@
 #include <dirent.h>
 #include <fcntl.h>
 
+#define MINISHELL 42
+
 /*
 * boolean
 */
@@ -53,6 +55,7 @@ typedef struct s_info
 	int exit_status;
 	int pid;
 	int ppid;
+	int std[2];
 } t_info;
 
 /*
@@ -84,9 +87,7 @@ typedef struct	s_pro
 {
 	int			type;
 	char		*raw;
-	// t_list		*raw_lst;
 	t_list		*pipe_lst;
-	// char		**bayol;
 	t_list		*cmd_lst;
 	struct		s_pro *next;
 }				t_pro;
@@ -100,7 +101,6 @@ typedef struct	s_parse
 	int			fd_count;
 	size_t		start;
 	char		*line;
-	// t_list		*cmd_lst;
 	t_pro		*pro_lst;
 }				t_parse;
 
@@ -137,5 +137,6 @@ int		cd(char *argv);
 int		pwd();
 void	free_exit();
 void	println_arr(char **arr);
+int		execute_builtin(char **argv);
 
 #endif

@@ -26,12 +26,12 @@ SRCS	=	./srcs/get_next_line.c	\
 			./srcs/execute_cmd.c	\
 			./srcs/env.c		\
 			./srcs/built_in.c		\
-			./srcs/test.c
+			./srcs/main.c
+			# ./srcs/test.c
 			# ./srcs/echo.c	\
 			# ./srcs/export.c	\
 			# ./srcs/env.c	\
 			# ./srcs/unset.c	\
-			# ./srcs/main.c
 
 OBJS	=	$(SRCS:.c=.o)
 
