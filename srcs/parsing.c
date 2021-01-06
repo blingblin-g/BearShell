@@ -325,19 +325,3 @@ t_exec	*create_exec(t_parse *pars, t_list *redir_lst)
 	}
 	return (exec_info);
 }
-
-void	free_exec_info(t_exec **exec_info)
-{
-	int		i;
-
-	i = 0;
-	free((*exec_info)->fd[0]);
-	free((*exec_info)->fd[1]);
-	free((*exec_info)->fd);
-	while ((*exec_info)->argv[i])
-	{
-		free((*exec_info)->argv[i]);
-		i++;
-	}
-	free((*exec_info)->argv);
-}

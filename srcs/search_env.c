@@ -1,19 +1,5 @@
 #include "mini.h"
 
-void	free_arr(char **arr)
-{
-	int		i;
-
-	i = 0;
-	while (arr[i])
-	{
-		free(arr[i]);
-		arr[i] = 0;
-		i++;
-	}
-	free(arr);
-}
-
 char	*get_env_item(char *key)
 {
 	extern char **environ;

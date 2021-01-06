@@ -46,7 +46,9 @@ void	free_prolst(t_pro **lst)
 		next_lst = (*lst)->next;
 		free((*lst)->raw);
 		ft_lstclear(&(*lst)->cmd_lst, free);
+		ft_lstclear(&(*lst)->pipe_lst, free);
 		free((*lst)->cmd_lst);
+		free((*lst)->pipe_lst);
 		free(*lst);
 		*lst = next_lst;
 	}

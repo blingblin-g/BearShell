@@ -140,5 +140,8 @@ void	println_arr(char **arr);
 int		execute_builtin(char **argv);
 size_t	len(char **arr);
 void	piping(t_parse *pars, t_list *pipe_lst);
+void	free_parse(t_parse *parse, char *command);
+void	free_arr(char **arr);
+void	free_exec_info(t_exec **exec_info);
 
 #endif
