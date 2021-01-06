@@ -12,7 +12,7 @@
 
 NAME	=	minishell
 CC		=	gcc
-INC		=	-I ./include -I ./libft #-g -fsanitize=address
+INC		=	-I ./include -I ./libft -g -fsanitize=address
 LIB		=	-L ./libft -lft
 CFLAGS	=	-Wall -Wextra -Werror
 LIB_SRC	=	./libft
@@ -27,8 +27,8 @@ SRCS	=	./srcs/get_next_line.c	\
 			./srcs/env.c			\
 			./srcs/built_in.c		\
 			./srcs/free.c			\
-			./srcs/main.c
-			# ./srcs/test.c
+			./srcs/main.c			\
+			./srcs/test.c
 
 OBJS	=	$(SRCS:.c=.o)
 

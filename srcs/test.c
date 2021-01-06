@@ -108,10 +108,12 @@ void	interruptHandler(int sig)
 int main(void)
 {
 	t_parse pars;
-	pid_t	child;
-	int		status;
-	t_list	*redirection_lst = NULL;
-	t_exec	*exec_info;
+	// pid_t	child;
+	// int		status;
+	// t_list	*redirection_lst = NULL;
+	// t_exec	*exec_info;
+	t_pro	*pro_lst;
+	t_list	*pipe_lst;
 
 	get_info()->env_list = create_env_list();
 	// char *line = ft_strdup("$PWD     $: $ $/  'haha' you s'o    beautifu'l  $PWD");
@@ -124,39 +126,18 @@ int main(void)
 	// char *line = ft_strdup("echo test| echo test> sample ; cat | cat | cat");
 	// char *line = ft_strdup("echo haha > mkdir yoyo abc > mkdir2 hehe haha");
 	// char *line = ft_strdup("echo haha yoyo abc hehe haha > mkdir > mkdir2");
-	char *line = ft_strdup("");
-
-	// int cmd_size;
-	// int pro_size;
-	// t_parse pars; 이게 지금 지역변수로 선언돼있어서
-	// 먼저 세미콜론으로 파싱 => 세미리스트(지금은 pro_lst로 되있음) => | 파싱 => 파이프리스트
-	// => 파이프 리스트 안에 있는 리디렉션 처리 => 파이프 리스트는 실행시에 동시 실행되야함
-	// => 세미리스트는 그냥 순차적으로 실행
-
+	char *line = ft_strdup("echo haha > result");
 	init_pars(&pars);
-	// pars.pro_lst->next = NULL;
-	printf("line: [%s]\n", line);
 	main_parse(line, &pars);
-	if (input_redirection_lst(&pars, line, &redirection_lst))
+	pro_lst = pars.pro_lst;
+	while (pro_lst)
 	{
-		exec_info = create_exec(&pars, redirection_lst);
-		print_exec_info(exec_info);
+		pipe_lst = pro_lst->pipe_lst;
+		piping(&pars, pipe_lst);
+		pro_lst = pro_lst->next;
+		printf("end?????\n");
 	}
-
-	child = fork();
-	if (child == 0)
-	{
-		printf("\n-----------------test-------------\n");
-		execute_cmd(exec_info);
-		printf("\n-----------------test-------------\n");
-		exit(0);
-	}
-	else if (child > 0)
-	{
-		printf("parent!!! wait pid: [%d]\n", child);
-		wait(&status);
-		printf("child status: [%d]\n", status);
-	}
+	free_parse(&pars, line);
 
 
 	// print_prolst(pars.pro_lst); // only 4 test

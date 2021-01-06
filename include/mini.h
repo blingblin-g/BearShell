@@ -143,5 +143,9 @@ void	piping(t_parse *pars, t_list *pipe_lst);
 void	free_parse(t_parse *parse, char *command);
 void	free_arr(char **arr);
 void	free_exec_info(t_exec **exec_info);
+t_exec	*redir_process(t_parse *pars, t_list *pipe_lst);
+void	close_fds(t_exec *exec_info);
+void	excute_cmd(t_parse *pars, t_list *pipe_lst);
+void	piping(t_parse *pars, t_list *pipe_lst);
 
 #endif
