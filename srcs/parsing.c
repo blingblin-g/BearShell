@@ -242,10 +242,10 @@ int		 init_exec(t_exec	*exec_info, int lst_count)
 		exec_info->fd[0] = NULL;
 	if (exec_info->output_count <= 0)
 		exec_info->fd[1] = NULL;
-	if (!(exec_info->argv = (char **)malloc(sizeof(char *) *
+	if (!(exec_info->argv = (char **)calloc(sizeof(char *),
 		(lst_count - fd_count + 1))))
 		return (ERROR);
-	exec_info->argv[lst_count - fd_count * 2] = 0;
+	// exec_info->argv[lst_count - fd_count * 2] = 0;
 	exec_info->fd_input_idx = 0;
 	exec_info->fd_output_idx = 0;
 	exec_info->argv_idx = 0;
@@ -308,7 +308,7 @@ t_exec	*create_exec(t_parse *pars, t_list *redir_lst)
 	while (redir_lst)
 	{
 		res = process_quotes(pars, redir_lst->content);
-		printf("after_parsing == [%s]\n", res);
+		printf("after_parsing == [%s],[%p]\n", res, res);
 		if (res && (res[0] == '>' || res[0] == '<'))
 		{
 			if (redir_lst->next)

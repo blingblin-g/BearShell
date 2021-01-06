@@ -30,13 +30,18 @@ int		cd(char *path)
 
 int			echo(char **argv)
 {
-	if (!ft_strncmp(argv[1], "-n", 3))
+	size_t	size;
+
+	size = len(argv);
+	if (size > 2 && !ft_strncmp(argv[1], "-n", 3))
 		print_arr(argv + 2);
-	else
+	else if (size > 1)
 	{
 		print_arr(argv + 1);
 		write(1, "\n", 1);
 	}
+	else if (size == 1)
+		write(1, "\n", 1);
 	return (TRUE);
 }
 

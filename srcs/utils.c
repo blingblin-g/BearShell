@@ -70,6 +70,16 @@ void	println_arr(char **arr)
 	}
 }
 
+size_t	len(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
+}
+
 t_info *get_info()
 {
 	static t_info info;
