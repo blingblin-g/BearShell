@@ -83,7 +83,7 @@ void	excute_cmd(t_parse *pars, t_list *pipe_lst)
 		else if (pid > 0)
 		{
 			wait(&status);
-			free_exec_info(&exec_info);
+			// free_exec_info(&exec_info);
 			if(WIFSIGNALED(status))
 			{
 				error(); // 이 에러는 자식 프로세스가 엄하게 뒤져버려서 생긴 에러

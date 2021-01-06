@@ -147,5 +147,10 @@ t_exec	*redir_process(t_parse *pars, t_list *pipe_lst);
 void	close_fds(t_exec *exec_info);
 void	excute_cmd(t_parse *pars, t_list *pipe_lst);
 void	piping(t_parse *pars, t_list *pipe_lst);
+int		is_semi_char(char c);
+int		is_pipe_char(char c);
+int		is_redirection_char(char c);
+void	init_pars(t_parse *pars);
+int		search_quotes(char c, char *line, int i);
 
 #endif

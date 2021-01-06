@@ -1,53 +1,5 @@
 #include "mini.h"
 
-int		is_semi_char(char c)
-{
-	if (c == ';')
-		return (SEMI);
-	if (c == 0)
-		return (END);
-	return (0);
-}
-
-int		is_pipe_char(char c)
-{
-	if (c == '|')
-		return (PIPE);
-	return (0);
-}
-
-int		is_redirection_char(char c)
-{
-	if (c == '>')
-		return (OUTPUT);
-	if (c == '<')
-		return (INPUT);
-	if (c == ' ')
-		return (SPACE);
-	return (0);
-}
-
-void	init_pars(t_parse *pars)
-{
-	pars->single_q = FALSE;
-	pars->double_q = FALSE;
-	pars->pro_lst = NULL;
-	pars->line = NULL;
-	pars->is_space = FALSE;
-	pars->start = 0;
-}
-
-int		search_quotes(char c, char *line, int i) // return index of pair_quotes
-{
-	while (line[i])
-	{
-		if (line[i] == c)
-			return (i);
-		i++;
-	}
-	return (ERROR); // 다 돌았지만 못찾은거임. 즉 pair quote가 없는 것
-}
-
 t_list	*new_lst_trim(char *content)
 {
 	t_list	*tmp_lst;
@@ -231,7 +183,7 @@ int		 init_exec(t_exec	*exec_info, int lst_count)
 
 
 	fd_count = exec_info->input_count + exec_info->output_count;
-	printf("exec_info->input_count: [%d], exec_info->output_count: [%d]\n", exec_info->input_count, exec_info->output_count);
+	// printf("exec_info->input_count: [%d], exec_info->output_count: [%d]\n", exec_info->input_count, exec_info->output_count);
 	if (exec_info->input_count > 0)
 		if (!(exec_info->fd[0] = (int *)malloc(sizeof(int) * (exec_info->input_count))))
 			return (ERROR);
@@ -245,7 +197,6 @@ int		 init_exec(t_exec	*exec_info, int lst_count)
 	if (!(exec_info->argv = (char **)calloc(sizeof(char *),
 		(lst_count - fd_count + 1))))
 		return (ERROR);
-	// exec_info->argv[lst_count - fd_count * 2] = 0;
 	exec_info->fd_input_idx = 0;
 	exec_info->fd_output_idx = 0;
 	exec_info->argv_idx = 0;
@@ -306,9 +257,9 @@ t_exec	*create_exec(t_parse *pars, t_list *redir_lst)
 	get_fd_count(redir_lst, exec_info);
 	init_exec(exec_info, lst_count);
 	while (redir_lst)
-	{
+	{//여기까지 읽었음
 		res = process_quotes(pars, redir_lst->content);
-		printf("after_parsing == [%s],[%p]\n", res, res);
+		// printf("after_parsing == [%s],[%p]\n", res, res);
 		if (res && (res[0] == '>' || res[0] == '<'))
 		{
 			if (redir_lst->next)

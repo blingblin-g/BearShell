@@ -21,6 +21,7 @@ SRCS	=	./srcs/get_next_line.c	\
 			./srcs/get_cmd.c		\
 			./srcs/utils.c			\
 			./srcs/prolst_utils.c	\
+			./srcs/parsing_utils.c	\
 			./srcs/parsing.c		\
 			./srcs/quotes_zone.c	\
 			./srcs/execute_cmd.c	\
