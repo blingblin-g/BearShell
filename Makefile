@@ -28,7 +28,7 @@ SRCS	=	./srcs/get_next_line.c	\
 			./srcs/built_in.c		\
 			./srcs/free.c			\
 			./srcs/main.c			\
-			./srcs/test.c
+			# ./srcs/test.c
 
 OBJS	=	$(SRCS:.c=.o)
 

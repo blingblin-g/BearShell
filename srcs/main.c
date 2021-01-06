@@ -144,29 +144,28 @@ void	print_prompt()
 	ft_putstr_fd(prompt, 1);
 }
 
-// int		main()
-// {
-// 	t_parse	pars;
-// 	char	*command;
-// 	t_pro	*pro_lst;
-// 	t_list	*pipe_lst;
+int		main()
+{
+	t_parse	pars;
+	char	*command;
+	t_pro	*pro_lst;
+	t_list	*pipe_lst;
 
-// 	get_info()->env_list = create_env_list();
-// 	while (MINISHELL)
-// 	{
-// 		printf("while (MINISHELL)\n");
-// 		print_prompt();
-// 		get_next_line(0, &command);
-// 		init_pars(&pars);
-// 		main_parse(command, &pars);
-// 		pro_lst = pars.pro_lst;
-// 		while (pro_lst)
-// 		{
-// 			pipe_lst = pro_lst->pipe_lst;
-// 			piping(&pars, pipe_lst);
-// 			pro_lst = pro_lst->next;
-// 		}
-// 		free_parse(&pars, command);
-// 	}
-// 	return (0);
-// }
+	get_info()->env_list = create_env_list();
+	while (MINISHELL)
+	{
+		print_prompt();
+		get_next_line(0, &command);
+		init_pars(&pars);
+		main_parse(command, &pars);
+		pro_lst = pars.pro_lst;
+		while (pro_lst)
+		{
+			pipe_lst = pro_lst->pipe_lst;
+			piping(&pars, pipe_lst);
+			pro_lst = pro_lst->next;
+		}
+		free_parse(&pars, command);
+	}
+	return (0);
+}
