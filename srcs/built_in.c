@@ -7,6 +7,7 @@ int		pwd()
 
 	working_directory = getcwd(buf, 2097152);
 	write(1, working_directory, ft_strlen(working_directory));
+	write(1, "\n", 1);
 	return (TRUE);
 }
 
