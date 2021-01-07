@@ -12,7 +12,7 @@ void error()
 	fprintf(stderr, "이 코드 나중에 안지우면 큰일남^^\n");
 }
 
-t_exec	*redir_process(t_parse *pars, t_list *pipe_lst)
+t_exec	*redir_process(t_parse *pars, t_list *pipe_lst) // 슝~
 {
 	t_exec	*exec_info = NULL;
 	t_list	*redirection_lst = NULL;
@@ -26,7 +26,7 @@ t_exec	*redir_process(t_parse *pars, t_list *pipe_lst)
 	{
 		exec_info->std[0] = dup(0);
 		dup2(exec_info->fd[0][exec_info->input_count - 1], 0); // 입력
-	}
+	}//여기를 보세요 이러면 되겠어요 안되겠어요 네 음.. 따라오세요
 	if (exec_info->fd[1] != NULL && exec_info->fd[1][exec_info->output_count - 1] != 0)
 	{
 		exec_info->std[1] = dup(1);
@@ -75,25 +75,26 @@ void	excute_cmd(t_parse *pars, t_list *pipe_lst)
 		pid = fork();
 		if (pid == 0)
 		{
-			fprintf(stderr, "pid: 0\n");
+			// fprintf(stderr, "pid: 0\n");
 			cmd = get_cmd(exec_info->argv[0]);
 			free(exec_info->argv[0]);
 			exec_info->argv[0] = cmd;
 			execve(cmd, exec_info->argv, get_environ());
-			// close_fds(exec_info);
+			close_fds(exec_info);
 			// fprintf(stderr, "exit [%s]\n", cmd);
 			// exit(1);
 		}
 		else if (pid > 0)
 		{
-			fprintf(stderr, "pid: 1\n");
-			waitpid(pid, &status, WNOHANG);
-			fprintf(stderr, "pid: 1 status: [%d]\n", status);
-			while (1)
-			{
-				sleep(1);
-				fprintf(stderr, "pid: 2 status: [%d]\n", status);
-			}
+			// fprintf(stderr, "pid: 1\n");
+			wait(&status);
+			// waitpid(pid, &status, WNOHANG);
+			// fprintf(stderr, "pid: 1 status: [%d]\n", status);
+			// while (1)
+			// {
+				// sleep(1);
+			// 	fprintf(stderr, "pid: 2 status: [%d]\n", status);
+			// }
 			// free_exec_info(&exec_info);
 			if(WIFSIGNALED(status))
 			{
@@ -116,43 +117,55 @@ void	piping(t_parse *pars, t_list *pipe_lst)
 
 	pid = 42;
 	status = 0;
+	// int he = open("test_input", O_CREAT | O_RDWR | O_APPEND, 00777);
 	if (pipe_lst->next)
 	{
 		pipe(io);
-		get_info()->std[0] = dup(0);
-		get_info()->std[1] = dup(1);
 		pid = fork();
 	}
 	if (pid == 0)
 	{
+		// char *sample = NULL;
+		// close(io[1]);
 		dup2(io[0], 0);
-		close(io[1]);
+		// close(io[0]);
+		// get_next_line(0, &sample);
+		// fprintf(stderr, "sample: [%s]\n", sample);
 		piping(pars, pipe_lst->next);
 		// if (pipe_lst->next->next)
 		// 	dup2(io[1], 1);
+		// exit(0); 
 		exit(0);
 	}
 	else if (pid > 0)
 	{
 		if (pipe_lst->next)
+		{
+			// close(io[0]);
 			dup2(io[1], 1);
+			// close(io[1]);
+		}
 		excute_cmd(pars, pipe_lst);
+		dup2(get_info()->std[1], 1);
+		dup2(get_info()->std[0], 0);
+		// close(io[1]);
+		close(io[0]);
 		if (pipe_lst->next)
 		{
-			fprintf(stderr, "pid: [%d]\n", pid);
-			// wait(&status);
-			waitpid(pid, &status, WNOHANG);
+			// fprintf(stderr, "pid: [%d]\n", pid);
+			wait(&status); 
+			// waitpid(pid, &status, WNOHANG);
 			if(WIFSIGNALED(status))
 			{
-				fprintf(stderr, "1111\n");
+				// fprintf(stderr, "1111\n");
 				error(); // 이 에러는 자식 프로세스가 엄하게 뒤져버려서 생긴 에러
 			}
 		}
-		close(1);
-		dup2(get_info()->std[1], 1);
+
+		// close(1);
 		// while(TRUE)
 		// {
-			fprintf(stderr, "status: [%d]\n", status);
+			// fprintf(stderr, "status: [%d]\n", status);
 		// }
 		// exit(0);
 	}
@@ -185,6 +198,8 @@ int		main()
 		init_pars(&pars);
 		main_parse(command, &pars);
 		pro_lst = pars.pro_lst;
+		get_info()->std[0] = dup(0);
+		get_info()->std[1] = dup(1);
 		while (pro_lst)
 		{
 			pipe_lst = pro_lst->pipe_lst;
