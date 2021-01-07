@@ -146,7 +146,6 @@ void	free_exec_info(t_exec **exec_info);
 t_exec	*redir_process(t_parse *pars, t_list *pipe_lst);
 void	close_fds(t_exec *exec_info);
 void	excute_cmd(t_parse *pars, t_list *pipe_lst);
-void	piping(t_parse *pars, t_list *pipe_lst);
 int		is_semi_char(char c);
 int		is_pipe_char(char c);
 int		is_redirection_char(char c);
