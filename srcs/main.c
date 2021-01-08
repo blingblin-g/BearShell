@@ -28,7 +28,7 @@ t_exec	*redir_process(t_parse *pars, t_list *pipe_lst)
 	if (exec_info->fd[1] != NULL && exec_info->fd[1][exec_info->output_count - 1] != 0)
 	{
 		exec_info->std[1] = dup(1);
-		dup2(exec_info->fd[1][exec_info->output_count - 1], 1);
+		dup2(exec_info->fd[1][exec_info->output_count - 1], 1); 
 	}
 	return (exec_info);
 }
@@ -41,6 +41,7 @@ void	close_fds(t_exec *exec_info)
 	if (exec_info->fd[0])
 	{
 		dup2(exec_info->std[0], 0);
+		close(exec_info->std[0]);
 		while (i < exec_info->input_count)
 		{
 			close(exec_info->fd[0][i]);
@@ -51,6 +52,7 @@ void	close_fds(t_exec *exec_info)
 	if (exec_info->fd[1])
 	{
 		dup2(exec_info->std[1], 1);
+		close(exec_info->std[1]);
 		while (i < exec_info->output_count)
 		{
 			close(exec_info->fd[1][i]);
