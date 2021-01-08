@@ -1,4 +1,19 @@
-#include "mini.h"
+#include <stdio.h>
+#include "libft.h"
+
+void	free_arr(char **arr)
+{
+	int		i;
+
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		arr[i] = 0;
+		i++;
+	}
+	free(arr);
+}
 
 char	*get_env_item(char *key)
 {
@@ -8,15 +23,11 @@ char	*get_env_item(char *key)
 	char	*value;
 
 	i = 0;
-	value = ft_strdup("");
 	while (environ[i] != 0)
 	{
 		arr = ft_split(environ[i], '=');
 		if (!ft_strncmp(arr[0], key, ft_strlen(key) + 1))
-		{
-			free(value);
 			value = ft_strdup(arr[1]);
-		}
 		free_arr(arr);
 		i++;
 	}
@@ -37,26 +48,4 @@ t_list	*create_env_list()
 		i++;
 	}
 	return (env_list);
-}
-
-char	**get_environ()
-{
-	t_list	*tmp_lst;
-	char	**environ;
-	size_t	size;
-	size_t	i;
-
-	size = ft_lstsize(get_info()->env_list);
-	if (!(environ = malloc(sizeof(char *) * (size + 1))))
-		return (NULL);
-	environ[size] = 0;
-	i = 0;
-	tmp_lst = get_info()->env_list;
-	while (tmp_lst)
-	{
-		environ[i] = tmp_lst->content;
-		i++;
-		tmp_lst = tmp_lst->next;
-	}
-	return (environ);
 }

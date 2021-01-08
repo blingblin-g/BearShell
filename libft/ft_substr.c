@@ -23,6 +23,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (slen < start)
 		return (ft_calloc(1, 1));
 	buf = (char *)malloc(len + 1);
+	buf[len] = 0;
 	if (buf == 0)
 		return (0);
 	while (i < len)
@@ -31,6 +32,5 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		++start;
 		++i;
 	}
-	buf[i] = 0;
 	return (buf);
 }

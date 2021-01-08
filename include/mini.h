@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #ifndef MINI_H
-# define MINI_H
+#define MINI_H
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -19,38 +19,137 @@
 #include <errno.h>
 #include <string.h>
 #include "libft.h"
+#include <dirent.h>
+#include <fcntl.h>
+
+#define MINISHELL 42
 
 /*
 * boolean
 */
 
-# define FALSE 0
-# define TRUE 1
+#define FALSE 0
+#define TRUE 1
 
 /*
 * need to add error
 */
 
-typedef struct	s_info
-{
-	t_list		*env_list;
-}				t_info;
+#define ERROR 0
+#define NOT_FOUND -1
+#define SUCCESS 1
 
-typedef struct	s_pars
+#define PIPE 1
+#define INPUT 2
+#define OUTPUT 3
+#define APPEND 4
+#define SEMI 5
+#define SPACE 6
+#define END 7
+
+typedef struct dirent t_dir;
+
+typedef struct s_info
 {
-	int			sing_q;
+	t_list *env_list;
+	int exit_status;
+	int pid;
+	int ppid;
+	int std[2];
+} t_info;
+
+/*
+* cmd_lst : command list
+* pro_lst : process list
+*/
+
+// typedef struct	s_pro_lst
+// {
+// 	int			type;
+// 	t_list		*next;
+// 	t_list		*cmd_lst;
+// }				t_pro_lst;
+
+typedef struct	s_exec
+{
+	int			*fd[2]; // fd 이차원 배열, fd[0]은 input 대상이이 들어온다. fd[1]은 output 대상이 들어온다., open으로 하나씩 열어놔야함
+	char		**argv; // 인자 배열
+	int			fd_count;
+	int			fd_input_idx;
+	int			fd_output_idx;
+	int			std[2];
+	int			argv_idx;
+	int			input_count;
+	int			output_count;
+}				t_exec;
+
+typedef struct	s_pro
+{
+	int			type;
+	char		*raw;
+	t_list		*pipe_lst;
+	t_list		*cmd_lst;
+	struct		s_pro *next;
+}				t_pro;
+
+typedef struct	s_parse
+{
+	int			is_space;
+	int			is_redirection;
+	int			single_q;
 	int			double_q;
-}				t_pars;
+	int			fd_count;
+	size_t		start;
+	char		*line;
+	t_pro		*pro_lst;
+}				t_parse;
 
 int		get_next_line(int fd, char **line);
 char	*get_env_item(char *key);
 int		echo(char **argv);
 t_list	*create_env_list();
 t_info	*get_info();
-void	export(char *argv);
+int		export(char *argv);
 void	print_str(void *str);
 int		find_chr(char *str, char ch);
-void	env();
-void	unset(char *argv);
+int		env();
+int		unset(char *argv);
+int		main_parse(char *line, t_parse *pars);
+t_pro	*new_prolst(char *raw, int type);
+t_pro	*last_prolst(t_pro *lst);
+void	add_back_prolst(t_pro **lst, t_pro *new);
+void	free_prolst(t_pro **lst);
+char	*free_strtrim(char **s, char const *set);
+char	*process_quotes(t_parse *pars, char *content);
+char	*free_join(char *s1, char *s2);
+char	*get_cmd(char *cmd);
+char	*get_single_quote_zone(char *content, size_t *start, size_t *i);
+char	*get_double_quote_zone(char *content, size_t *start, size_t *i);
+char	*find_var_name(char *content, size_t *i);
+char	*out_of_quotes_zone(char *content, size_t *start, size_t *i);
+int		input_redirection_lst(t_parse *pars, char *raw, t_list **raw_lst);
+void	init_pars(t_parse *pars);
+t_exec	*create_exec(t_parse *pars, t_list	*redir_lst);
+char	**get_environ();
+void	excute_cmd(t_parse *pars, t_list *pipe_lst);
+void	print_arr(char **arr);
+int		cd(char *argv);
+int		pwd();
+void	free_exit();
+void	println_arr(char **arr);
+int		execute_builtin(char **argv);
+size_t	len(char **arr);
+void	piping(t_parse *pars, t_list *pipe_lst);
+void	free_parse(t_parse *parse, char *command);
+void	free_arr(char **arr);
+void	free_exec_info(t_exec **exec_info);
+t_exec	*redir_process(t_parse *pars, t_list *pipe_lst);
+void	close_fds(t_exec *exec_info);
+void	excute_cmd(t_parse *pars, t_list *pipe_lst);
+int		is_semi_char(char c);
+int		is_pipe_char(char c);
+int		is_redirection_char(char c);
+void	init_pars(t_parse *pars);
+int		search_quotes(char c, char *line, int i);
 
 #endif
