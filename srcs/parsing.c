@@ -257,9 +257,8 @@ t_exec	*create_exec(t_parse *pars, t_list *redir_lst)
 	get_fd_count(redir_lst, exec_info);
 	init_exec(exec_info, lst_count);
 	while (redir_lst)
-	{//여기까지 읽었음
+	{
 		res = process_quotes(pars, redir_lst->content);
-		// printf("after_parsing == [%s],[%p]\n", res, res);
 		if (res && (res[0] == '>' || res[0] == '<'))
 		{
 			if (redir_lst->next)
