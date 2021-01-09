@@ -28,6 +28,7 @@ SRCS	=	./srcs/get_next_line.c	\
 			./srcs/env.c			\
 			./srcs/built_in.c		\
 			./srcs/free.c			\
+			./srcs/error.c			\
 			./srcs/main.c			\
 			# ./srcs/test.c
 

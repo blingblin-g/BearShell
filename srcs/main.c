@@ -6,11 +6,6 @@
 #include "mini.h"
 #include "libft.h"
 
-void error()
-{
-	fprintf(stderr, "이 코드 나중에 안지우면 큰일남^^\n");
-}
-
 t_exec	*redir_process(t_parse *pars, t_list *pipe_lst)
 {
 	t_exec	*exec_info = NULL;
@@ -67,10 +62,14 @@ void	excute_cmd(t_parse *pars, t_list *pipe_lst)
 	int		status;
 	pid_t	pid;
 	char	*cmd;
+	int		is_builtin;
 
 	pid = 42;
+	is_builtin = FALSE;
 	exec_info = redir_process(pars, pipe_lst);
-	if (exec_info->argv[0] && !execute_builtin(exec_info->argv))
+	if (exec_info->argv[0])
+		is_builtin = execute_builtin(exec_info->argv);
+	if (is_builtin == NOT_BUILTIN)
 	{
 		pid = fork();
 		set_process_name(exec_info->argv[0]);
@@ -92,7 +91,7 @@ void	excute_cmd(t_parse *pars, t_list *pipe_lst)
 		}
 		else
 		{
-			error();
+			error(FORK_ERROR);
 		}
 	}
 	close_fds(exec_info);
@@ -144,7 +143,7 @@ void	piping(t_parse *pars, t_list *pipe_lst)
 	}
 	else
 	{
-		error();
+		error(FORK_ERROR);
 	}
 }
 

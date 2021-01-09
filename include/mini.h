@@ -40,6 +40,7 @@
 #define ERROR 0
 #define NOT_FOUND -1
 #define SUCCESS 1
+#define NOT_BUILTIN 2
 
 #define PIPE 1
 #define INPUT 2
@@ -48,6 +49,8 @@
 #define SEMI 5
 #define SPACE 6
 #define END 7
+
+#define FORK_ERROR 1
 
 typedef struct dirent t_dir;
 
@@ -157,5 +160,6 @@ void	init_pars(t_parse *pars);
 int		search_quotes(char c, char *line, int i);
 int		set_string(char **old_str, char *new_str);
 int		set_process_name(char *name);
+void	error(int type);
 
 #endif
