@@ -21,8 +21,10 @@
 #include "libft.h"
 #include <dirent.h>
 #include <fcntl.h>
+#include <signal.h>
 
 #define MINISHELL 42
+#define NAME "minishell"
 
 /*
 * boolean
@@ -51,8 +53,10 @@ typedef struct dirent t_dir;
 
 typedef struct s_info
 {
-	t_list *env_list;
-	int exit_status;
+	t_list	*env_list;
+	char	*process_name;
+	int		process_index;
+	int	exit_status;
 	int pid;
 	int ppid;
 	int std[2];
@@ -151,5 +155,7 @@ int		is_pipe_char(char c);
 int		is_redirection_char(char c);
 void	init_pars(t_parse *pars);
 int		search_quotes(char c, char *line, int i);
+int		set_string(char **old_str, char *new_str);
+int		set_process_name(char *name);
 
 #endif

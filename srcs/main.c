@@ -73,6 +73,7 @@ void	excute_cmd(t_parse *pars, t_list *pipe_lst)
 	if (exec_info->argv[0] && !execute_builtin(exec_info->argv))
 	{
 		pid = fork();
+		set_process_name(exec_info->argv[0]);
 		if (pid == 0)
 		{
 			cmd = get_cmd(exec_info->argv[0]);
@@ -83,10 +84,11 @@ void	excute_cmd(t_parse *pars, t_list *pipe_lst)
 		else if (pid > 0)
 		{
 			wait(&status);
-			if(WIFSIGNALED(status))
-			{
-				error();
-			}
+			// if(WIFSIGNALED(status))
+			// {
+			// 	fprintf(stderr, "error in excute_cmd: [%d]\n", status);
+			// 	error();
+			// }
 		}
 		else
 		{
@@ -108,9 +110,11 @@ void	piping(t_parse *pars, t_list *pipe_lst)
 	{
 		pipe(io);
 		pid = fork();
+		get_info()->pid = pid;
 	}
 	if (pid == 0)
 	{
+		set_process_name("pipe");
 		close(io[1]);
 		dup2(io[0], 0);
 		close(io[0]);
@@ -131,10 +135,11 @@ void	piping(t_parse *pars, t_list *pipe_lst)
 		if (pipe_lst->next)
 		{
 			wait(&status);
-			if(WIFSIGNALED(status))
-			{
-				error();
-			}
+			// if(WIFSIGNALED(status))
+			// {
+			// 	fprintf(stderr, "error in piping: [%d]\n", status);
+			// 	error();
+			// }
 		}
 	}
 	else
@@ -151,6 +156,32 @@ void	print_prompt()
 	ft_putstr_fd(prompt, 1);
 }
 
+void	interruptHandler(int sig)
+{
+	if (sig == SIGINT)
+	{
+		if (get_info()->pid != 0)
+			kill(get_info()->pid, sig);
+		if (!ft_strcmp(NAME, get_info()->process_name))
+		{
+			ft_putstr_fd("\b\b  \b\b", 1);
+			write(1, "\n", 1);
+			print_prompt();
+		}
+		else if (get_info()->process_index == 1)
+			ft_putstr_fd("\n", 2);
+	}
+	else if (sig == SIGQUIT)
+	{
+		if (get_info()->pid != 0)
+			kill(get_info()->pid, sig);
+		if (!ft_strcmp(NAME, get_info()->process_name))
+			ft_putstr_fd("\b\b  \b\b", 1);
+		else if (get_info()->process_index == 1)
+			ft_putstr_fd("Quit: 3\n", 2);
+	}
+}
+
 int		main()
 {
 	t_parse	pars;
@@ -159,8 +190,12 @@ int		main()
 	t_list	*pipe_lst;
 
 	get_info()->env_list = create_env_list();
+	get_info()->process_name = NULL;
+	signal(SIGINT, interruptHandler);
+	signal(SIGQUIT, interruptHandler);
 	while (MINISHELL)
 	{
+		set_process_name(NAME);
 		print_prompt();
 		get_next_line(0, &command);
 		init_pars(&pars);
