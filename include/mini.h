@@ -50,7 +50,8 @@
 #define SPACE 6
 #define END 7
 
-#define FORK_ERROR 1
+#define FORK_ERR 1
+#define PATH_ERR 2
 
 typedef struct dirent t_dir;
 
@@ -160,6 +161,6 @@ void	init_pars(t_parse *pars);
 int		search_quotes(char c, char *line, int i);
 int		set_string(char **old_str, char *new_str);
 int		set_process_name(char *name);
-void	error(int type);
+int		print_error(int type, char *path);
 
 #endif

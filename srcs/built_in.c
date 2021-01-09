@@ -25,7 +25,7 @@ int		cd(char *path)
 	if (path == 0)
 		path = get_env_item("HOME");
 	else if (valid_path(path))
-		return(0);
+		return(print_error(PATH_ERR, path));
 	return (!chdir(path));
 }
 

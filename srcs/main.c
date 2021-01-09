@@ -91,7 +91,7 @@ void	excute_cmd(t_parse *pars, t_list *pipe_lst)
 		}
 		else
 		{
-			error(FORK_ERROR);
+			print_error(FORK_ERR, NULL);
 		}
 	}
 	close_fds(exec_info);
@@ -143,7 +143,7 @@ void	piping(t_parse *pars, t_list *pipe_lst)
 	}
 	else
 	{
-		error(FORK_ERROR);
+		print_error(FORK_ERR, NULL);
 	}
 }
 
@@ -157,20 +157,19 @@ void	print_prompt()
 
 void	interruptHandler(int sig)
 {
-	if (sig == SIGINT)
+	if (sig == SIGINT) // Ctrl+C
 	{
 		if (get_info()->pid != 0)
 			kill(get_info()->pid, sig);
 		if (!ft_strcmp(NAME, get_info()->process_name))
 		{
-			ft_putstr_fd("\b\b  \b\b", 1);
-			write(1, "\n", 1);
+			ft_putendl_fd("\b\b  \b\b", 1);
 			print_prompt();
 		}
 		else if (get_info()->process_index == 1)
 			ft_putstr_fd("\n", 2);
 	}
-	else if (sig == SIGQUIT)
+	else if (sig == SIGQUIT) // Ctrl+백슬래시
 	{
 		if (get_info()->pid != 0)
 			kill(get_info()->pid, sig);
