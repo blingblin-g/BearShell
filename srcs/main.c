@@ -21,7 +21,7 @@ t_exec	*redir_process(t_parse *pars, t_list *pipe_lst)
 	else
 	{
 		// print_error(PARSING_ERR, NULL);
-		return (NULL);
+		return (ERROR);
 	}
 	if (exec_info->fd[0] != NULL && exec_info->fd[0][exec_info->input_count - 1] != 0)
 	{
@@ -148,7 +148,7 @@ int		piping(t_parse *pars, t_list *pipe_lst)
 		}
 		if (excute_cmd(pars, pipe_lst) == ERROR)
 		{
-			kill(0, SIGINT);
+			// kill(0, SIGINT);
 			return (ERROR);
 		}
 		dup2(get_info()->std[1], 1);
@@ -249,9 +249,13 @@ int		main()
 		get_next_line(0, &command);
 		init_pars(&pars);
 		if (is_valid_line(&command) == ERROR)
+		{
+			// fprintf(stderr, "1\n");
 			continue;
+		}
 		if (main_parse(command, &pars) == ERROR)
 		{
+			// fprintf(stderr, "1\n");
 			free_parse(&pars, command);
 			print_error(PARSING_ERR, NULL);
 			continue;
