@@ -11,9 +11,12 @@ t_exec	*redir_process(t_parse *pars, t_list *pipe_lst)
 	t_exec	*exec_info = NULL;
 	t_list	*redirection_lst = NULL;
 
-	if (input_redirection_lst(pars, pipe_lst->content, &redirection_lst))
-	{
+	if (input_redirection_lst(pars, pipe_lst->content, &redirection_lst) != ERROR)
 		exec_info = create_exec(pars, redirection_lst);
+	else
+	{
+		print_error(PARSING_ERR, NULL);
+		return (NULL);
 	}
 	if (exec_info->fd[0] != NULL && exec_info->fd[0][exec_info->input_count - 1] != 0)
 	{
@@ -66,7 +69,8 @@ void	excute_cmd(t_parse *pars, t_list *pipe_lst)
 
 	pid = 42;
 	is_builtin = FALSE;
-	exec_info = redir_process(pars, pipe_lst);
+	if (!(exec_info = redir_process(pars, pipe_lst)))
+		return ; // free 해줘야함
 	if (exec_info->argv[0])
 		is_builtin = execute_builtin(exec_info->argv);
 	if (is_builtin == NOT_BUILTIN)
@@ -78,7 +82,11 @@ void	excute_cmd(t_parse *pars, t_list *pipe_lst)
 			cmd = get_cmd(exec_info->argv[0]);
 			free(exec_info->argv[0]);
 			exec_info->argv[0] = cmd;
-			execve(cmd, exec_info->argv, get_environ());
+			if (execve(cmd, exec_info->argv, get_environ()))
+			{
+				print_error(COMMAND_ERR, NULL);
+				exit(0);
+			}
 		}
 		else if (pid > 0)
 		{
@@ -151,7 +159,7 @@ void	print_prompt()
 {
 	char	*prompt;
 
-	prompt = "C2H5OH$$$ ";
+	prompt = "คʕ•ﻌ•ʔค ❤❤❤ ";
 	ft_putstr_fd(prompt, 1);
 }
 
@@ -197,7 +205,12 @@ int		main()
 		print_prompt();
 		get_next_line(0, &command);
 		init_pars(&pars);
-		main_parse(command, &pars);
+		if (main_parse(command, &pars) == ERROR)
+		{
+			free_parse(&pars, command);
+			print_error(PARSING_ERR, NULL);
+			continue;
+		}
 		pro_lst = pars.pro_lst;
 		get_info()->std[0] = dup(0);
 		get_info()->std[1] = dup(1);

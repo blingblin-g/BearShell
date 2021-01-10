@@ -70,7 +70,9 @@ int		input_pipe_lst(t_parse *pars, char *raw, t_list **raw_lst)
 	tmp_lst = new_lst_trim(ft_substr(raw, pars->start, i - pars->start));
 	ft_lstadd_back(raw_lst, tmp_lst);
 	if (pars->single_q || pars->double_q)
+	{
 		return (ERROR);
+	}
 	return (SUCCESS);
 }
 
@@ -122,7 +124,10 @@ int		input_redirection_lst(t_parse *pars, char *raw, t_list **raw_lst)
 	tmp_lst = new_lst_trim(ft_substr(raw, pars->start, i - pars->start));
 	ft_lstadd_back(raw_lst, tmp_lst);
 	if (pars->single_q || pars->double_q)
+	{
+		print_error(PARSING_ERR, NULL); // free 해줘야함
 		return (ERROR);
+	}
 	return (SUCCESS);
 }
 
@@ -162,6 +167,12 @@ int		main_parse(char *line, t_parse *pars)
 		}
 		i++;
 	}
+
+	if (pars->single_q || pars->double_q) // free도 해줘야함
+	{
+		return (ERROR);
+	}
+
 	pro_lst = new_prolst(ft_substr(line, pars->start, i - pars->start), type);
 	add_back_prolst(&pars->pro_lst, pro_lst);
 	pro_lst = pars->pro_lst;
@@ -169,12 +180,12 @@ int		main_parse(char *line, t_parse *pars)
 	while (pro_lst)
 	{
 		pro_lst->raw = free_strtrim(&pro_lst->raw, " ");
-		input_pipe_lst(pars, pro_lst->raw, &pro_lst->pipe_lst);
+		if (input_pipe_lst(pars, pro_lst->raw, &pro_lst->pipe_lst) == ERROR) // free도 다 해줘야함
+			return (ERROR);
 		pro_lst = pro_lst->next;
 	}
 	pro_lst = pars->pro_lst;
-
-	return (0);
+	return (SUCCESS);
 }
 
 int		 init_exec(t_exec	*exec_info, int lst_count)

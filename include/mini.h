@@ -52,6 +52,8 @@
 
 #define FORK_ERR 1
 #define PATH_ERR 2
+#define PARSING_ERR 3
+#define COMMAND_ERR 4
 
 typedef struct dirent t_dir;
 
