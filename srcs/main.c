@@ -12,7 +12,10 @@ t_exec	*redir_process(t_parse *pars, t_list *pipe_lst)
 	t_list	*redirection_lst = NULL;
 
 	if (input_redirection_lst(pars, pipe_lst->content, &redirection_lst) != ERROR)
-		exec_info = create_exec(pars, redirection_lst);
+	{
+		if ((exec_info = create_exec(pars, redirection_lst)) == ERROR)
+			return (ERROR);
+	}
 	else
 	{
 		print_error(PARSING_ERR, NULL);
@@ -59,7 +62,7 @@ void	close_fds(t_exec *exec_info)
 	}
 }
 
-void	excute_cmd(t_parse *pars, t_list *pipe_lst)
+int	excute_cmd(t_parse *pars, t_list *pipe_lst)
 {
 	t_exec	*exec_info;
 	int		status;
@@ -69,8 +72,11 @@ void	excute_cmd(t_parse *pars, t_list *pipe_lst)
 
 	pid = 42;
 	is_builtin = FALSE;
-	if (!(exec_info = redir_process(pars, pipe_lst)))
-		return ; // free 해줘야함
+	if ((exec_info = redir_process(pars, pipe_lst)) == ERROR)
+	{
+		print_error(PARSING_ERR, NULL);
+		return (ERROR);
+	}// free 해줘야함
 	if (exec_info->argv[0])
 		is_builtin = execute_builtin(exec_info->argv);
 	if (is_builtin == NOT_BUILTIN)
@@ -100,12 +106,14 @@ void	excute_cmd(t_parse *pars, t_list *pipe_lst)
 		else
 		{
 			print_error(FORK_ERR, NULL);
+			return (ERROR);
 		}
 	}
 	close_fds(exec_info);
+	return (SUCCESS);
 }
 
-void	piping(t_parse *pars, t_list *pipe_lst)
+int		piping(t_parse *pars, t_list *pipe_lst)
 {
 	int		io[2];
 	pid_t	pid;
@@ -136,7 +144,11 @@ void	piping(t_parse *pars, t_list *pipe_lst)
 			dup2(io[1], 1);
 			close(io[1]);
 		}
-		excute_cmd(pars, pipe_lst);
+		if (excute_cmd(pars, pipe_lst) == ERROR)
+		{
+			kill(0, SIGINT);
+			return (ERROR);
+		}
 		dup2(get_info()->std[1], 1);
 		dup2(get_info()->std[0], 0);
 		if (pipe_lst->next)
@@ -152,14 +164,16 @@ void	piping(t_parse *pars, t_list *pipe_lst)
 	else
 	{
 		print_error(FORK_ERR, NULL);
+		return (ERROR);
 	}
+	return (SUCCESS);
 }
 
 void	print_prompt()
 {
 	char	*prompt;
 
-	prompt = "คʕ•ﻌ•ʔค ❤❤❤ ";
+	prompt = "คʕ • ﻌ•ʔค ❤❤❤ ";
 	ft_putstr_fd(prompt, 1);
 }
 
@@ -217,7 +231,8 @@ int		main()
 		while (pro_lst)
 		{
 			pipe_lst = pro_lst->pipe_lst;
-			piping(&pars, pipe_lst);
+			if (piping(&pars, pipe_lst) == ERROR)
+				break ;
 			pro_lst = pro_lst->next;
 		}
 		free_parse(&pars, command);

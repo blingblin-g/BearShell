@@ -46,10 +46,10 @@ int		input_pipe_lst(t_parse *pars, char *raw, t_list **raw_lst)
 					if (i != pars->start)
 					{
 						tmp_lst = new_lst_trim(ft_substr(raw, pars->start, i - pars->start));
-						if (type == OUTPUT && raw[i] && raw[i + 1] == '>')
-							i++;
 						ft_lstadd_back(raw_lst, tmp_lst);
 					}
+					if (raw[i + 1] != 0 && raw[i + 1] == '|')
+						return (ERROR);
 					pars->start = i + 1;
 				}
 				if (raw[i] == '\"')
@@ -233,11 +233,14 @@ void	get_fd_count(t_list	*redir_lst, t_exec *exec_info)
 	}
 }
 
-void	create_fds(t_exec *exec_info, char *redir_str, char *file_str)
+int		create_fds(t_exec *exec_info, char *redir_str, char *file_str)
 {
 	int	fd;
 
 	fd = 0;
+	if (!ft_strncmp(file_str, ">", 2) || !ft_strncmp(file_str, ">>", 3) ||
+		!ft_strncmp(file_str, "<", 2))
+		return (ERROR);
 	if (!ft_strcmp(redir_str, ">"))
 	{
 		// printf("output fd: [%d], file_str: [%s]\n", fd, file_str);
@@ -256,6 +259,9 @@ void	create_fds(t_exec *exec_info, char *redir_str, char *file_str)
 		fd = open(file_str, O_RDONLY, 00777);
 		exec_info->fd[0][exec_info->fd_input_idx++] = fd;
 	}
+	if (fd < 0)
+		return (ERROR);
+	return (SUCCESS);
 }
 
 t_exec	*create_exec(t_parse *pars, t_list *redir_lst)
@@ -275,7 +281,8 @@ t_exec	*create_exec(t_parse *pars, t_list *redir_lst)
 		if (res && (res[0] == '>' || res[0] == '<'))
 		{
 			if (redir_lst->next)
-				create_fds(exec_info, res, process_quotes(pars, redir_lst->next->content));
+				if (create_fds(exec_info, res, process_quotes(pars, redir_lst->next->content)) == ERROR)
+					return (ERROR);
 			redir_lst = redir_lst->next;
 		}
 		else if (ft_strcmp(res, ""))
