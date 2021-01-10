@@ -164,5 +164,6 @@ int		search_quotes(char c, char *line, int i);
 int		set_string(char **old_str, char *new_str);
 int		set_process_name(char *name);
 int		print_error(int type, char *path);
+int		valid_command(char c);
 
 #endif

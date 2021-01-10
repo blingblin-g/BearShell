@@ -185,6 +185,8 @@ int		main_parse(char *line, t_parse *pars)
 		pro_lst = pro_lst->next;
 	}
 	pro_lst = pars->pro_lst;
+	if (valid_command(((char *)pro_lst->pipe_lst->content)[0]) == ERROR)
+		return (ERROR);
 	return (SUCCESS);
 }
 

@@ -22,3 +22,10 @@ int		print_error(int type, char *path)
 	}
 	return (ERROR);
 }
+
+int		valid_command(char c)
+{
+	if (ft_strchr("<>|;", c))
+		return (ERROR);
+	return (SUCCESS);
+}
