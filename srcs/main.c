@@ -14,11 +14,13 @@ t_exec	*redir_process(t_parse *pars, t_list *pipe_lst)
 	if (input_redirection_lst(pars, pipe_lst->content, &redirection_lst) != ERROR)
 	{
 		if ((exec_info = create_exec(pars, redirection_lst)) == ERROR)
+		{
 			return (ERROR);
+		}
 	}
 	else
 	{
-		print_error(PARSING_ERR, NULL);
+		// print_error(PARSING_ERR, NULL);
 		return (NULL);
 	}
 	if (exec_info->fd[0] != NULL && exec_info->fd[0][exec_info->input_count - 1] != 0)
@@ -202,6 +204,33 @@ void	interruptHandler(int sig)
 	}
 }
 
+int		is_valid_line(char **line)
+{
+	char	*new_line;
+
+	// if (*line == 0)
+	// {
+	// 	*line = ft_strdup("");
+	// 	return (ERROR);
+	// }
+	// fprintf(stderr, "line == [%s]\n", *line);
+	new_line = ft_strtrim(*line, " ");
+	free(*line);
+	if (!ft_strcmp(new_line, ""))
+	{
+		free(new_line);
+		return (ERROR);
+	}
+	if (new_line[0] == ';')
+	{
+		free(new_line);
+		print_error(PARSING_ERR, NULL);
+		return (ERROR);
+	}
+	*line = new_line;
+	return (SUCCESS);
+}
+
 int		main()
 {
 	t_parse	pars;
@@ -219,6 +248,8 @@ int		main()
 		print_prompt();
 		get_next_line(0, &command);
 		init_pars(&pars);
+		if (is_valid_line(&command) == ERROR)
+			continue;
 		if (main_parse(command, &pars) == ERROR)
 		{
 			free_parse(&pars, command);
@@ -235,7 +266,9 @@ int		main()
 				break ;
 			pro_lst = pro_lst->next;
 		}
+
 		free_parse(&pars, command);
+		// fprintf(stderr, "minishell end\n");
 	}
 	return (0);
 }

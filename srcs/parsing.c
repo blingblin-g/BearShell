@@ -67,8 +67,13 @@ int		input_pipe_lst(t_parse *pars, char *raw, t_list **raw_lst)
 		}
 		i++;
 	}
+	if (i == pars->start)
+	{
+		return (ERROR);
+	}
 	tmp_lst = new_lst_trim(ft_substr(raw, pars->start, i - pars->start));
 	ft_lstadd_back(raw_lst, tmp_lst);
+	// fprintf(stderr, "tmp_lst22: [%s], i - pars->start: [%lu]\n", tmp_lst->content, i - pars->start);
 	if (pars->single_q || pars->double_q)
 	{
 		return (ERROR);
@@ -121,6 +126,11 @@ int		input_redirection_lst(t_parse *pars, char *raw, t_list **raw_lst)
 		}
 		i++;
 	}
+	if (i == pars->start)
+	{
+		return (ERROR);
+	}
+	fprintf(stderr, "i - pars->start == [%lu]\n", i - pars->start);
 	tmp_lst = new_lst_trim(ft_substr(raw, pars->start, i - pars->start));
 	ft_lstadd_back(raw_lst, tmp_lst);
 	if (pars->single_q || pars->double_q)
@@ -140,6 +150,10 @@ int		main_parse(char *line, t_parse *pars)
 	i = 0;
 	pars->start = 0;
 	type = 0;
+
+	if (line == NULL)
+		return (ERROR);
+
 	while (line[i])
 	{
 		if (!pars->single_q && !pars->double_q)
@@ -186,7 +200,9 @@ int		main_parse(char *line, t_parse *pars)
 	}
 	pro_lst = pars->pro_lst;
 	if (valid_command(((char *)pro_lst->pipe_lst->content)[0]) == ERROR)
+	{
 		return (ERROR);
+	}
 	return (SUCCESS);
 }
 
@@ -238,29 +254,34 @@ int		create_fds(t_exec *exec_info, char *redir_str, char *file_str)
 	int	fd;
 
 	fd = 0;
+	// fprintf(stderr, "file_str: [%s]\n", file_str);
 	if (!ft_strncmp(file_str, ">", 2) || !ft_strncmp(file_str, ">>", 3) ||
 		!ft_strncmp(file_str, "<", 2))
 		return (ERROR);
 	if (!ft_strcmp(redir_str, ">"))
 	{
-		// printf("output fd: [%d], file_str: [%s]\n", fd, file_str);
+		fprintf(stderr, "output fd: [%d], file_str: [%s]\n", fd, file_str);
 		fd = open(file_str, O_RDWR | O_TRUNC | O_CREAT, 00777);
 		exec_info->fd[1][exec_info->fd_output_idx++] = fd;
 	}
 	else if (!ft_strcmp(redir_str, ">>"))
 	{
-		// printf("append fd: [%d], file_str: [%s]\n", fd, file_str);
+		fprintf(stderr, "append fd: [%d], file_str: [%s]\n", fd, file_str);
 		fd = open(file_str, O_RDWR | O_APPEND | O_CREAT, 00777);
 		exec_info->fd[1][exec_info->fd_output_idx++] = fd;
 	}
 	else if (!ft_strcmp(redir_str, "<"))
 	{
-		// printf("input fd: [%d], file_str: [%s]\n", fd, file_str);
+		fprintf(stderr, "input fd: [%d], file_str: [%s]\n", fd, file_str);
 		fd = open(file_str, O_RDONLY, 00777);
 		exec_info->fd[0][exec_info->fd_input_idx++] = fd;
 	}
 	if (fd < 0)
+	{
+		fprintf(stderr, "fd == [%d]\n", fd);
+		// ft_putendl_fd("error!!!!", 2);
 		return (ERROR);
+	}
 	return (SUCCESS);
 }
 

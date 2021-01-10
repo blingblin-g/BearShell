@@ -25,7 +25,12 @@ int		print_error(int type, char *path)
 
 int		valid_command(char c)
 {
+	// if (c == 0)
+	// 	return (SUCCESS);
 	if (ft_strchr("<>|;", c))
+	{
+		printf("[%p]\n",ft_strchr("<>|;", c));
 		return (ERROR);
+	}
 	return (SUCCESS);
 }
