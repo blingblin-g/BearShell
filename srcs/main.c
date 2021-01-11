@@ -6,20 +6,20 @@
 #include "mini.h"
 #include "libft.h"
 
-void error()
-{
-	fprintf(stderr, "이 코드 나중에 안지우면 큰일남^^\n");
-}
-
 t_exec	*redir_process(t_parse *pars, t_list *pipe_lst)
 {
 	t_exec	*exec_info = NULL;
 	t_list	*redirection_lst = NULL;
 
-	if (input_redirection_lst(pars, pipe_lst->content, &redirection_lst))
+	if (input_redirection_lst(pars, pipe_lst->content, &redirection_lst) != ERROR)
 	{
-		exec_info = create_exec(pars, redirection_lst);
+		if ((exec_info = create_exec(pars, redirection_lst)) == ERROR)
+		{
+			return (ERROR);
+		}
 	}
+	else
+		return (ERROR);
 	if (exec_info->fd[0] != NULL && exec_info->fd[0][exec_info->input_count - 1] != 0)
 	{
 		exec_info->std[0] = dup(0);
@@ -61,42 +61,63 @@ void	close_fds(t_exec *exec_info)
 	}
 }
 
-void	excute_cmd(t_parse *pars, t_list *pipe_lst)
+int	excute_cmd(t_parse *pars, t_list *pipe_lst)
 {
 	t_exec	*exec_info;
 	int		status;
 	pid_t	pid;
 	char	*cmd;
+	int		is_builtin;
 
 	pid = 42;
-	exec_info = redir_process(pars, pipe_lst);
-	if (exec_info->argv[0] && !execute_builtin(exec_info->argv))
+	is_builtin = FALSE;
+	if ((exec_info = redir_process(pars, pipe_lst)) == ERROR)
+	{
+		print_error(PARSING_ERR, NULL);
+		return (ERROR);
+	}// free 해줘야함
+	if (exec_info->argv[0])
+		is_builtin = execute_builtin(exec_info->argv);
+	if (is_builtin == NOT_BUILTIN)
 	{
 		pid = fork();
+		set_process_name(exec_info->argv[0]);
+		if (ft_strnstr(exec_info->argv[0], "minishell", ft_strlen(exec_info->argv[0])))
+			get_info()->is_minishell = TRUE;
 		if (pid == 0)
 		{
 			cmd = get_cmd(exec_info->argv[0]);
 			free(exec_info->argv[0]);
 			exec_info->argv[0] = cmd;
-			execve(cmd, exec_info->argv, get_environ());
+			if (execve(cmd, exec_info->argv, get_environ()))
+			{
+				print_error(COMMAND_ERR, NULL);
+				exit(0);
+			}
 		}
 		else if (pid > 0)
 		{
 			wait(&status);
-			if(WIFSIGNALED(status))
-			{
-				error();
-			}
+			get_info()->is_minishell = FALSE;
+			// if(WIFSIGNALED(status))
+			// {
+			// 	fprintf(stderr, "error in excute_cmd: [%d]\n", status);
+			// 	error();
+			// }
 		}
 		else
 		{
-			error();
+			print_error(FORK_ERR, NULL);
+			return (ERROR);
 		}
 	}
+	else
+		free_exec_info(&exec_info);
 	close_fds(exec_info);
+	return (SUCCESS);
 }
 
-void	piping(t_parse *pars, t_list *pipe_lst)
+int		piping(t_parse *pars, t_list *pipe_lst)
 {
 	int		io[2];
 	pid_t	pid;
@@ -108,9 +129,11 @@ void	piping(t_parse *pars, t_list *pipe_lst)
 	{
 		pipe(io);
 		pid = fork();
+		get_info()->pid = pid;
 	}
 	if (pid == 0)
 	{
+		set_process_name("pipe");
 		close(io[1]);
 		dup2(io[0], 0);
 		close(io[0]);
@@ -125,30 +148,101 @@ void	piping(t_parse *pars, t_list *pipe_lst)
 			dup2(io[1], 1);
 			close(io[1]);
 		}
-		excute_cmd(pars, pipe_lst);
+		if (excute_cmd(pars, pipe_lst) == ERROR)
+		{
+			// kill(0, SIGINT);
+			return (ERROR);
+		}
 		dup2(get_info()->std[1], 1);
 		dup2(get_info()->std[0], 0);
 		if (pipe_lst->next)
 		{
 			wait(&status);
-			if(WIFSIGNALED(status))
-			{
-				error();
-			}
+			// if(WIFSIGNALED(status))
+			// {
+			// 	fprintf(stderr, "error in piping: [%d]\n", status);
+			// 	error();
+			// }
 		}
 	}
 	else
 	{
-		error();
+		print_error(FORK_ERR, NULL);
+		return (ERROR);
 	}
+	return (SUCCESS);
 }
 
 void	print_prompt()
 {
 	char	*prompt;
 
-	prompt = "C2H5OH$$$ ";
+	prompt = "คʕ • ﻌ•ʔค ❤❤❤ ";
 	ft_putstr_fd(prompt, 1);
+}
+
+void	interruptHandler(int sig)
+{
+	if (get_info()->is_minishell)
+		return ;
+	if (sig == SIGINT) // Ctrl+C
+	{
+		if (!ft_strcmp(NAME, get_info()->process_name))
+		{
+			// ft_putendl_fd("\b\b  \b\b", 1);
+			// write(1, "\n", 1);
+			printf("\n");
+			print_prompt();
+		}
+		else if (get_info()->process_index == 1)
+			ft_putstr_fd("\n", 2);
+	}
+	else if (sig == SIGQUIT) // Ctrl+백슬래시
+	{
+		if (!ft_strcmp(NAME, get_info()->process_name))
+			;// ft_putstr_fd("\b\b  \b\b", 1);
+		else if (get_info()->process_index == 1)
+			ft_putstr_fd("Quit: 3\n", 2);
+	}
+}
+
+int		is_valid_line(char **line)
+{
+	char	*new_line;
+
+	new_line = ft_strtrim(*line, " ");
+	free(*line);
+	if (!ft_strcmp(new_line, ""))
+	{
+		free(new_line);
+		return (ERROR);
+	}
+	if (new_line[0] == ';')
+	{
+		free(new_line);
+		print_error(PARSING_ERR, NULL);
+		return (ERROR);
+	}
+	*line = new_line;
+	return (SUCCESS);
+}
+
+int		check_eof(int gnl_value, char **command)
+{
+	if (gnl_value == 0)
+	{
+		if (!ft_strcmp(*command, ""))
+		{
+			ft_putstr_fd("exit\n", 1);
+			free(*command);
+			exit(0);
+		}
+		else
+		{
+			write(1, "\n", 1);
+		}
+	}
+	return (SUCCESS);
 }
 
 int		main()
@@ -159,19 +253,32 @@ int		main()
 	t_list	*pipe_lst;
 
 	get_info()->env_list = create_env_list();
+	get_info()->process_name = NULL;
+	signal(SIGINT, interruptHandler);
+	signal(SIGQUIT, interruptHandler);
 	while (MINISHELL)
 	{
+		set_process_name(NAME);
 		print_prompt();
-		get_next_line(0, &command);
+		if (check_eof(get_next_line(0, &command), &command) == ERROR)
+			continue;
 		init_pars(&pars);
-		main_parse(command, &pars);
+		if (is_valid_line(&command) == ERROR)
+			continue;
+		if (main_parse(command, &pars) == ERROR)
+		{
+			free_parse(&pars, command);
+			print_error(PARSING_ERR, NULL);
+			continue;
+		}
 		pro_lst = pars.pro_lst;
 		get_info()->std[0] = dup(0);
 		get_info()->std[1] = dup(1);
 		while (pro_lst)
 		{
 			pipe_lst = pro_lst->pipe_lst;
-			piping(&pars, pipe_lst);
+			if (piping(&pars, pipe_lst) == ERROR)
+				break ;
 			pro_lst = pro_lst->next;
 		}
 		free_parse(&pars, command);

@@ -2,23 +2,24 @@
 
 char	*get_env_item(char *key)
 {
-	extern char **environ;
 	int		i;
 	char	**arr;
 	char	*value;
+	t_list	*env_lst;
 
 	i = 0;
+	env_lst = get_info()->env_list;
 	value = ft_strdup("");
-	while (environ[i] != 0)
+	while (env_lst)
 	{
-		arr = ft_split(environ[i], '=');
+		arr = ft_split(env_lst->content, '=');
 		if (!ft_strncmp(arr[0], key, ft_strlen(key) + 1))
 		{
 			free(value);
 			value = ft_strdup(arr[1]);
 		}
 		free_arr(arr);
-		i++;
+		env_lst = env_lst->next;
 	}
 	return (value);
 }

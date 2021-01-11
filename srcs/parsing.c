@@ -46,10 +46,10 @@ int		input_pipe_lst(t_parse *pars, char *raw, t_list **raw_lst)
 					if (i != pars->start)
 					{
 						tmp_lst = new_lst_trim(ft_substr(raw, pars->start, i - pars->start));
-						if (type == OUTPUT && raw[i] && raw[i + 1] == '>')
-							i++;
 						ft_lstadd_back(raw_lst, tmp_lst);
 					}
+					if (raw[i + 1] != 0 && raw[i + 1] == '|') // 이건 당연한거 아닌가?
+						return (ERROR);
 					pars->start = i + 1;
 				}
 				if (raw[i] == '\"')
@@ -67,10 +67,17 @@ int		input_pipe_lst(t_parse *pars, char *raw, t_list **raw_lst)
 		}
 		i++;
 	}
+	// fprintf(stderr, "tmp_lst22: [%s], i - pars->start: [%lu]\n", tmp_lst->content, i - pars->start);
+	if (i == pars->start)
+	{
+		return (ERROR);
+	}
 	tmp_lst = new_lst_trim(ft_substr(raw, pars->start, i - pars->start));
 	ft_lstadd_back(raw_lst, tmp_lst);
 	if (pars->single_q || pars->double_q)
+	{
 		return (ERROR);
+	}
 	return (SUCCESS);
 }
 
@@ -119,10 +126,18 @@ int		input_redirection_lst(t_parse *pars, char *raw, t_list **raw_lst)
 		}
 		i++;
 	}
+	// fprintf(stderr, "1i - pars->start == [%lu]\n", i - pars->start);
+	if (i == pars->start)
+	{
+		return (ERROR);
+	}
 	tmp_lst = new_lst_trim(ft_substr(raw, pars->start, i - pars->start));
 	ft_lstadd_back(raw_lst, tmp_lst);
 	if (pars->single_q || pars->double_q)
+	{
+		print_error(PARSING_ERR, NULL); // free 해줘야함
 		return (ERROR);
+	}
 	return (SUCCESS);
 }
 
@@ -135,6 +150,13 @@ int		main_parse(char *line, t_parse *pars)
 	i = 0;
 	pars->start = 0;
 	type = 0;
+
+	if (line == NULL)
+	{
+		// fprintf(stderr, "3\n");
+		return (ERROR);
+	}
+	// fprintf(stderr, "4\n");
 	while (line[i])
 	{
 		if (!pars->single_q && !pars->double_q)
@@ -162,6 +184,12 @@ int		main_parse(char *line, t_parse *pars)
 		}
 		i++;
 	}
+
+	if (pars->single_q || pars->double_q) // free도 해줘야함
+	{
+		return (ERROR);
+	}
+
 	pro_lst = new_prolst(ft_substr(line, pars->start, i - pars->start), type);
 	add_back_prolst(&pars->pro_lst, pro_lst);
 	pro_lst = pars->pro_lst;
@@ -169,12 +197,16 @@ int		main_parse(char *line, t_parse *pars)
 	while (pro_lst)
 	{
 		pro_lst->raw = free_strtrim(&pro_lst->raw, " ");
-		input_pipe_lst(pars, pro_lst->raw, &pro_lst->pipe_lst);
+		if (input_pipe_lst(pars, pro_lst->raw, &pro_lst->pipe_lst) == ERROR) // free도 다 해줘야함
+			return (ERROR);
 		pro_lst = pro_lst->next;
 	}
 	pro_lst = pars->pro_lst;
-
-	return (0);
+	if (valid_command(((char *)pro_lst->pipe_lst->content)[0]) == ERROR)
+	{
+		return (ERROR);
+	}
+	return (SUCCESS);
 }
 
 int		 init_exec(t_exec	*exec_info, int lst_count)
@@ -220,29 +252,40 @@ void	get_fd_count(t_list	*redir_lst, t_exec *exec_info)
 	}
 }
 
-void	create_fds(t_exec *exec_info, char *redir_str, char *file_str)
+int		create_fds(t_exec *exec_info, char *redir_str, char *file_str)
 {
 	int	fd;
 
 	fd = 0;
+	// fprintf(stderr, "file_str: [%s]\n", file_str);
+	if (!ft_strncmp(file_str, ">", 2) || !ft_strncmp(file_str, ">>", 3) ||
+		!ft_strncmp(file_str, "<", 2))
+		return (ERROR);
 	if (!ft_strcmp(redir_str, ">"))
 	{
-		// printf("output fd: [%d], file_str: [%s]\n", fd, file_str);
+		// fprintf(stderr, "output fd: [%d], file_str: [%s]\n", fd, file_str);
 		fd = open(file_str, O_RDWR | O_TRUNC | O_CREAT, 00777);
 		exec_info->fd[1][exec_info->fd_output_idx++] = fd;
 	}
 	else if (!ft_strcmp(redir_str, ">>"))
 	{
-		// printf("append fd: [%d], file_str: [%s]\n", fd, file_str);
+		// fprintf(stderr, "append fd: [%d], file_str: [%s]\n", fd, file_str);
 		fd = open(file_str, O_RDWR | O_APPEND | O_CREAT, 00777);
 		exec_info->fd[1][exec_info->fd_output_idx++] = fd;
 	}
 	else if (!ft_strcmp(redir_str, "<"))
 	{
-		// printf("input fd: [%d], file_str: [%s]\n", fd, file_str);
+		// fprintf(stderr, "input fd: [%d], file_str: [%s]\n", fd, file_str);
 		fd = open(file_str, O_RDONLY, 00777);
 		exec_info->fd[0][exec_info->fd_input_idx++] = fd;
 	}
+	if (fd < 0)
+	{
+		// fprintf(stderr, "fd == [%d]\n", fd);
+		// ft_putendl_fd("error!!!!", 2);
+		return (ERROR);
+	}
+	return (SUCCESS);
 }
 
 t_exec	*create_exec(t_parse *pars, t_list *redir_lst)
@@ -262,7 +305,8 @@ t_exec	*create_exec(t_parse *pars, t_list *redir_lst)
 		if (res && (res[0] == '>' || res[0] == '<'))
 		{
 			if (redir_lst->next)
-				create_fds(exec_info, res, process_quotes(pars, redir_lst->next->content));
+				if (create_fds(exec_info, res, process_quotes(pars, redir_lst->next->content)) == ERROR)
+					return (ERROR);
 			redir_lst = redir_lst->next;
 		}
 		else if (ft_strcmp(res, ""))

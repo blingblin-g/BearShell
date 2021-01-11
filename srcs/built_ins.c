@@ -1,5 +1,24 @@
 #include "mini.h"
 
+int		execute_builtin(char **argv)
+{
+	if (!ft_strcmp(argv[0], "echo"))
+		return (echo(argv));
+	if (!ft_strcmp(argv[0], "pwd"))
+		return (pwd());
+	if (!ft_strcmp(argv[0], "export"))
+		return (export(argv[1]));
+	if (!ft_strcmp(argv[0], "unset"))
+		return (unset(argv[1]));
+	if (!ft_strcmp(argv[0], "cd"))
+		return (cd(argv[1]));
+	if (!ft_strcmp(argv[0], "env"))
+		return (env());
+	if (!ft_strcmp(argv[0], "exit"))
+		free_exit(get_info()->exit_status);
+	return (NOT_BUILTIN);
+}
+
 int		pwd()
 {
 	char	buf[2097152];
@@ -11,21 +30,12 @@ int		pwd()
 	return (TRUE);
 }
 
-int		valid_path(char *path)
-{
-	DIR *directory;
-
-	if ((directory = opendir(path)))
-		return (closedir(directory));
-	return (TRUE);
-}
-
 int		cd(char *path)
 {
 	if (path == 0)
 		path = get_env_item("HOME");
 	else if (valid_path(path))
-		return(0);
+		return(print_error(PATH_ERR, path));
 	return (!chdir(path));
 }
 

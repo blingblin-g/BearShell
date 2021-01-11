@@ -28,7 +28,6 @@ void	free_exec_info(t_exec **exec_info)
 	i = 0;
 	free((*exec_info)->fd[0]);
 	free((*exec_info)->fd[1]);
-	free((*exec_info)->fd);
 	while ((*exec_info)->argv[i])
 	{
 		free((*exec_info)->argv[i]);
