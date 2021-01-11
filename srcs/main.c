@@ -187,7 +187,9 @@ void	interruptHandler(int sig)
 			kill(get_info()->pid, sig);
 		if (!ft_strcmp(NAME, get_info()->process_name))
 		{
-			ft_putendl_fd("\b\b  \b\b", 1);
+			// ft_putendl_fd("\b\b  \b\b", 1);
+			// write(1, "\n", 1);
+			printf("\n");
 			print_prompt();
 		}
 		else if (get_info()->process_index == 1)
@@ -198,7 +200,7 @@ void	interruptHandler(int sig)
 		if (get_info()->pid != 0)
 			kill(get_info()->pid, sig);
 		if (!ft_strcmp(NAME, get_info()->process_name))
-			ft_putstr_fd("\b\b  \b\b", 1);
+			;// ft_putstr_fd("\b\b  \b\b", 1);
 		else if (get_info()->process_index == 1)
 			ft_putstr_fd("Quit: 3\n", 2);
 	}
@@ -269,7 +271,6 @@ int		main()
 		init_pars(&pars);
 		if (is_valid_line(&command) == ERROR)
 		{
-			free(command);
 			continue;
 		}
 		if (main_parse(command, &pars) == ERROR)

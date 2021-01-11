@@ -114,24 +114,161 @@ typedef struct	s_parse
 	t_pro		*pro_lst;
 }				t_parse;
 
-int		get_next_line(int fd, char **line);
-char	*get_env_item(char *key);
-int		echo(char **argv);
-t_list	*create_env_list();
+
+
+
+
+/**********
+** utils **
+***********/
+
 t_info	*get_info();
-int		export(char *argv);
-void	print_str(void *str);
+size_t	len(char **arr);
 int		find_chr(char *str, char ch);
+char	*free_join(char *s1, char *s2);
+
+
+
+/****************
+** print_utils **
+*****************/
+
+void	print_str(void *str);
+void	print_err(void *str);
+void	print_arr(char **arr);
+void	println_arr(char **arr);
+int		print_error(int type, char *path);
+
+
+
+/**************
+** built-ins **
+***************/
+
+int		pwd();
+int		cd(char *argv);
+int		echo(char **argv);
+void	free_exit();
+int		execute_builtin(char **argv);
+
+
+
+/*************
+** is_valid **
+**************/
+
+int		valid_path(char *path);
+int		valid_command(char c);
+
+
+
+/*********
+**  env **
+**********/
+
 int		env();
+void	sort_env_arr(char **arr);
+void	export_only();
+int		export(char *argv);
 int		unset(char *argv);
-int		main_parse(char *line, t_parse *pars);
+
+
+
+/***************
+** search_env **
+****************/
+
+char	*get_env_item(char *key);
+t_list	*create_env_list();
+char	**get_environ();
+
+
+/******************
+** parsing_utils **
+*******************/
+
+int		is_semi_char(char c);
+int		is_pipe_char(char c);
+int		is_redirection_char(char c);
+void	init_pars(t_parse *pars);
+int		search_quotes(char c, char *line, int i);
+
+
+
+/*******************
+** parsing_utils2 **
+********************/
+
+int		how2divide(char c);
+int		is_error(char c);
+int		is_outofquote_end(char c);
+int		is_escape(char c);
+int		is_sayeon(char c);
+
+
+/******************
+** prolist_utils **
+*******************/
+
 t_pro	*new_prolst(char *raw, int type);
 t_pro	*last_prolst(t_pro *lst);
 void	add_back_prolst(t_pro **lst, t_pro *new);
 void	free_prolst(t_pro **lst);
 char	*free_strtrim(char **s, char const *set);
+
+
+
+/**************
+** set_items **
+***************/
+
+int		set_string(char **old_str, char *new_str);
+int		set_process_name(char *name);
+
+
+
+/************
+** get_cmd **
+*************/
+
+char	*join_cmd_envpath(char	**path, char *command);
+char	*get_cmd(char *cmd);
+
+
+
+/*********
+** free **
+**********/
+
+void	free_parse(t_parse *parse, char *command);
+void	free_arr(char **arr);
+void	free_exec_info(t_exec **exec_info);
+
+
+
+/*********
+** main **
+**********/
+
+
+
+/************
+** parsing **
+*************/
+
+
+
+/****************
+** quotes_zone **
+*****************/
+
+
+
+
+
+int		get_next_line(int fd, char **line);
+int		main_parse(char *line, t_parse *pars);
 char	*process_quotes(t_parse *pars, char *content);
-char	*free_join(char *s1, char *s2);
 char	*get_cmd(char *cmd);
 char	*get_single_quote_zone(char *content, size_t *start, size_t *i);
 char	*get_double_quote_zone(char *content, size_t *start, size_t *i);
@@ -140,29 +277,13 @@ char	*out_of_quotes_zone(char *content, size_t *start, size_t *i);
 int		input_redirection_lst(t_parse *pars, char *raw, t_list **raw_lst);
 void	init_pars(t_parse *pars);
 t_exec	*create_exec(t_parse *pars, t_list	*redir_lst);
-char	**get_environ();
 int		excute_cmd(t_parse *pars, t_list *pipe_lst);
-void	print_arr(char **arr);
-int		cd(char *argv);
-int		pwd();
-void	free_exit();
-void	println_arr(char **arr);
-int		execute_builtin(char **argv);
-size_t	len(char **arr);
+
 int		piping(t_parse *pars, t_list *pipe_lst);
 void	free_parse(t_parse *parse, char *command);
 void	free_arr(char **arr);
 void	free_exec_info(t_exec **exec_info);
 t_exec	*redir_process(t_parse *pars, t_list *pipe_lst);
 void	close_fds(t_exec *exec_info);
-int		is_semi_char(char c);
-int		is_pipe_char(char c);
-int		is_redirection_char(char c);
-void	init_pars(t_parse *pars);
-int		search_quotes(char c, char *line, int i);
-int		set_string(char **old_str, char *new_str);
-int		set_process_name(char *name);
-int		print_error(int type, char *path);
-int		valid_command(char c);
 
 #endif

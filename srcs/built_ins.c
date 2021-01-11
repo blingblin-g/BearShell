@@ -1,5 +1,24 @@
 #include "mini.h"
 
+int		execute_builtin(char **argv)
+{
+	if (!ft_strcmp(argv[0], "echo"))
+		return (echo(argv));
+	if (!ft_strcmp(argv[0], "pwd"))
+		return (pwd());
+	if (!ft_strcmp(argv[0], "export"))
+		return (export(argv[1]));
+	if (!ft_strcmp(argv[0], "unset"))
+		return (unset(argv[1]));
+	if (!ft_strcmp(argv[0], "cd"))
+		return (cd(argv[1]));
+	if (!ft_strcmp(argv[0], "env"))
+		return (env());
+	if (!ft_strcmp(argv[0], "exit"))
+		free_exit(get_info()->exit_status);
+	return (NOT_BUILTIN);
+}
+
 int		pwd()
 {
 	char	buf[2097152];
@@ -8,15 +27,6 @@ int		pwd()
 	working_directory = getcwd(buf, 2097152);
 	write(1, working_directory, ft_strlen(working_directory));
 	write(1, "\n", 1);
-	return (TRUE);
-}
-
-int		valid_path(char *path)
-{
-	DIR *directory;
-
-	if ((directory = opendir(path)))
-		return (closedir(directory));
 	return (TRUE);
 }
 
