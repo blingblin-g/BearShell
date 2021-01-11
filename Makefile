@@ -12,7 +12,7 @@
 
 NAME	=	minishell
 CC		=	gcc
-INC		=	-I ./include -I ./libft -g -fsanitize=address
+INC		=	-I ./include -I ./libft # -g -fsanitize=address
 LIB		=	-L ./libft -lft
 CFLAGS	=	-Wall -Wextra -Werror
 LIB_SRC	=	./libft

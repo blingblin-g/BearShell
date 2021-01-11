@@ -116,9 +116,6 @@ typedef struct	s_parse
 }				t_parse;
 
 
-
-
-
 /**********
 ** utils **
 ***********/

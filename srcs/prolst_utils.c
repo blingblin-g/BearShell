@@ -10,7 +10,6 @@ t_pro	*new_prolst(char *raw, int type)
 	new->raw = raw;
 	new->type = type;
 	new->pipe_lst = NULL;
-	new->cmd_lst = NULL;
 	new->next = 0;
 	return (new);
 }
@@ -45,9 +44,7 @@ void	free_prolst(t_pro **lst)
 	{
 		next_lst = (*lst)->next;
 		free((*lst)->raw);
-		ft_lstclear(&(*lst)->cmd_lst, free);
 		ft_lstclear(&(*lst)->pipe_lst, free);
-		free((*lst)->cmd_lst);
 		free((*lst)->pipe_lst);
 		free(*lst);
 		*lst = next_lst;

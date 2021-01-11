@@ -111,6 +111,8 @@ int	excute_cmd(t_parse *pars, t_list *pipe_lst)
 			return (ERROR);
 		}
 	}
+	else
+		free_exec_info(&exec_info);
 	close_fds(exec_info);
 	return (SUCCESS);
 }
@@ -279,7 +281,6 @@ int		main()
 				break ;
 			pro_lst = pro_lst->next;
 		}
-
 		free_parse(&pars, command);
 	}
 	return (0);
