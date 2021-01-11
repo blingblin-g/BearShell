@@ -231,6 +231,24 @@ int		is_valid_line(char **line)
 	return (SUCCESS);
 }
 
+int		check_eof(int gnl_value, char **command)
+{
+	if (gnl_value == 0)
+	{
+		if (!ft_strcmp(*command, ""))
+		{
+			ft_putstr_fd("exit\n", 1);
+			free(*command);
+			exit(0);
+		}
+		else
+		{
+			write(1, "\n", 1);
+		}
+	}
+	return (SUCCESS);
+}
+
 int		main()
 {
 	t_parse	pars;
@@ -246,16 +264,16 @@ int		main()
 	{
 		set_process_name(NAME);
 		print_prompt();
-		get_next_line(0, &command);
+		if (check_eof(get_next_line(0, &command), &command) == ERROR)
+			continue;
 		init_pars(&pars);
 		if (is_valid_line(&command) == ERROR)
 		{
-			// fprintf(stderr, "1\n");
+			free(command);
 			continue;
 		}
 		if (main_parse(command, &pars) == ERROR)
 		{
-			// fprintf(stderr, "1\n");
 			free_parse(&pars, command);
 			print_error(PARSING_ERR, NULL);
 			continue;
@@ -272,7 +290,6 @@ int		main()
 		}
 
 		free_parse(&pars, command);
-		// fprintf(stderr, "minishell end\n");
 	}
 	return (0);
 }
