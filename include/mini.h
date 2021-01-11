@@ -65,6 +65,7 @@ typedef struct s_info
 	int	exit_status;
 	int pid;
 	int ppid;
+	int		is_minishell;
 	int std[2];
 } t_info;
 

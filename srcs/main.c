@@ -19,10 +19,7 @@ t_exec	*redir_process(t_parse *pars, t_list *pipe_lst)
 		}
 	}
 	else
-	{
-		// print_error(PARSING_ERR, NULL);
 		return (ERROR);
-	}
 	if (exec_info->fd[0] != NULL && exec_info->fd[0][exec_info->input_count - 1] != 0)
 	{
 		exec_info->std[0] = dup(0);
@@ -85,6 +82,8 @@ int	excute_cmd(t_parse *pars, t_list *pipe_lst)
 	{
 		pid = fork();
 		set_process_name(exec_info->argv[0]);
+		if (ft_strnstr(exec_info->argv[0], "minishell", ft_strlen(exec_info->argv[0])))
+			get_info()->is_minishell = TRUE;
 		if (pid == 0)
 		{
 			cmd = get_cmd(exec_info->argv[0]);
@@ -99,6 +98,7 @@ int	excute_cmd(t_parse *pars, t_list *pipe_lst)
 		else if (pid > 0)
 		{
 			wait(&status);
+			get_info()->is_minishell = FALSE;
 			// if(WIFSIGNALED(status))
 			// {
 			// 	fprintf(stderr, "error in excute_cmd: [%d]\n", status);
@@ -181,10 +181,10 @@ void	print_prompt()
 
 void	interruptHandler(int sig)
 {
+	if (get_info()->is_minishell)
+		return ;
 	if (sig == SIGINT) // Ctrl+C
 	{
-		if (get_info()->pid != 0)
-			kill(get_info()->pid, sig);
 		if (!ft_strcmp(NAME, get_info()->process_name))
 		{
 			// ft_putendl_fd("\b\b  \b\b", 1);
@@ -197,8 +197,6 @@ void	interruptHandler(int sig)
 	}
 	else if (sig == SIGQUIT) // Ctrl+백슬래시
 	{
-		if (get_info()->pid != 0)
-			kill(get_info()->pid, sig);
 		if (!ft_strcmp(NAME, get_info()->process_name))
 			;// ft_putstr_fd("\b\b  \b\b", 1);
 		else if (get_info()->process_index == 1)
@@ -210,12 +208,6 @@ int		is_valid_line(char **line)
 {
 	char	*new_line;
 
-	// if (*line == 0)
-	// {
-	// 	*line = ft_strdup("");
-	// 	return (ERROR);
-	// }
-	// fprintf(stderr, "line == [%s]\n", *line);
 	new_line = ft_strtrim(*line, " ");
 	free(*line);
 	if (!ft_strcmp(new_line, ""))
@@ -270,9 +262,7 @@ int		main()
 			continue;
 		init_pars(&pars);
 		if (is_valid_line(&command) == ERROR)
-		{
 			continue;
-		}
 		if (main_parse(command, &pars) == ERROR)
 		{
 			free_parse(&pars, command);
