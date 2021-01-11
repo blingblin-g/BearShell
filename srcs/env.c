@@ -86,8 +86,8 @@ int		unset(char *argv)
 	tmp_node = get_info()->env_list;
 	while (tmp_node)
 	{
-		if (!ft_strncmp(tmp_node->content, argv, len &&
-		 ((char *)tmp_node->content)[len] == '='))
+		if (!ft_strncmp(tmp_node->content, argv, len) &&
+		((char *)tmp_node->content)[len] == '=')
 		{
 			if (pre_node == NULL)
 				get_info()->env_list = tmp_node->next;
