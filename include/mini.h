@@ -62,9 +62,9 @@ typedef struct s_info
 	t_list	*env_list;
 	char	*process_name;
 	int		process_index;
-	int	exit_status;
-	int pid;
-	int ppid;
+	int		exit_status;
+	int		pid;
+	int		ppid;
 	int		is_minishell;
 	int std[2];
 } t_info;
@@ -147,7 +147,6 @@ int		pwd();
 int		cd(char *argv);
 int		echo(char **argv);
 void	free_exit();
-int		execute_builtin(char **argv);
 
 
 
@@ -157,7 +156,8 @@ int		execute_builtin(char **argv);
 
 int		valid_path(char *path);
 int		valid_command(char c);
-
+int		valid_pipe(t_list *pipe_lst);
+int		is_valid_line(char **line);
 
 
 /*********
@@ -243,6 +243,70 @@ void	free_arr(char **arr);
 void	free_exec_info(t_exec **exec_info);
 
 
+/**************
+** lst_utils **
+***************/
+
+t_list	*new_lst_trim(char *content);
+void	add_redirection_lst(t_parse *pars, t_list **lst, int type);
+
+
+
+/****************
+ ** exec_utils **
+****************/
+
+int		 init_exec(t_exec	*exec_info, int lst_count);
+t_exec	*create_exec(t_parse *pars, t_list *redir_lst);
+
+
+
+/********
+ ** fd **
+ ********/
+
+void	get_fd_count(t_list	*redir_lst, t_exec *exec_info);
+int		create_fds(t_exec *exec_info, char *redir_str, char *file_str);
+void	close_fds(t_exec *exec_info);
+
+
+
+/****************
+ ** excute_cmd **
+ ****************/
+
+int		excute_cmd(t_parse *pars, t_list *pipe_lst);
+int		execute_builtin(char **argv);
+
+
+
+/**************
+ ** redirect **
+ **************/
+
+int		input_redirection_lst(t_parse *pars, char *raw, t_list **raw_lst);
+t_exec	*redir_process(t_parse *pars, t_list *pipe_lst);
+
+
+
+/**********
+ ** pipe **
+ **********/
+
+int		piping(t_parse *pars, t_list *pipe_lst);
+
+
+
+/****************
+ ** main_utils **
+ ****************/
+
+void	print_prompt();
+void	interrupt_handler(int sig);
+int		check_eof(int gnl_value, char **command);
+
+
+
 
 /*********
 ** main **
@@ -272,16 +336,12 @@ char	*get_single_quote_zone(char *content, size_t *start, size_t *i);
 char	*get_double_quote_zone(char *content, size_t *start, size_t *i);
 char	*find_var_name(char *content, size_t *i);
 char	*out_of_quotes_zone(char *content, size_t *start, size_t *i);
-int		input_redirection_lst(t_parse *pars, char *raw, t_list **raw_lst);
 void	init_pars(t_parse *pars);
 t_exec	*create_exec(t_parse *pars, t_list	*redir_lst);
-int		excute_cmd(t_parse *pars, t_list *pipe_lst);
 
 int		piping(t_parse *pars, t_list *pipe_lst);
 void	free_parse(t_parse *parse, char *command);
 void	free_arr(char **arr);
 void	free_exec_info(t_exec **exec_info);
-t_exec	*redir_process(t_parse *pars, t_list *pipe_lst);
-void	close_fds(t_exec *exec_info);
 
 #endif

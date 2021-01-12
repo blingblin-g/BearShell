@@ -28,11 +28,17 @@ SRCS	=	./srcs/get_next_line.c	\
 			./srcs/prolst_utils.c	\
 			./srcs/set_items.c		\
 			./srcs/get_cmd.c		\
+			./srcs/exec_utils.c		\
+			./srcs/lst_utils.c		\
 			./srcs/free.c			\
+			./srcs/fd.c				\
+			./srcs/pipe.c			\
+			./srcs/redirect.c		\
 			./srcs/parsing.c		\
 			./srcs/quotes_zone.c	\
-			./srcs/execute_cmd.c	\
+			./srcs/execute.c	\
 			./srcs/error.c			\
+			./srcs/main_utils.c		\
 			./srcs/main.c			\
 			# ./srcs/test.c
 
