@@ -66,20 +66,13 @@ typedef struct s_info
 	int		pid;
 	int		ppid;
 	int		is_minishell;
-	int std[2];
+	int		std[2];
 } t_info;
 
 /*
 * cmd_lst : command list
 * pro_lst : process list
 */
-
-// typedef struct	s_pro_lst
-// {
-// 	int			type;
-// 	t_list		*next;
-// 	t_list		*cmd_lst;
-// }				t_pro_lst;
 
 typedef struct	s_exec
 {
@@ -99,7 +92,6 @@ typedef struct	s_pro
 	int			type;
 	char		*raw;
 	t_list		*pipe_lst;
-	t_list		*cmd_lst;
 	struct		s_pro *next;
 }				t_pro;
 
@@ -135,7 +127,8 @@ void	print_str(void *str);
 void	print_err(void *str);
 void	print_arr(char **arr);
 void	println_arr(char **arr);
-int		print_error(int type, char *path);
+void	print_lst(t_list *lst);
+
 
 
 
@@ -204,6 +197,15 @@ int		is_escape(char c);
 int		is_sayeon(char c);
 
 
+
+/*******************
+** parsing_utils3 **
+********************/
+
+void	process_sayeon(char c, char **result);
+char	*find_var_name(char *content, size_t *i);
+char	*process_home(char *content);
+
 /******************
 ** prolist_utils **
 *******************/
@@ -212,7 +214,7 @@ t_pro	*new_prolst(char *raw, int type);
 t_pro	*last_prolst(t_pro *lst);
 void	add_back_prolst(t_pro **lst, t_pro *new);
 void	free_prolst(t_pro **lst);
-char	*free_strtrim(char **s, char const *set);
+
 
 
 
@@ -241,6 +243,8 @@ char	*get_cmd(char *cmd);
 void	free_parse(t_parse *parse, char *command);
 void	free_arr(char **arr);
 void	free_exec_info(t_exec **exec_info);
+char	*free_strtrim(char **s, char const *set);
+
 
 
 /**************
@@ -305,6 +309,13 @@ void	print_prompt();
 void	interrupt_handler(int sig);
 int		check_eof(int gnl_value, char **command);
 
+
+
+/***********
+ ** error **
+ ***********/
+
+int		print_error(int type, char *path);
 
 
 

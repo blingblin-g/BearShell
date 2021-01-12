@@ -12,14 +12,33 @@
 
 #include "libft.h"
 
+// void	ft_lstclear(t_list **lst, void (*del)(void *))
+// {
+// 	t_list *daum;
+
+// 	while (*lst)
+// 	{
+// 		daum = (*lst)->next;
+// 		ft_lstdelone(*lst, del);
+// 		*lst = daum;
+// 	}
+// }
+
 void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	t_list *daum;
+	t_list	*node;
+	t_list	*remove_node;
 
-	while (*lst)
+	if (lst != 0)
 	{
-		daum = (*lst)->next;
-		ft_lstdelone(*lst, del);
-		*lst = daum;
+		node = *lst;
+		while (node != 0)
+		{
+			remove_node = node;
+			node = node->next;
+			del(remove_node->content);
+			free(remove_node);
+		}
+		*lst = 0;
 	}
 }

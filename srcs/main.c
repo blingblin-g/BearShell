@@ -1,12 +1,24 @@
 #include <string.h>
 #include "mini.h"
 
+int prolst_size(t_pro *lst)
+{
+	int count;
+
+	count = 0;
+	while (lst)
+	{
+		count++;
+		lst = lst->next;
+	}
+	return count;
+}
+
 int		main()
 {
 	t_parse	pars;
-	char	*command;
+	char	*command = NULL;
 	t_pro	*pro_lst;
-	t_list	*pipe_lst;
 
 	get_info()->env_list = create_env_list();
 	get_info()->process_name = NULL;
@@ -32,8 +44,7 @@ int		main()
 		get_info()->std[1] = dup(1);
 		while (pro_lst)
 		{
-			pipe_lst = pro_lst->pipe_lst;
-			if (piping(&pars, pipe_lst) == ERROR)
+			if (piping(&pars, pro_lst->pipe_lst) == ERROR)
 				break ;
 			pro_lst = pro_lst->next;
 		}

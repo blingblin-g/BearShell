@@ -40,6 +40,8 @@ int		create_fds(t_exec *exec_info, char *redir_str, char *file_str)
 		fd = open(file_str, O_RDONLY, 00777);
 		exec_info->fd[0][exec_info->fd_input_idx++] = fd;
 	}
+	free(redir_str);
+	free(file_str);
 	if (fd < 0)
 		return (ERROR);
 	return (SUCCESS);
@@ -71,5 +73,4 @@ void	close_fds(t_exec *exec_info)
 			i++;
 		}
 	}
-	free_exec_info(&exec_info);
 }

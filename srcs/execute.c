@@ -65,5 +65,7 @@ int		excute_cmd(t_parse *pars, t_list *pipe_lst)
 		}
 	}
 	close_fds(exec_info);
+	free_exec_info(&exec_info);
+	// while (1);
 	return (SUCCESS);
 }

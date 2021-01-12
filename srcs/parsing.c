@@ -60,7 +60,7 @@ int		input_pipe_lst(t_parse *pars, char *raw, t_list **raw_lst)
 int		main_parse(char *line, t_parse *pars)
 {
 	int		type;
-	int		i;
+	size_t	i;
 	t_pro	*pro_lst;
 
 	i = 0;
@@ -96,12 +96,14 @@ int		main_parse(char *line, t_parse *pars)
 		}
 		i++;
 	}
-
-	if (pars->single_q || pars->double_q) // free도 해줘야함
+	if (pars->single_q || pars->double_q)
 	{
 		return (ERROR);
 	}
-
+	// if (i == pars->start)
+	// {
+	// 	return (ERROR);
+	// }
 	pro_lst = new_prolst(ft_substr(line, pars->start, i - pars->start), type);
 	add_back_prolst(&pars->pro_lst, pro_lst);
 	pro_lst = pars->pro_lst;

@@ -50,12 +50,3 @@ void	free_prolst(t_pro **lst)
 		*lst = next_lst;
 	}
 }
-
-char	*free_strtrim(char **s, char const *set)
-{
-	char	*result;
-
-	result = ft_strtrim(*s, set);
-	free(*s);
-	return (result);
-}

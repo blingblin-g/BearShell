@@ -31,7 +31,6 @@ void	interrupt_handler(int sig)
 	}
 }
 
-
 int		check_eof(int gnl_value, char **command)
 {
 	if (gnl_value == 0)

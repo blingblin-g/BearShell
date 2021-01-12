@@ -12,7 +12,7 @@
 
 NAME	=	minishell
 CC		=	gcc
-INC		=	-I ./include -I ./libft # -g -fsanitize=address
+INC		=	-I ./include -I ./libft   #-g -fsanitize=address
 LIB		=	-L ./libft -lft
 CFLAGS	=	-Wall -Wextra -Werror
 LIB_SRC	=	./libft
@@ -25,6 +25,7 @@ SRCS	=	./srcs/get_next_line.c	\
 			./srcs/search_env.c		\
 			./srcs/parsing_utils.c	\
 			./srcs/parsing_utils2.c	\
+			./srcs/parsing_utils3.c	\
 			./srcs/prolst_utils.c	\
 			./srcs/set_items.c		\
 			./srcs/get_cmd.c		\
@@ -36,7 +37,7 @@ SRCS	=	./srcs/get_next_line.c	\
 			./srcs/redirect.c		\
 			./srcs/parsing.c		\
 			./srcs/quotes_zone.c	\
-			./srcs/execute.c	\
+			./srcs/execute.c		\
 			./srcs/error.c			\
 			./srcs/main_utils.c		\
 			./srcs/main.c			\

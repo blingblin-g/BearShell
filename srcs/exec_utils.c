@@ -4,9 +4,7 @@ int		 init_exec(t_exec	*exec_info, int lst_count)
 {
 	int		fd_count;
 
-
 	fd_count = exec_info->input_count + exec_info->output_count;
-	// printf("exec_info->input_count: [%d], exec_info->output_count: [%d]\n", exec_info->input_count, exec_info->output_count);
 	if (exec_info->input_count > 0)
 		if (!(exec_info->fd[0] = (int *)malloc(sizeof(int) * (exec_info->input_count))))
 			return (ERROR);
@@ -40,11 +38,13 @@ t_exec	*create_exec(t_parse *pars, t_list *redir_lst)
 	init_exec(exec_info, lst_count);
 	while (redir_lst)
 	{
-		res = process_quotes(pars, ft_strdup(redir_lst->content));
+		res = process_quotes(pars, redir_lst->content);
+		if (res == ERROR)
+			return ERROR;
 		if (res && (res[0] == '>' || res[0] == '<'))
 		{
 			if (redir_lst->next)
-				if (create_fds(exec_info, res, process_quotes(pars, ft_strdup(redir_lst->next->content))) == ERROR)
+				if (create_fds(exec_info, res, process_quotes(pars, redir_lst->next->content)) == ERROR)
 					return (ERROR);
 			redir_lst = redir_lst->next;
 		}

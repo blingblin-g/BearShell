@@ -45,7 +45,7 @@ int		input_redirection_lst(t_parse *pars, char *raw, t_list **raw_lst)
 		}
 		i++;
 	}
-	// fprintf(stderr, "1i - pars->start == [%lu]\n", i - pars->start);
+
 	if (i == pars->start)
 	{
 		return (ERROR);
@@ -63,17 +63,21 @@ int		input_redirection_lst(t_parse *pars, char *raw, t_list **raw_lst)
 t_exec	*redir_process(t_parse *pars, t_list *pipe_lst)
 {
 	t_exec	*exec_info = NULL;
-	t_list	*redirection_lst = NULL;
+	t_list	*redir_lst = NULL;
 
-	if (input_redirection_lst(pars, pipe_lst->content, &redirection_lst) != ERROR)
+	if (input_redirection_lst(pars, pipe_lst->content, &redir_lst) != ERROR)
 	{
-		if ((exec_info = create_exec(pars, redirection_lst)) == ERROR)
+		if ((exec_info = create_exec(pars, redir_lst)) == ERROR)
 		{
-			ft_lstclear(&redirection_lst, free);
+			ft_lstclear(&redir_lst, free);
+			free(redir_lst);
 			return (ERROR);
 		}
-		if (redirection_lst != NULL)
-			ft_lstclear(&redirection_lst, free);
+		if (redir_lst != NULL)
+		{
+			ft_lstclear(&redir_lst, free);
+			free(redir_lst);
+		}
 	}
 	else
 		return (ERROR);

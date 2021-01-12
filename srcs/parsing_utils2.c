@@ -23,7 +23,7 @@ int is_outofquote_end(char c)
 
 int is_escape(char c)
 {
-	if (c == '$' || c == '\"' || c == '\\' || c == '`')
+	if (c == '$' || c == '\'' || c == '\"' || c == '\\' || c == '`')
 		return (TRUE);
 	return (FALSE);
 }
