@@ -38,7 +38,7 @@ int		is_valid_line(char **line)
 		free(new_line);
 		return (ERROR);
 	}
-	if (new_line[0] == ';')
+	if (new_line[0] == ';' || new_line[0] == '|')
 	{
 		free(new_line);
 		print_error(PARSING_ERR, NULL);
