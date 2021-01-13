@@ -47,6 +47,7 @@ void	export_only()
 	}
 	sort_env_arr(env);
 	println_arr(env);
+	free_arr(env);
 }
 
 int		export(char *argv)
