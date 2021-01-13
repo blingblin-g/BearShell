@@ -15,7 +15,7 @@ int		execute_builtin(char **argv)
 	if (!ft_strcmp(argv[0], "env"))
 		return (env());
 	if (!ft_strcmp(argv[0], "exit"))
-		free_exit(get_info()->exit_status);
+		builtin_exit(argv[1]);
 	return (NOT_BUILTIN);
 }
 

@@ -31,7 +31,7 @@ int		cd(char *path)
 	return (result);
 }
 
-int			echo(char **argv)
+int		echo(char **argv)
 {
 	size_t	size;
 
@@ -47,6 +47,14 @@ int			echo(char **argv)
 		write(1, "\n", 1);
 	get_info()->exit_status = 0;
 	return (TRUE);
+}
+
+void	builtin_exit(char *argv)
+{
+	if (argv == NULL)
+		exit(get_info()->exit_status);
+	else
+		exit((unsigned char)ft_atoi(argv));
 }
 
 void free_exit() // memory free 관련 기능 추가하기

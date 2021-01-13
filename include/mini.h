@@ -131,7 +131,6 @@ void	print_lst(t_list *lst);
 
 
 
-
 /**************
 ** built-ins **
 ***************/
@@ -139,8 +138,8 @@ void	print_lst(t_list *lst);
 int		pwd();
 int		cd(char *argv);
 int		echo(char **argv);
+void	builtin_exit(char *argv);
 void	free_exit();
-
 
 
 /*************
@@ -162,7 +161,6 @@ void	sort_env_arr(char **arr);
 void	export_only();
 int		export(char *argv);
 int		unset(char *argv);
-
 
 
 /***************
@@ -197,7 +195,6 @@ int		is_escape(char c);
 int		is_sayeon(char c);
 
 
-
 /*******************
 ** parsing_utils3 **
 ********************/
@@ -217,14 +214,12 @@ void	free_prolst(t_pro **lst);
 
 
 
-
 /**************
 ** set_items **
 ***************/
 
 int		set_string(char **old_str, char *new_str);
 int		set_process_name(char *name);
-
 
 
 /************
