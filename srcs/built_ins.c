@@ -33,17 +33,16 @@ int		cd(char *path)
 
 int		echo(char **argv)
 {
-	size_t	size;
+	int 	is_option;
 
-	size = len(argv);
-	if (size > 2 && !ft_strncmp(argv[1], "-n", 3))
-		print_arr(argv + 2);
-	else if (size > 1)
+	is_option = FALSE;
+	while (ft_strncmp(argv[1], "-n", 3) == 0)
 	{
-		print_arr(argv + 1);
-		write(1, "\n", 1);
+		is_option = TRUE;
+		argv++;
 	}
-	else if (size == 1)
+	print_arr(argv + 1);
+	if (!is_option)
 		write(1, "\n", 1);
 	get_info()->exit_status = 0;
 	return (TRUE);
