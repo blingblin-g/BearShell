@@ -24,11 +24,33 @@ int		 init_exec(t_exec	*exec_info, int lst_count)
 	return (SUCCESS);
 }
 
+int		create_exec_iter(t_parse *pars, t_exec *exec_info, t_list **redir_lst)
+{
+	char	*res;
+
+	res = process_quotes(pars, (*redir_lst)->content);
+	if (res == ERROR)
+		return (ERROR);
+	if (res && (res[0] == '>' || res[0] == '<'))
+	{
+		if ((*redir_lst)->next)
+			if (create_fds(exec_info, res, process_quotes(pars, (*redir_lst)->next->content)) == ERROR)
+				return (ERROR);
+		*redir_lst = (*redir_lst)->next;
+	}
+	else if (ft_strcmp(res, ""))
+	{
+		exec_info->argv[exec_info->argv_idx] = res;
+		exec_info->argv_idx++;
+	}
+	if ((*redir_lst))
+		*redir_lst = (*redir_lst)->next;
+	return (SUCCESS);
+}
 
 t_exec	*create_exec(t_parse *pars, t_list *redir_lst)
 {
 	t_exec	*exec_info;
-	char	*res;
 	int		lst_count;
 
 	if (!(exec_info = (t_exec *)malloc(sizeof(t_exec))))
@@ -38,23 +60,8 @@ t_exec	*create_exec(t_parse *pars, t_list *redir_lst)
 	init_exec(exec_info, lst_count);
 	while (redir_lst)
 	{
-		res = process_quotes(pars, redir_lst->content);
-		if (res == ERROR)
-			return ERROR;
-		if (res && (res[0] == '>' || res[0] == '<'))
-		{
-			if (redir_lst->next)
-				if (create_fds(exec_info, res, process_quotes(pars, redir_lst->next->content)) == ERROR)
-					return (ERROR);
-			redir_lst = redir_lst->next;
-		}
-		else if (ft_strcmp(res, ""))
-		{
-			exec_info->argv[exec_info->argv_idx] = res;
-			exec_info->argv_idx++;
-		}
-		if (redir_lst)
-			redir_lst = redir_lst->next;
+		if (create_exec_iter(pars, exec_info, &redir_lst) == ERROR)
+			return (ERROR);
 	}
 	return (exec_info);
 }
