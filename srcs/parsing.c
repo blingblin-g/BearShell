@@ -35,7 +35,7 @@ int		input_pipe_lst(t_parse *pars, char *raw, t_list **raw_lst)
 		}
 		else
 		{
-			if (i != 0 && pars->single_q && raw[i - 1] != '\\' && raw[i] == '\'')
+			if (i != 0 && pars->single_q && raw[i] == '\'')
 				pars->single_q = FALSE;
 			else if (i != 0 && pars->double_q && raw[i - 1] != '\\' && raw[i] == '\"')
 				pars->double_q = FALSE;
@@ -89,7 +89,7 @@ int		main_parse(char *line, t_parse *pars)
 		}
 		else
 		{
-			if (i != 0 && pars->single_q && line[i - 1] != '\\' && line[i] == '\'')
+			if (i != 0 && pars->single_q && line[i] == '\'')
 				pars->single_q = FALSE;
 			else if (i != 0 && pars->double_q && line[i - 1] != '\\' && line[i] == '\"')
 				pars->double_q = FALSE;
@@ -107,7 +107,7 @@ int		main_parse(char *line, t_parse *pars)
 	pro_lst = new_prolst(ft_substr(line, pars->start, i - pars->start), type);
 	add_back_prolst(&pars->pro_lst, pro_lst);
 	pro_lst = pars->pro_lst;
-
+	
 	while (pro_lst)
 	{
 		pro_lst->raw = free_strtrim(&pro_lst->raw, " ");

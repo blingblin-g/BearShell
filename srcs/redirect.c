@@ -38,7 +38,7 @@ int		input_redirection_lst(t_parse *pars, char *raw, t_list **raw_lst)
 		}
 		else
 		{
-			if (i != 0 && pars->single_q && raw[i - 1] != '\\' && raw[i] == '\'')
+			if (i != 0 && pars->single_q && raw[i] == '\'')
 				pars->single_q = FALSE;
 			else if (i != 0 && pars->double_q && raw[i - 1] != '\\' && raw[i] == '\"')
 				pars->double_q = FALSE;
