@@ -30,10 +30,8 @@ int		piping(t_parse *pars, t_list *pipe_lst)
 			dup2(io[1], 1);
 			close(io[1]);
 		}
-		// 여기 확인함, 누수 없었음
-		if (excute_cmd(pars, pipe_lst) == ERROR)// 이새끼가 범인임
+		if (excute_cmd(pars, pipe_lst) == ERROR)
 			return (ERROR);
-		// 여기서 누수 확인됨
 		dup2(get_info()->std[1], 1);
 		dup2(get_info()->std[0], 0);
 		if (pipe_lst->next)

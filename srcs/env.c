@@ -58,7 +58,7 @@ int		export(char *argv)
 	if (!argv)
 	{
 		export_only();
-		return TRUE;
+		return (TRUE);
 	}
 	temp = get_info()->env_list;
 	eq_index = find_chr(argv, '=');
@@ -67,12 +67,12 @@ int		export(char *argv)
 		if (!ft_strncmp(argv, temp->content, eq_index))
 		{
 			free(temp->content);
-			temp->content = argv;
+			temp->content = ft_strdup(argv);
 			return (TRUE);
 		}
 		temp = temp->next;
 	}
-	ft_lstadd_back(&get_info()->env_list, ft_lstnew(argv));
+	ft_lstadd_back(&get_info()->env_list, ft_lstnew(ft_strdup(argv)));
 	return (TRUE);
 }
 
@@ -81,7 +81,7 @@ int		unset(char *argv)
 	t_list	*tmp_node;
 	t_list	*pre_node;
 	size_t len;
-	
+
 	len = ft_strlen(argv);
 	pre_node = NULL;
 	tmp_node = get_info()->env_list;
