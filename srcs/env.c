@@ -3,6 +3,7 @@
 int env()
 {
 	ft_lstiter(get_info()->env_list, print_str);
+	get_info()->exit_status = 0;
 	return (TRUE);
 }
 
@@ -55,6 +56,7 @@ int		export(char *argv)
 	t_list	*temp;
 	int		eq_index;
 
+	get_info()->exit_status = 0;
 	if (!argv)
 	{
 		export_only();
@@ -82,6 +84,7 @@ int		unset(char *argv)
 	t_list	*pre_node;
 	size_t len;
 
+	get_info()->exit_status = 0;
 	len = ft_strlen(argv);
 	pre_node = NULL;
 	tmp_node = get_info()->env_list;

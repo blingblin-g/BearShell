@@ -21,6 +21,7 @@ void	interrupt_handler(int sig)
 		}
 		else if (get_info()->process_index == 1)
 			ft_putstr_fd("\n", 2);
+		get_info()->exit_status = 130;
 	}
 	else if (sig == SIGQUIT) // Ctrl+백슬래시
 	{
@@ -28,6 +29,7 @@ void	interrupt_handler(int sig)
 			ft_putstr_fd("\b\b  \b\b", 1);
 		else if (get_info()->process_index == 1)
 			ft_putstr_fd("Quit: 3\n", 2);
+		get_info()->exit_status = 131;
 	}
 }
 
@@ -37,9 +39,9 @@ int		check_eof(int gnl_value, char **command)
 	{
 		if (!ft_strcmp(*command, ""))
 		{
-			ft_putstr_fd("exit\n", 1);
+			ft_putstr_fd("exit\n", 2);
 			free(*command);
-			exit(0);
+			exit(get_info()->exit_status);
 		}
 		else
 		{

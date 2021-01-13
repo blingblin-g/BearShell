@@ -50,12 +50,13 @@ int		excute_cmd(t_parse *pars, t_list *pipe_lst)
 			if (execve(cmd, exec_info->argv, get_environ()))
 			{
 				print_error(COMMAND_ERR, NULL);
-				exit(0);
+				exit(get_info()->exit_status);
 			}
 		}
 		else if (pid > 0)
 		{
 			wait(&status);
+			get_info()->exit_status = status;
 			get_info()->is_minishell = FALSE;
 		}
 		else

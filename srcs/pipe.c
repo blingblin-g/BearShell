@@ -20,7 +20,7 @@ int		piping(t_parse *pars, t_list *pipe_lst)
 		dup2(io[0], 0);
 		close(io[0]);
 		piping(pars, pipe_lst->next);
-		exit(0);
+		exit(get_info()->exit_status);
 	}
 	else if (pid > 0)
 	{
@@ -35,7 +35,10 @@ int		piping(t_parse *pars, t_list *pipe_lst)
 		dup2(get_info()->std[1], 1);
 		dup2(get_info()->std[0], 0);
 		if (pipe_lst->next)
+		{
 			wait(&status);
+			get_info()->exit_status = status;
+		}
 	}
 	else
 	{

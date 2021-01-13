@@ -50,5 +50,5 @@ int		main()
 		}
 		free_parse(&pars, command);
 	}
-	return (0);
+	return (get_info()->exit_status);
 }

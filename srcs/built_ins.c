@@ -8,16 +8,27 @@ int		pwd()
 	working_directory = getcwd(buf, 2097152);
 	write(1, working_directory, ft_strlen(working_directory));
 	write(1, "\n", 1);
+	get_info()->exit_status = 0;
 	return (TRUE);
 }
 
 int		cd(char *path)
 {
+	int		result;
+
 	if (path == 0)
 		path = get_env_item("HOME");
 	else if (valid_path(path))
+	{
+		get_info()->exit_status = 1;
 		return(print_error(PATH_ERR, path));
-	return (!chdir(path));
+	}
+	result = !chdir(path);
+	if (!result)
+		get_info()->exit_status = 0;
+	else
+		get_info()->exit_status = 1;
+	return (result);
 }
 
 int			echo(char **argv)
@@ -34,6 +45,7 @@ int			echo(char **argv)
 	}
 	else if (size == 1)
 		write(1, "\n", 1);
+	get_info()->exit_status = 0;
 	return (TRUE);
 }
 
