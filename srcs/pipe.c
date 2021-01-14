@@ -7,22 +7,13 @@ int		piping(t_parse *pars, t_list *pipe_lst)
 	int		status;
 
 	pid = 42;
-	status = 0;
+	status = -1;
 	if (pipe_lst->next)
 	{
 		pipe(io);
 		pid = fork();
 	}
-	if (pid == 0)
-	{
-		set_process_name("pipe");
-		close(io[1]);
-		dup2(io[0], 0);
-		close(io[0]);
-		piping(pars, pipe_lst->next);
-		exit(get_info()->exit_status);
-	}
-	else if (pid > 0)
+	if (pid > 0)
 	{
 		if (pipe_lst->next)
 		{
@@ -39,6 +30,17 @@ int		piping(t_parse *pars, t_list *pipe_lst)
 			wait(&status);
 			get_info()->exit_status = status;
 		}
+	}
+	else if (pid == 0)
+	{
+		set_process_name("pipe");
+		close(io[1]);
+		dup2(io[0], 0);
+		close(io[0]);
+		piping(pars, pipe_lst->next);
+		if (pipe_lst->next && !(pipe_lst->next->next))
+			ft_sleep(1);
+		exit(get_info()->exit_status >> 8);
 	}
 	else
 	{

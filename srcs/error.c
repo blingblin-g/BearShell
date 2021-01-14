@@ -13,12 +13,12 @@ int		print_error(int type, char *path)
 	else if (type == PARSING_ERR)
 	{
 		print_err("คʕ;•̀ ᴥ•́ʔค ❤❤❤ syntax error!\n");
-		get_info()->exit_status = 258;
+		get_info()->exit_status = 258 << 8;
 	}
 	else if (type == COMMAND_ERR)
 	{
 		print_err("คʕ •̀ o•́ʔค ❤❤❤ command not found\n");
-		get_info()->exit_status = 127;
+		get_info()->exit_status = 127 << 8;
 	}
 	return (ERROR);
 }

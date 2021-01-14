@@ -54,7 +54,7 @@ t_exec	*create_exec(t_parse *pars, t_list *redir_lst)
 	int		lst_count;
 
 	if (!(exec_info = (t_exec *)malloc(sizeof(t_exec))))
-		return (NULL);
+		return (ERROR);
 	lst_count = ft_lstsize(redir_lst);
 	get_fd_count(redir_lst, exec_info);
 	init_exec(exec_info, lst_count);

@@ -32,8 +32,9 @@ int		excute_cmd(t_parse *pars, t_list *pipe_lst)
 	if ((exec_info = redir_process(pars, pipe_lst)) == ERROR)
 	{
 		print_error(PARSING_ERR, NULL);
+		// fprintf(stderr, "free해야함!!!\n");
 		return (ERROR);
-	}// free 해줘야함
+	}
 	if (exec_info->argv[0])
 		is_builtin = execute_builtin(exec_info->argv);
 	if (is_builtin == NOT_BUILTIN)
@@ -50,13 +51,21 @@ int		excute_cmd(t_parse *pars, t_list *pipe_lst)
 			if (execve(cmd, exec_info->argv, get_environ()))
 			{
 				print_error(COMMAND_ERR, NULL);
-				exit(get_info()->exit_status);
+				exit(127);
 			}
 		}
 		else if (pid > 0)
 		{
 			wait(&status);
-			get_info()->exit_status = status;
+			if (pipe_lst->next == NULL)
+			{
+				if (WIFEXITED(status))
+					get_info()->exit_status = WEXITSTATUS(status) << 8;
+				else if (WIFSIGNALED(status))
+					get_info()->exit_status = (WTERMSIG(status) + 128) << 8;
+				else
+					get_info()->exit_status = status << 8;
+			}
 			get_info()->is_minishell = FALSE;
 		}
 		else

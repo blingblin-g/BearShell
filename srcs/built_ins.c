@@ -20,14 +20,14 @@ int		cd(char *path)
 		path = get_env_item("HOME");
 	else if (valid_path(path))
 	{
-		get_info()->exit_status = 1;
+		get_info()->exit_status = 1 << 8;
 		return(print_error(PATH_ERR, path));
 	}
 	result = !chdir(path);
 	if (!result)
 		get_info()->exit_status = 0;
 	else
-		get_info()->exit_status = 1;
+		get_info()->exit_status = 1 << 8;
 	return (result);
 }
 

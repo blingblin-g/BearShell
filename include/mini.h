@@ -116,7 +116,7 @@ t_info	*get_info();
 size_t	len(char **arr);
 int		find_chr(char *str, char ch);
 char	*free_join(char *s1, char *s2);
-
+void	ft_sleep(int amount);
 
 
 /****************

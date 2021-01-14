@@ -3,7 +3,7 @@
 void	process_sayeon(char c, char **result)
 {
 	if (c == '?')
-		*result = free_join(*result, ft_itoa(get_info()->exit_status));
+		*result = free_join(*result, ft_itoa(get_info()->exit_status >> 8));
 	if (c == '$')
 		*result = free_join(*result, ft_itoa(get_info()->pid));
 	if (c == '-')

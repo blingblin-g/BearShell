@@ -47,14 +47,12 @@ int		input_redirection_lst(t_parse *pars, char *raw, t_list **raw_lst)
 	}
 
 	if (i == pars->start)
-	{
 		return (ERROR);
-	}
 	tmp_lst = new_lst_trim(ft_substr(raw, pars->start, i - pars->start));
 	ft_lstadd_back(raw_lst, tmp_lst);
 	if (pars->single_q || pars->double_q)
 	{
-		print_error(PARSING_ERR, NULL); // free 해줘야함
+		print_error(PARSING_ERR, NULL);
 		return (ERROR);
 	}
 	return (SUCCESS);
@@ -80,7 +78,10 @@ t_exec	*redir_process(t_parse *pars, t_list *pipe_lst)
 		}
 	}
 	else
+	{
+		ft_lstclear(&redir_lst, free);
 		return (ERROR);
+	}
 	if (exec_info->fd[0] != NULL && exec_info->fd[0][exec_info->input_count - 1] != 0)
 	{
 		exec_info->std[0] = dup(0);

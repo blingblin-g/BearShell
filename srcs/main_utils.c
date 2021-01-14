@@ -12,7 +12,7 @@ void	interrupt_handler(int sig)
 {
 	if (get_info()->is_minishell)
 		return ;
-	if (sig == SIGINT) // Ctrl+C
+	if (sig == SIGINT)
 	{
 		if (!ft_strcmp(NAME, get_info()->process_name))
 		{
@@ -21,15 +21,15 @@ void	interrupt_handler(int sig)
 		}
 		else if (get_info()->process_index == 1)
 			ft_putstr_fd("\n", 2);
-		get_info()->exit_status = 130;
+		get_info()->exit_status = 130 << 8;
 	}
-	else if (sig == SIGQUIT) // Ctrl+백슬래시
+	else if (sig == SIGQUIT)
 	{
 		if (!ft_strcmp(NAME, get_info()->process_name))
 			ft_putstr_fd("\b\b  \b\b", 1);
 		else if (get_info()->process_index == 1)
 			ft_putstr_fd("Quit: 3\n", 2);
-		get_info()->exit_status = 131;
+		get_info()->exit_status = 131 << 8;
 	}
 }
 
