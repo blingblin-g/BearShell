@@ -22,7 +22,6 @@ int		execute_builtin(char **argv)
 int		excute_cmd(t_parse *pars, t_list *pipe_lst)
 {
 	t_exec	*exec_info;
-	int		status;
 	pid_t	pid;
 	char	*cmd;
 	int		is_builtin;
@@ -56,15 +55,15 @@ int		excute_cmd(t_parse *pars, t_list *pipe_lst)
 		}
 		else if (pid > 0)
 		{
-			wait(&status);
+			wait(&(get_info()->exit_status));
 			if (pipe_lst->next == NULL)
 			{
-				if (WIFEXITED(status))
-					get_info()->exit_status = WEXITSTATUS(status) << 8;
-				else if (WIFSIGNALED(status))
-					get_info()->exit_status = (WTERMSIG(status) + 128) << 8;
+				if (WIFEXITED(get_info()->exit_status))
+					get_info()->exit_status = WEXITSTATUS(get_info()->exit_status) << 8;
+				else if (WIFSIGNALED(get_info()->exit_status))
+					get_info()->exit_status = (WTERMSIG(get_info()->exit_status) + 128) << 8;
 				else
-					get_info()->exit_status = status << 8;
+					get_info()->exit_status = get_info()->exit_status << 8;
 			}
 			get_info()->is_minishell = FALSE;
 		}

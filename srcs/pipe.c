@@ -4,10 +4,8 @@ int		piping(t_parse *pars, t_list *pipe_lst)
 {
 	int		io[2];
 	pid_t	pid;
-	int		status;
 
 	pid = 42;
-	status = -1;
 	if (pipe_lst->next)
 	{
 		pipe(io);
@@ -26,10 +24,7 @@ int		piping(t_parse *pars, t_list *pipe_lst)
 		dup2(get_info()->std[1], 1);
 		dup2(get_info()->std[0], 0);
 		if (pipe_lst->next)
-		{
-			wait(&status);
-			get_info()->exit_status = status;
-		}
+			wait(&(get_info()->exit_status));
 	}
 	else if (pid == 0)
 	{
