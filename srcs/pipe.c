@@ -4,8 +4,10 @@ int		piping(t_parse *pars, t_list *pipe_lst)
 {
 	int		io[2];
 	pid_t	pid;
+	int		result;
 
 	pid = 42;
+	result = SUCCESS;
 	if (pipe_lst->next)
 	{
 		pipe(io);
@@ -19,8 +21,7 @@ int		piping(t_parse *pars, t_list *pipe_lst)
 			dup2(io[1], 1);
 			close(io[1]);
 		}
-		if (excute_cmd(pars, pipe_lst) == ERROR)
-			return (ERROR);
+		result = excute_cmd(pars, pipe_lst);
 		dup2(get_info()->std[1], 1);
 		dup2(get_info()->std[0], 0);
 		if (pipe_lst->next)
@@ -38,9 +39,6 @@ int		piping(t_parse *pars, t_list *pipe_lst)
 		exit(get_info()->exit_status >> 8);
 	}
 	else
-	{
-		print_error(FORK_ERR, NULL);
-		return (ERROR);
-	}
-	return (SUCCESS);
+		result = print_error(FORK_ERR, NULL);
+	return (result);
 }
