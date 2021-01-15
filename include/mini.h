@@ -147,7 +147,7 @@ void	free_exit();
 **************/
 
 int		valid_path(char *path);
-int		valid_command(char c);
+int		valid_first_command(char c);
 int		valid_pipe(t_list *pipe_lst);
 int		is_valid_line(char **line);
 

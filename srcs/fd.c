@@ -22,9 +22,6 @@ int		create_fds(t_exec *exec_info, char *redir_str, char *file_str)
 	int	fd;
 
 	fd = 0;
-	// if (!ft_strncmp(file_str, ">", 2) || !ft_strncmp(file_str, ">>", 3) ||
-	// 	!ft_strncmp(file_str, "<", 2))
-	// 	return (ERROR);
 	if (!ft_strcmp(redir_str, ">"))
 	{
 		fd = open(file_str, O_RDWR | O_TRUNC | O_CREAT, 00777);
