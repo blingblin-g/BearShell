@@ -50,3 +50,16 @@ void	free_prolst(t_pro **lst)
 		*lst = next_lst;
 	}
 }
+
+int prolst_size(t_pro *lst)
+{
+	int count;
+
+	count = 0;
+	while (lst)
+	{
+		count++;
+		lst = lst->next;
+	}
+	return count;
+}

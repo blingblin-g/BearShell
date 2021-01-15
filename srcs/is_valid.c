@@ -16,18 +16,6 @@ int		valid_first_command(char c)
 	return (SUCCESS);
 }
 
-int		find_multi_redir(char *text)
-{
-	size_t	size;
-
-	size = ft_strlen(text);
-	if (ft_strnstr(text, ">>>", size))
-		return (ERROR);
-	if (ft_strnstr(text, "<<<", size))
-		return (ERROR);
-	return (SUCCESS);
-}
-
 int		valid_pipe(t_list *pipe_lst)
 {
 	while (pipe_lst)
@@ -52,7 +40,7 @@ int		is_valid_line(char **line)
 		free(new_line);
 		return (ERROR);
 	}
-	if (new_line[0] == ';' || new_line[0] == '|')
+	if (new_line[0] == ';' || new_line[0] == '|' || check_continuous(new_line) == ERROR)
 	{
 		free(new_line);
 		print_error(PARSING_ERR, NULL);

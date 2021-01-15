@@ -1,60 +1,56 @@
 #include "mini.h"
 
-int		input_redirection_lst(t_parse *pars, char *raw, t_list **raw_lst)
+void	redir_iter(size_t *i, t_parse *pars, char *raw, t_list **raw_lst)
 {
-	t_list	*tmp_lst;
-	size_t	i;
-	int		type;
-
-	i = 0;
-	pars->start = i;
-	type = 0;
-	while (raw[i])
-	{ 
-		if (!pars->single_q && !pars->double_q)
+	if (!pars->single_q && !pars->double_q)
+	{
+		if (*i == 0 || (*i != 0 && raw[*i - 1] != '\\'))
 		{
-			if (i == 0 || (i != 0 && raw[i - 1] != '\\'))
+			if ((pars->type = is_redirection_char(raw[*i])))
 			{
-				if ((type = is_redirection_char(raw[i])))
+				if (*i != pars->start)
+					substr_addlst_back(raw_lst, raw, pars->start, *i);
+				if (pars->type == OUTPUT && raw[*i + 1] && raw[*i + 1] == '>')
 				{
-					if (i != pars->start)
-					{
-						tmp_lst = new_lst_trim(ft_substr(raw, pars->start, i - pars->start));
-						ft_lstadd_back(raw_lst, tmp_lst);
-					}
-					if (type == OUTPUT && raw[i + 1] && raw[i + 1] == '>')
-					{
-						i++;
-						type = APPEND;
-					}
-					add_redirection_lst(pars, raw_lst, type);
-					pars->start = i + 1;
+					(*i)++;
+					pars->type = APPEND;
 				}
-				if (raw[i] == '\"')
-					pars->double_q = TRUE;
-				else if (raw[i] == '\'')
-					pars->single_q = TRUE;
+				add_redirection_lst(pars, raw_lst, pars->type);
+				pars->start = *i + 1;
 			}
+			is_quotes_true(raw[*i], pars);
 		}
-		else
-		{
-			if (i != 0 && pars->single_q && raw[i] == '\'')
-				pars->single_q = FALSE;
-			else if (i != 0 && pars->double_q && raw[i - 1] != '\\' && raw[i] == '\"')
-				pars->double_q = FALSE;
-		}
-		i++;
 	}
+	else
+		is_quotes_false(raw, *i, pars);
+}
+
+int		redir_ret(size_t i, t_parse *pars, char *raw, t_list **raw_lst)
+{
 	if (i == pars->start)
 		return (ERROR);
-	tmp_lst = new_lst_trim(ft_substr(raw, pars->start, i - pars->start));
-	ft_lstadd_back(raw_lst, tmp_lst);
+	substr_addlst_back(raw_lst, raw, pars->start, i);
 	if (pars->single_q || pars->double_q)
 	{
 		print_error(PARSING_ERR, NULL);
 		return (ERROR);
 	}
 	return (SUCCESS);
+}
+
+int		input_redirection_lst(t_parse *pars, char *raw, t_list **raw_lst)
+{
+	size_t	i;
+
+	i = 0;
+	pars->start = i;
+	pars->type = 0;
+	while (raw[i])
+	{ 
+		redir_iter(&i, pars, raw, raw_lst);
+		i++;
+	}
+	return (redir_ret(i, pars, raw, raw_lst));
 }
 
 t_exec	*redir_process(t_parse *pars, t_list *pipe_lst)

@@ -44,3 +44,19 @@ char	*process_home(char *content)
 	}
 	return (content);
 }
+
+void		is_quotes_true(char c, t_parse *pars)
+{
+	if (c == '\"')
+		pars->double_q = TRUE;
+	else if (c == '\'')
+		pars->single_q = TRUE;
+}
+
+void		is_quotes_false(char* line, size_t i, t_parse *pars)
+{
+	if (i != 0 && pars->single_q && line[i] == '\'')
+		pars->single_q = FALSE;
+	else if (i != 0 && pars->double_q && line[i - 1] != '\\' && line[i] == '\"')
+		pars->double_q = FALSE;
+}

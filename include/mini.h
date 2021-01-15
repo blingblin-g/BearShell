@@ -6,7 +6,7 @@
 /*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 22:30:37 by sooyoon           #+#    #+#             */
-/*   Updated: 2020/11/16 23:11:51 by sooyoon          ###   ########.fr       */
+/*   Updated: 2021/01/16 03:46:26 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ typedef struct	s_parse
 	int			single_q;
 	int			double_q;
 	int			fd_count;
+	int			type;
 	size_t		start;
 	char		*line;
 	t_pro		*pro_lst;
@@ -202,6 +203,8 @@ int		is_sayeon(char c);
 void	process_sayeon(char c, char **result);
 char	*find_var_name(char *content, size_t *i);
 char	*process_home(char *content);
+void	is_quotes_true(char c, t_parse *pars);
+void	is_quotes_false(char* line, size_t i, t_parse *pars);
 
 /******************
 ** prolist_utils **
@@ -211,6 +214,7 @@ t_pro	*new_prolst(char *raw, int type);
 t_pro	*last_prolst(t_pro *lst);
 void	add_back_prolst(t_pro **lst, t_pro *new);
 void	free_prolst(t_pro **lst);
+void	concat_prolst(t_parse *pars, char *line, size_t i, int type);
 
 
 
@@ -288,11 +292,22 @@ t_exec	*redir_process(t_parse *pars, t_list *pipe_lst);
 
 
 
+/*****************
+ ** redir_utils **
+ *****************/
+
+int		is_redir_pipe(char ch);
+int		find_multi_redir(char *text);
+int		check_continuous(char *str);
+
+
+
 /**********
  ** pipe **
  **********/
 
 int		piping(t_parse *pars, t_list *pipe_lst);
+
 
 
 
@@ -311,6 +326,8 @@ int		check_eof(int gnl_value, char **command);
  ***********/
 
 int		print_error(int type, char *path);
+int		input_pipe_lst(t_parse *pars, char *raw, t_list **raw_lst);
+
 
 
 
@@ -318,6 +335,14 @@ int		print_error(int type, char *path);
 ** main **
 **********/
 
+
+
+/****************
+ ** parse_pipe **
+ ****************/
+
+int			make_pipe_lst(t_pro *pro_lst, t_parse *pars);
+void		substr_addlst_back(t_list **raw_lst, char *raw, int start, int i);
 
 
 /************
