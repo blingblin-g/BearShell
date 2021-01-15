@@ -36,6 +36,11 @@ int		echo(char **argv)
 	int 	is_option;
 
 	is_option = FALSE;
+	if (argv[1] == NULL)
+	{
+		write(1, "\n", 1);
+		return (TRUE);	
+	}
 	while (ft_strncmp(argv[1], "-n", 3) == 0)
 	{
 		is_option = TRUE;
