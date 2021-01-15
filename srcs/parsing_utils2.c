@@ -30,7 +30,8 @@ int is_escape(char c)
 
 int is_sayeon(char c)
 {
-	if (c == '?' || c == '$' || c == '-' || ft_isdigit(c) || c == '!' || c == '@' || c == '*' || c == '#')
+	if (c == '?' || c == '$' || c == '-' || ft_isdigit(c) || c == '!' ||
+		c == '@' || c == '*' || c == '#')
 		return (TRUE);
 	return (FALSE);
 }

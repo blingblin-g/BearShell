@@ -37,7 +37,7 @@ void	init_pars(t_parse *pars)
 	pars->start = 0;
 }
 
-int		search_quotes(char c, char *line, int i) // return index of pair_quotes
+int		search_quotes(char c, char *line, int i)
 {
 	while (line[i])
 	{
@@ -45,5 +45,5 @@ int		search_quotes(char c, char *line, int i) // return index of pair_quotes
 			return (i);
 		i++;
 	}
-	return (ERROR); // 다 돌았지만 못찾은거임. 즉 pair quote가 없는 것
+	return (ERROR);
 }
