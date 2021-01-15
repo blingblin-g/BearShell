@@ -24,9 +24,8 @@ char	*get_env_item(char *key)
 	return (value);
 }
 
-t_list	*create_env_list()
+t_list	*create_env_list(char **environ)
 {
-	extern char **environ;
 	t_list	*env_list;
 	int		i;
 

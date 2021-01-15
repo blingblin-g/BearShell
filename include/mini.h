@@ -168,7 +168,7 @@ int		unset(char *argv);
 ****************/
 
 char	*get_env_item(char *key);
-t_list	*create_env_list();
+t_list	*create_env_list(char **environ);
 char	**get_environ();
 
 

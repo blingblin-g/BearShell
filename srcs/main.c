@@ -14,13 +14,15 @@ int prolst_size(t_pro *lst)
 	return count;
 }
 
-int		main()
+int		main(int argc, char *argv[], char **environ)
 {
 	t_parse	pars;
 	char	*command = NULL;
 	t_pro	*pro_lst;
 
-	get_info()->env_list = create_env_list();
+	(void)argc;
+	(void)argv;
+	get_info()->env_list = create_env_list(environ);
 	get_info()->process_name = NULL;
 	signal(SIGINT, interrupt_handler);
 	signal(SIGQUIT, interrupt_handler);
