@@ -61,7 +61,10 @@ t_exec	*create_exec(t_parse *pars, t_list *redir_lst)
 	while (redir_lst)
 	{
 		if (create_exec_iter(pars, exec_info, &redir_lst) == ERROR)
+		{
+			free_exec_info(&exec_info);
 			return (ERROR);
+		}
 	}
 	return (exec_info);
 }

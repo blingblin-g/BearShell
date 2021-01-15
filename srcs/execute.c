@@ -31,7 +31,6 @@ int		excute_cmd(t_parse *pars, t_list *pipe_lst)
 	if ((exec_info = redir_process(pars, pipe_lst)) == ERROR)
 	{
 		print_error(PARSING_ERR, NULL);
-		// fprintf(stderr, "free해야함!!!\n");
 		return (ERROR);
 	}
 	if (exec_info->argv[0])

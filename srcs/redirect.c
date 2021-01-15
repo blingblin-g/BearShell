@@ -45,7 +45,6 @@ int		input_redirection_lst(t_parse *pars, char *raw, t_list **raw_lst)
 		}
 		i++;
 	}
-
 	if (i == pars->start)
 		return (ERROR);
 	tmp_lst = new_lst_trim(ft_substr(raw, pars->start, i - pars->start));

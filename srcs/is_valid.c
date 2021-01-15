@@ -11,7 +11,7 @@ int		valid_path(char *path)
 
 int		valid_command(char c)
 {
-	if (ft_strchr("<|;", c))
+	if (ft_strchr("|;", c))
 		return (ERROR);
 	return (SUCCESS);
 }
