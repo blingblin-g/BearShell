@@ -1,4 +1,3 @@
-#include <string.h>
 #include "mini.h"
 
 void	piping_iter(t_parse *pars, t_pro *pro_lst)
