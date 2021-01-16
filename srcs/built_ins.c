@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 19:31:41 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/16 19:50:18 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/17 00:17:55 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,4 @@ int		builtin_exit(char **argv)
 		return (FALSE);
 	}
 	return (TRUE);
-}
-
-void	free_exit(void)
-{
-	exit(0);
 }

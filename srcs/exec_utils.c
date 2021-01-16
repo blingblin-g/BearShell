@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:35:02 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/16 21:46:31 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/17 01:53:06 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ int		create_exec_iter(t_parse *pars, t_exec *exec_info, t_list **redir_lst)
 	res = process_quotes(pars, (*redir_lst)->content);
 	if (res == ERROR)
 		return (ERROR);
-	if (res && (res[0] == '>' || res[0] == '<'))
+	if (res && (((char *)(*redir_lst)->content)[0] == '>' ||
+			((char *)(*redir_lst)->content)[0] == '<'))
 	{
 		if ((*redir_lst)->next)
 			if (create_fds(exec_info, res, process_quotes(
@@ -58,6 +59,8 @@ int		create_exec_iter(t_parse *pars, t_exec *exec_info, t_list **redir_lst)
 		exec_info->argv[exec_info->argv_idx] = res;
 		exec_info->argv_idx++;
 	}
+	else
+		free(res);
 	if ((*redir_lst))
 		*redir_lst = (*redir_lst)->next;
 	return (SUCCESS);

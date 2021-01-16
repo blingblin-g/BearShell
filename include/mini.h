@@ -6,7 +6,7 @@
 /*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 22:30:37 by sooyoon           #+#    #+#             */
-/*   Updated: 2021/01/16 22:58:52 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/17 00:17:39 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,6 @@ int		pwd();
 int		cd(char *argv);
 int		echo(char **argv);
 int		builtin_exit(char **argv);
-void	free_exit();
 
 /*
 ** is_valid
