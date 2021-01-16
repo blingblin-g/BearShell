@@ -6,13 +6,13 @@
 /*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:34:28 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/16 21:34:29 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/16 21:40:45 by chlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-char	*join_cmd_envpath(char	**path, char *command)
+char	*join_cmd_envpath(char **path, char *command)
 {
 	DIR		*dp;
 	char	*tmp;

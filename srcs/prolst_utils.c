@@ -6,7 +6,7 @@
 /*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:34:07 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/16 21:34:09 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/16 21:40:00 by chlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_pro	*new_prolst(char *raw, int type)
 {
-	t_pro *new;
+	t_pro	*new;
 
 	new = (t_pro *)malloc(sizeof(t_pro));
 	if (new == 0)
@@ -37,7 +37,7 @@ t_pro	*last_prolst(t_pro *lst)
 
 void	add_back_prolst(t_pro **lst, t_pro *new)
 {
-	t_pro *last;
+	t_pro	*last;
 
 	if (*lst == 0)
 		*lst = new;
@@ -45,9 +45,7 @@ void	add_back_prolst(t_pro **lst, t_pro *new)
 	last->next = new;
 	new->next = 0;
 }
-/*
-* do not need to free prolst outside
-*/
+
 void	free_prolst(t_pro **lst)
 {
 	t_pro	*next_lst;
@@ -63,9 +61,9 @@ void	free_prolst(t_pro **lst)
 	}
 }
 
-int prolst_size(t_pro *lst)
+int		prolst_size(t_pro *lst)
 {
-	int count;
+	int		count;
 
 	count = 0;
 	while (lst)
@@ -73,5 +71,5 @@ int prolst_size(t_pro *lst)
 		count++;
 		lst = lst->next;
 	}
-	return count;
+	return (count);
 }

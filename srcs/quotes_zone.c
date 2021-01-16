@@ -6,7 +6,7 @@
 /*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:34:49 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/16 21:34:50 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/16 21:43:43 by chlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	process_dollar(char **result, char *content, size_t *start, size_t *i)
 
 char	*get_single_quote_zone(char *content, size_t *start, size_t *i)
 {
-	char *result;
+	char	*result;
 
 	(*i)++;
 	*start = *i;
@@ -51,7 +51,7 @@ char	*get_single_quote_zone(char *content, size_t *start, size_t *i)
 		else if (content[*i] == '\'')
 		{
 			fill_result_plus_start(&result, content, start, i);
-			break;
+			break ;
 		}
 		(*i)++;
 	}
@@ -60,7 +60,7 @@ char	*get_single_quote_zone(char *content, size_t *start, size_t *i)
 
 char	*get_double_quote_zone(char *content, size_t *start, size_t *i)
 {
-	char *result;
+	char	*result;
 
 	*start = ++(*i);
 	result = ft_strdup("");
@@ -79,7 +79,7 @@ char	*get_double_quote_zone(char *content, size_t *start, size_t *i)
 		else if (content[*i] == '\"')
 		{
 			fill_result_plus_start(&result, content, start, i);
-			break;
+			break ;
 		}
 		(*i)++;
 	}
@@ -88,8 +88,8 @@ char	*get_double_quote_zone(char *content, size_t *start, size_t *i)
 
 char	*out_of_quotes_zone(char *content, size_t *i, size_t *end_i)
 {
-	char *result;
-	size_t start;
+	char	*result;
+	size_t	start;
 
 	start = *i;
 	result = ft_strdup("");
@@ -102,7 +102,7 @@ char	*out_of_quotes_zone(char *content, size_t *i, size_t *end_i)
 		else if (is_outofquote_end(content[*i]))
 		{
 			fill_result_plus_start(&result, content, &start, i);
-			break;
+			break ;
 		}
 		(*i)++;
 	}

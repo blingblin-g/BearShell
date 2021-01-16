@@ -6,7 +6,7 @@
 /*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:34:16 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/16 21:34:18 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/16 21:40:22 by chlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_list	*create_env_list(char **environ)
 	return (env_list);
 }
 
-char	**get_environ()
+char	**get_environ(void)
 {
 	t_list	*tmp_lst;
 	char	**environ;

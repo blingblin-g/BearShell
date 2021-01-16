@@ -6,7 +6,7 @@
 /*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:35:20 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/16 21:35:21 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/16 21:48:06 by chlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ int		make_pipe_lst_iter(size_t i, t_parse *pars, char *raw, t_list **raw_lst)
 		if (i == 0 || (i != 0 && raw[i - 1] != '\\'))
 		{
 			if ((pars->type = is_pipe_char(raw[i])))
-				{
-					if (i != pars->start)
-						substr_addlst_back(raw_lst, raw, pars->start, i);
-					if (raw[i + 1] == '|')
-						return (ERROR);
-					pars->start = i + 1;
-				}
+			{
+				if (i != pars->start)
+					substr_addlst_back(raw_lst, raw, pars->start, i);
+				if (raw[i + 1] == '|')
+					return (ERROR);
+				pars->start = i + 1;
+			}
 			is_quotes_true(raw[i], pars);
 		}
 	}
@@ -34,12 +34,12 @@ int		make_pipe_lst_iter(size_t i, t_parse *pars, char *raw, t_list **raw_lst)
 	return (SUCCESS);
 }
 
-int			make_pipe_lst(t_pro *pro_lst, t_parse *pars)
+int		make_pipe_lst(t_pro *pro_lst, t_parse *pars)
 {
 	while (pro_lst)
 	{
 		pro_lst->raw = free_strtrim(&pro_lst->raw, " ");
-		if (input_pipe_lst(pars, pro_lst->raw, &pro_lst->pipe_lst) == ERROR) // free도 다 해줘야함
+		if (input_pipe_lst(pars, pro_lst->raw, &pro_lst->pipe_lst) == ERROR)
 			return (ERROR);
 		pro_lst = pro_lst->next;
 	}

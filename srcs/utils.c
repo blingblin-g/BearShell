@@ -6,7 +6,7 @@
 /*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:36:16 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/16 21:36:17 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/16 21:52:27 by chlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,16 @@ int		find_chr(char *str, char ch)
 
 char	*free_join(char *s1, char *s2)
 {
-	int	i;
-	int	len1;
-	int	len2;
-	char *result;
+	int		i;
+	int		len1;
+	int		len2;
+	char	*result;
 
 	i = 0;
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
 	if (!(result = (char *)malloc(sizeof(char) * (len1 + len2 + 1))))
-		return(0);
+		return (0);
 	while (i < len1)
 	{
 		result[i] = s1[i];
@@ -57,7 +57,7 @@ char	*free_join(char *s1, char *s2)
 
 size_t	len(char **arr)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (arr[i])
@@ -78,8 +78,9 @@ void	ft_sleep(int amount)
 	}
 }
 
-t_info *get_info()
+t_info	*get_info(void)
 {
-	static t_info info;
-	return &info;
+	static	t_info info;
+
+	return (&info);
 }

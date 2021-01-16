@@ -6,22 +6,24 @@
 /*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:35:02 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/16 21:35:03 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/16 21:46:31 by chlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-int		 init_exec(t_exec	*exec_info, int lst_count)
+int		init_exec(t_exec *exec_info, int lst_count)
 {
 	int		fd_count;
 
 	fd_count = exec_info->input_count + exec_info->output_count;
 	if (exec_info->input_count > 0)
-		if (!(exec_info->fd[0] = (int *)malloc(sizeof(int) * (exec_info->input_count))))
+		if (!(exec_info->fd[0] = (int *)malloc(sizeof(int) *
+						(exec_info->input_count))))
 			return (ERROR);
 	if (exec_info->output_count > 0)
-		if (!(exec_info->fd[1] = (int *)malloc(sizeof(int) * (exec_info->output_count))))
+		if (!(exec_info->fd[1] = (int *)malloc(sizeof(int) *
+						(exec_info->output_count))))
 			return (ERROR);
 	if (exec_info->input_count <= 0)
 		exec_info->fd[0] = NULL;
@@ -46,7 +48,8 @@ int		create_exec_iter(t_parse *pars, t_exec *exec_info, t_list **redir_lst)
 	if (res && (res[0] == '>' || res[0] == '<'))
 	{
 		if ((*redir_lst)->next)
-			if (create_fds(exec_info, res, process_quotes(pars, (*redir_lst)->next->content)) == ERROR)
+			if (create_fds(exec_info, res, process_quotes(
+							pars, (*redir_lst)->next->content)) == ERROR)
 				return (ERROR);
 		*redir_lst = (*redir_lst)->next;
 	}

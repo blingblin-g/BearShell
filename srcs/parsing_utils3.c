@@ -6,7 +6,7 @@
 /*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:34:42 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/16 21:34:43 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/16 21:42:06 by chlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	process_sayeon(char c, char **result)
 
 char	*find_var_name(char *content, size_t *i)
 {
-	size_t start;
+	size_t	start;
 
 	start = *i;
 	while (!how2divide(content[*i]))
@@ -57,7 +57,7 @@ char	*process_home(char *content)
 	return (content);
 }
 
-void		is_quotes_true(char c, t_parse *pars)
+void	is_quotes_true(char c, t_parse *pars)
 {
 	if (c == '\"')
 		pars->double_q = TRUE;
@@ -65,7 +65,7 @@ void		is_quotes_true(char c, t_parse *pars)
 		pars->single_q = TRUE;
 }
 
-void		is_quotes_false(char* line, size_t i, t_parse *pars)
+void	is_quotes_false(char *line, size_t i, t_parse *pars)
 {
 	if (i != 0 && pars->single_q && line[i] == '\'')
 		pars->single_q = FALSE;

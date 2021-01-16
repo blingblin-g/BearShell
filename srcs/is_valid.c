@@ -6,7 +6,7 @@
 /*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:35:48 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/16 21:35:49 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/16 21:50:40 by chlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ int		is_valid_line(char **line)
 		free(new_line);
 		return (ERROR);
 	}
-	if (new_line[0] == ';' || new_line[0] == '|' || check_continuous(new_line) == ERROR)
+	if (new_line[0] == ';' || new_line[0] == '|' ||
+			check_continuous(new_line) == ERROR)
 	{
 		free(new_line);
 		print_error(PARSING_ERR, NULL);

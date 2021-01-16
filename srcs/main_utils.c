@@ -6,13 +6,13 @@
 /*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:34:34 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/16 21:34:35 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/16 21:41:01 by chlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-void	print_prompt()
+void	print_prompt(void)
 {
 	char	*prompt;
 

@@ -6,7 +6,7 @@
 /*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:35:42 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/16 21:35:44 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/16 21:50:16 by chlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,20 +51,23 @@ void	execute_cmd_parent(t_list *pipe_lst)
 	if (pipe_lst->next == NULL)
 	{
 		if (WIFEXITED(get_info()->exit_status))
-			get_info()->exit_status = WEXITSTATUS(get_info()->exit_status) << 8;
+			get_info()->exit_status =
+				WEXITSTATUS(get_info()->exit_status) << 8;
 		else if (WIFSIGNALED(get_info()->exit_status))
-			get_info()->exit_status = (WTERMSIG(get_info()->exit_status) + 128) << 8;
+			get_info()->exit_status =
+				(WTERMSIG(get_info()->exit_status) + 128) << 8;
 		else
 			get_info()->exit_status = get_info()->exit_status << 8;
 	}
 	get_info()->is_minishell = FALSE;
 }
 
-int		not_builtin_iter(t_exec	*exec_info, t_list *pipe_lst, int *pid)
+int		not_builtin_iter(t_exec *exec_info, t_list *pipe_lst, int *pid)
 {
 	*pid = fork();
 	set_process_name(exec_info->argv[0]);
-	if (ft_strnstr(exec_info->argv[0], "minishell", ft_strlen(exec_info->argv[0])))
+	if (ft_strnstr(exec_info->argv[0], "minishell",
+				ft_strlen(exec_info->argv[0])))
 		get_info()->is_minishell = TRUE;
 	if (*pid == 0)
 		excute_cmd_chlid(exec_info);
