@@ -6,13 +6,13 @@
 #    By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/10 22:46:22 by sooyoon           #+#    #+#              #
-#    Updated: 2021/01/16 03:49:47 by sooyoon          ###   ########.fr        #
+#    Updated: 2021/01/17 03:17:23 by sooyoon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	=	minishell
 CC		=	gcc
-INC		=	-I ./include -I ./libft #-g -fsanitize=address
+INC		=	-I ./include -I ./libft
 LIB		=	-L ./libft -lft
 CFLAGS	=	-Wall -Wextra -Werror
 LIB_SRC	=	./libft
@@ -44,8 +44,7 @@ SRCS	=	./srcs/get_next_line.c		\
 			./srcs/execute.c			\
 			./srcs/error.c				\
 			./srcs/main_utils.c			\
-			./srcs/main.c				\
-			# ./srcs/test.c
+			./srcs/main.c
 
 OBJS	=	$(SRCS:.c=.o)
 
