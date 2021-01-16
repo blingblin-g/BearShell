@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lst_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/16 21:25:42 by chlim             #+#    #+#             */
+/*   Updated: 2021/01/16 21:26:07 by chlim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mini.h"
 
 t_list	*new_lst_trim(char *content)
 {
 	t_list	*tmp_lst;
-	
+
 	content = free_strtrim(&content, " ");
 	tmp_lst = ft_lstnew(content);
 	return (tmp_lst);

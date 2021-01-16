@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/16 21:24:51 by chlim             #+#    #+#             */
+/*   Updated: 2021/01/16 21:25:30 by chlim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mini.h"
 
-void	get_fd_count(t_list	*redir_lst, t_exec *exec_info)
+void	get_fd_count(t_list *redir_lst, t_exec *exec_info)
 {
 	exec_info->input_count = 0;
 	exec_info->output_count = 0;

@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/16 21:30:55 by chlim             #+#    #+#             */
+/*   Updated: 2021/01/16 21:33:18 by chlim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mini.h"
 
-int env()
+int		env(void)
 {
 	ft_lstiter(get_info()->env_list, print_str);
 	get_info()->exit_status = 0;
@@ -9,28 +21,28 @@ int env()
 
 void	sort_env_arr(char **arr)
 {
-    int		i;
-    int		j;
-    char	*tmp;
+	int		i;
+	int		j;
+	char	*tmp;
 
 	i = 0;
 	j = 0;
 	tmp = NULL;
-    while (arr[i])
-    {
-        j = i - 1;
-        tmp = arr[i];
-        while (j >= 0 && ft_strcmp(arr[j], tmp) >= 0)
-        {
-            arr[j + 1] = arr[j];
-            j--;
-        }
-        arr[j + 1] = tmp;
-        i++;
-    }
+	while (arr[i])
+	{
+		j = i - 1;
+		tmp = arr[i];
+		while (j >= 0 && ft_strcmp(arr[j], tmp) >= 0)
+		{
+			arr[j + 1] = arr[j];
+			j--;
+		}
+		arr[j + 1] = tmp;
+		i++;
+	}
 }
 
-void	export_only()
+void	export_only(void)
 {
 	int		i;
 	int		size;

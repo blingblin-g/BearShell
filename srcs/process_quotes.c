@@ -1,20 +1,39 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   process_quotes.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/16 21:27:01 by chlim             #+#    #+#             */
+/*   Updated: 2021/01/16 21:28:59 by chlim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mini.h"
 
-void	process_single_quotes(t_parse *pars, char *content, char **result, size_t *i)
+void	process_single_quotes(t_parse *pars,
+		char *content, char **result, size_t *i)
 {
-	*result = free_join(*result, out_of_quotes_zone(content, &(pars->start), i));
-	*result = free_join(*result, get_single_quote_zone(content, &(pars->start), i));
+	*result = free_join(*result,
+			out_of_quotes_zone(content, &(pars->start), i));
+	*result = free_join(*result,
+			get_single_quote_zone(content, &(pars->start), i));
 	pars->single_q = FALSE;
 }
 
-void	process_double_quotes(t_parse *pars, char *content, char **result, size_t *i)
+void	process_double_quotes(t_parse *pars,
+		char *content, char **result, size_t *i)
 {
-	*result = free_join(*result, out_of_quotes_zone(content, &(pars->start), i));
-	*result = free_join(*result, get_double_quote_zone(content, &(pars->start), i));
+	*result = free_join(*result,
+			out_of_quotes_zone(content, &(pars->start), i));
+	*result = free_join(*result,
+			get_double_quote_zone(content, &(pars->start), i));
 	pars->double_q = FALSE;
 }
 
-void	process_quotes_iter(t_parse *pars, char *content, char **result, size_t *i)
+void	process_quotes_iter(t_parse *pars,
+		char *content, char **result, size_t *i)
 {
 	if (!pars->single_q && !pars->double_q)
 	{

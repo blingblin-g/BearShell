@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirect.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/16 21:29:19 by chlim             #+#    #+#             */
+/*   Updated: 2021/01/16 21:30:45 by chlim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mini.h"
 
 void	redir_iter(size_t *i, t_parse *pars, char *raw, t_list **raw_lst)
@@ -46,24 +58,26 @@ int		input_redirection_lst(t_parse *pars, char *raw, t_list **raw_lst)
 	pars->start = i;
 	pars->type = 0;
 	while (raw[i])
-	{ 
+	{
 		redir_iter(&i, pars, raw, raw_lst);
 		i++;
 	}
 	return (redir_ret(i, pars, raw, raw_lst));
 }
 
-void	fd_redirect(t_exec	*exec_info)
+void	fd_redirect(t_exec *exec_info)
 {
-	if (exec_info->fd[0] != NULL && exec_info->fd[0][exec_info->input_count - 1] != 0)
+	if (exec_info->fd[0] != NULL &&
+			exec_info->fd[0][exec_info->input_count - 1] != 0)
 	{
 		exec_info->std[0] = dup(0);
 		dup2(exec_info->fd[0][exec_info->input_count - 1], 0);
 	}
-	if (exec_info->fd[1] != NULL && exec_info->fd[1][exec_info->output_count - 1] != 0)
+	if (exec_info->fd[1] != NULL &&
+			exec_info->fd[1][exec_info->output_count - 1] != 0)
 	{
 		exec_info->std[1] = dup(1);
-		dup2(exec_info->fd[1][exec_info->output_count - 1], 1); 
+		dup2(exec_info->fd[1][exec_info->output_count - 1], 1);
 	}
 }
 
