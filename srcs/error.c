@@ -8,7 +8,9 @@ int		print_error(int type, char *path)
 	{
 		print_err("คʕ • ₒ•ʔค ❤❤❤ cd: ");
 		print_err(path);
-		print_err(": No such file or directory\n");
+		print_err(": ");
+		print_err(strerror(errno));
+		print_err("\n");
 	}
 	else if (type == PARSING_ERR)
 	{
