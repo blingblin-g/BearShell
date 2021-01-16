@@ -139,7 +139,7 @@ void	print_lst(t_list *lst);
 int		pwd();
 int		cd(char *argv);
 int		echo(char **argv);
-void	builtin_exit(char *argv);
+int		builtin_exit(char **argv);
 void	free_exit();
 
 

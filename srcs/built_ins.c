@@ -53,15 +53,25 @@ int		echo(char **argv)
 	return (TRUE);
 }
 
-void	builtin_exit(char *argv)
+int		builtin_exit(char **argv)
 {
-	if (argv == NULL)
+	size_t	size;
+
+	size = len(argv);
+	if (size == 1)
 		exit(get_info()->exit_status);
+	else if (size == 2)
+		exit((unsigned char)ft_atoi(argv[1]));
 	else
-		exit((unsigned char)ft_atoi(argv));
+	{
+		print_err("exit\n");
+		print_err("คʕ • ₒ•ʔค ❤❤❤ exit: too many arguments\n");
+		return (FALSE);
+	}
+	return (TRUE);
 }
 
-void free_exit() // memory free 관련 기능 추가하기
+void	free_exit() // memory free 관련 기능 추가하기
 {
 	exit(0);
 }
