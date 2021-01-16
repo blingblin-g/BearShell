@@ -6,7 +6,7 @@
 /*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 22:30:37 by sooyoon           #+#    #+#             */
-/*   Updated: 2021/01/16 22:48:39 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/16 22:58:52 by chlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@
 # define PATH_ERR 2
 # define PARSING_ERR 3
 # define COMMAND_ERR 4
+
+typedef struct dirent	t_dir;
 
 struct	s_info
 {
