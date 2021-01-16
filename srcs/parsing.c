@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/16 19:26:37 by chlim             #+#    #+#             */
+/*   Updated: 2021/01/16 19:27:37 by chlim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mini.h"
 
 void	concat_prolst(t_parse *pars, char *line, size_t i, int type)
 {
-	add_back_prolst(&pars->pro_lst, new_prolst(ft_substr(line, pars->start, i - pars->start), type));
+	add_back_prolst(&pars->pro_lst,
+			new_prolst(ft_substr(line, pars->start, i - pars->start), type));
 	pars->start = i + 1;
 }
 
@@ -21,7 +34,6 @@ void	parsing_loop(t_parse *pars, char *line, size_t i, int type)
 		is_quotes_false(line, i, pars);
 }
 
-
 int		main_parse(char *line, t_parse *pars)
 {
 	int		type;
@@ -31,7 +43,6 @@ int		main_parse(char *line, t_parse *pars)
 	i = 0;
 	pars->start = 0;
 	type = 0;
-
 	if (line == NULL)
 		return (ERROR);
 	while (line[i])
@@ -46,4 +57,3 @@ int		main_parse(char *line, t_parse *pars)
 	pro_lst = pars->pro_lst;
 	return (make_pipe_lst(pro_lst, pars));
 }
-

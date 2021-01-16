@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   built_ins.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/16 19:31:41 by chlim             #+#    #+#             */
+/*   Updated: 2021/01/16 19:50:18 by chlim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mini.h"
 
-int		pwd()
+int		pwd(void)
 {
 	char	buf[2097152];
 	char	*working_directory;
@@ -21,7 +33,7 @@ int		cd(char *path)
 	else if (valid_path(path))
 	{
 		get_info()->exit_status = 1 << 8;
-		return(print_error(PATH_ERR, path));
+		return (print_error(PATH_ERR, path));
 	}
 	result = !chdir(path);
 	if (!result)
@@ -33,13 +45,13 @@ int		cd(char *path)
 
 int		echo(char **argv)
 {
-	int 	is_option;
+	int		is_option;
 
 	is_option = FALSE;
 	if (argv[1] == NULL)
 	{
 		write(1, "\n", 1);
-		return (TRUE);	
+		return (TRUE);
 	}
 	while (ft_strncmp(argv[1], "-n", 3) == 0)
 	{
@@ -71,7 +83,7 @@ int		builtin_exit(char **argv)
 	return (TRUE);
 }
 
-void	free_exit() // memory free 관련 기능 추가하기
+void	free_exit(void)
 {
 	exit(0);
 }
