@@ -1,11 +1,5 @@
 #include "mini.h"
 
-void	fill_result(char **result, char *content, size_t *start, size_t *i)
-{
-	*result = free_join(*result, ft_substr(content, *start, *i - *start));
-	*start = *i + 1;
-}
-
 void	process_dollar(char **result, char *content, size_t *start, size_t *i)
 {
 	char	*var_name;
@@ -44,7 +38,7 @@ char	*get_single_quote_zone(char *content, size_t *start, size_t *i)
 			return (NULL);
 		else if (content[*i] == '\'')
 		{
-			fill_result(&result, content, start, i);
+			fill_result_plus_start(&result, content, start, i);
 			break;
 		}
 		(*i)++;
@@ -52,7 +46,7 @@ char	*get_single_quote_zone(char *content, size_t *start, size_t *i)
 	return (result);
 }
 
-char *get_double_quote_zone(char *content, size_t *start, size_t *i)
+char	*get_double_quote_zone(char *content, size_t *start, size_t *i)
 {
 	char *result;
 
@@ -72,7 +66,7 @@ char *get_double_quote_zone(char *content, size_t *start, size_t *i)
 			process_dollar(&result, content, start, i);
 		else if (content[*i] == '\"')
 		{
-			fill_result(&result, content, start, i);
+			fill_result_plus_start(&result, content, start, i);
 			break;
 		}
 		(*i)++;
@@ -80,7 +74,7 @@ char *get_double_quote_zone(char *content, size_t *start, size_t *i)
 	return (result);
 }
 
-char *out_of_quotes_zone(char *content, size_t *i, size_t *end_i)
+char	*out_of_quotes_zone(char *content, size_t *i, size_t *end_i)
 {
 	char *result;
 	size_t start;
@@ -90,60 +84,15 @@ char *out_of_quotes_zone(char *content, size_t *i, size_t *end_i)
 	while (*i <= *end_i)
 	{
 		if (content[*i] == '\\')
-			fill_result(&result, content, &start, i);
+			fill_result_plus_i(&result, content, &start, i);
 		else if (content[*i] == '$')
 			process_dollar(&result, content, &start, i);
 		else if (is_outofquote_end(content[*i]))
 		{
-			fill_result(&result, content, &start, i);
+			fill_result_plus_start(&result, content, &start, i);
 			break;
 		}
 		(*i)++;
 	}
-	return (result);
-}
-
-char *process_quotes(t_parse *pars, char *content)
-{
-	size_t i;
-	char *result;
-
-	i = 0;
-	pars->single_q = FALSE;
-	pars->double_q = FALSE;
-	pars->start = 0;
-	result = ft_strdup("");
-	content = process_home(ft_strdup(content));
-	while (i <= ft_strlen(content))
-	{
-		if (!pars->single_q && !pars->double_q)
-		{
-			if (i == 0 || (i != 0 && content[i - 1] != '\\'))
-			{
-				if (content[i] == '\"')
-					pars->double_q = TRUE;
-				else if (content[i] == '\'')
-					pars->single_q = TRUE;
-			}
-			if (!content[i])
-				result = free_join(result, out_of_quotes_zone(content, &(pars->start), &i));
-		}
-		if (pars->single_q)
-		{
-			result = free_join(result, out_of_quotes_zone(content, &(pars->start), &i));
-			result = free_join(result, get_single_quote_zone(content, &(pars->start), &i));
-			pars->single_q = FALSE;
-		}
-		if (pars->double_q)
-		{
-			result = free_join(result, out_of_quotes_zone(content, &(pars->start), &i));
-			result = free_join(result, get_double_quote_zone(content, &(pars->start), &i));
-			pars->double_q = FALSE;
-		}
-		i++;
-	}
-	if (pars->single_q || pars->double_q)
-		return (ERROR);
-	free(content);
 	return (result);
 }

@@ -1,19 +1,6 @@
 #include <string.h>
 #include "mini.h"
 
-int prolst_size(t_pro *lst)
-{
-	int count;
-
-	count = 0;
-	while (lst)
-	{
-		count++;
-		lst = lst->next;
-	}
-	return count;
-}
-
 int		main(int argc, char *argv[], char **environ)
 {
 	t_parse	pars;

@@ -9,10 +9,13 @@ int env()
 
 void	sort_env_arr(char **arr)
 {
-    int i = 0;
-    int j = 0;
-    char *tmp = 0;
+    int		i;
+    int		j;
+    char	*tmp;
 
+	i = 0;
+	j = 0;
+	tmp = NULL;
     while (arr[i])
     {
         j = i - 1;
@@ -82,7 +85,7 @@ int		unset(char *argv)
 {
 	t_list	*tmp_node;
 	t_list	*pre_node;
-	size_t len;
+	size_t	len;
 
 	get_info()->exit_status = 0;
 	len = ft_strlen(argv);

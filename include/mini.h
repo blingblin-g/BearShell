@@ -329,17 +329,10 @@ int		print_error(int type, char *path);
 int		input_pipe_lst(t_parse *pars, char *raw, t_list **raw_lst);
 
 
-
-
-/*********
-** main **
-**********/
-
-
-
 /****************
  ** parse_pipe **
  ****************/
+
 
 int			make_pipe_lst(t_pro *pro_lst, t_parse *pars);
 void		substr_addlst_back(t_list **raw_lst, char *raw, int start, int i);
@@ -350,29 +343,41 @@ void		substr_addlst_back(t_list **raw_lst, char *raw, int start, int i);
 *************/
 
 
+int		main_parse(char *line, t_parse *pars);
+
 
 /****************
 ** quotes_zone **
 *****************/
 
 
-
-
-
-int		get_next_line(int fd, char **line);
-int		main_parse(char *line, t_parse *pars);
-char	*process_quotes(t_parse *pars, char *content);
-char	*get_cmd(char *cmd);
 char	*get_single_quote_zone(char *content, size_t *start, size_t *i);
 char	*get_double_quote_zone(char *content, size_t *start, size_t *i);
-char	*find_var_name(char *content, size_t *i);
 char	*out_of_quotes_zone(char *content, size_t *start, size_t *i);
-void	init_pars(t_parse *pars);
-t_exec	*create_exec(t_parse *pars, t_list	*redir_lst);
 
-int		piping(t_parse *pars, t_list *pipe_lst);
-void	free_parse(t_parse *parse, char *command);
-void	free_arr(char **arr);
-void	free_exec_info(t_exec **exec_info);
+
+/****************
+** quotes_zone_util **
+*****************/
+
+
+void	fill_result(char **result, char *content, size_t *start, size_t *i);
+void	fill_result_plus_start(char **result, char *content, size_t *start, size_t *i);
+void	fill_result_plus_i(char **result, char *content, size_t *start, size_t *i);
+
+
+/****************
+** process_quotes **
+*****************/
+
+char	*process_quotes(t_parse *pars, char *content);
+
+
+/*********
+** main **
+**********/
+
+int		get_next_line(int fd, char **line);
+
 
 #endif

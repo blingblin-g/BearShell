@@ -1,6 +1,5 @@
 #include "mini.h"
 
-
 void	concat_prolst(t_parse *pars, char *line, size_t i, int type)
 {
 	add_back_prolst(&pars->pro_lst, new_prolst(ft_substr(line, pars->start, i - pars->start), type));
