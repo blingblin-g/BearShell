@@ -53,11 +53,26 @@ int		input_redirection_lst(t_parse *pars, char *raw, t_list **raw_lst)
 	return (redir_ret(i, pars, raw, raw_lst));
 }
 
+void	fd_redirect(t_exec	*exec_info)
+{
+	if (exec_info->fd[0] != NULL && exec_info->fd[0][exec_info->input_count - 1] != 0)
+	{
+		exec_info->std[0] = dup(0);
+		dup2(exec_info->fd[0][exec_info->input_count - 1], 0);
+	}
+	if (exec_info->fd[1] != NULL && exec_info->fd[1][exec_info->output_count - 1] != 0)
+	{
+		exec_info->std[1] = dup(1);
+		dup2(exec_info->fd[1][exec_info->output_count - 1], 1); 
+	}
+}
+
 t_exec	*redir_process(t_parse *pars, t_list *pipe_lst)
 {
-	t_exec	*exec_info = NULL;
-	t_list	*redir_lst = NULL;
+	t_exec	*exec_info;
+	t_list	*redir_lst;
 
+	redir_lst = NULL;
 	if (input_redirection_lst(pars, pipe_lst->content, &redir_lst) != ERROR)
 	{
 		if ((exec_info = create_exec(pars, redir_lst)) == ERROR)
@@ -77,15 +92,6 @@ t_exec	*redir_process(t_parse *pars, t_list *pipe_lst)
 		ft_lstclear(&redir_lst, free);
 		return (ERROR);
 	}
-	if (exec_info->fd[0] != NULL && exec_info->fd[0][exec_info->input_count - 1] != 0)
-	{
-		exec_info->std[0] = dup(0);
-		dup2(exec_info->fd[0][exec_info->input_count - 1], 0);
-	}
-	if (exec_info->fd[1] != NULL && exec_info->fd[1][exec_info->output_count - 1] != 0)
-	{
-		exec_info->std[1] = dup(1);
-		dup2(exec_info->fd[1][exec_info->output_count - 1], 1); 
-	}
+	fd_redirect(exec_info);
 	return (exec_info);
 }
