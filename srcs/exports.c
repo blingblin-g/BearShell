@@ -1,21 +1,21 @@
 #include "mini.h"
 
-char	*concat_export_template(char **str)
+char	*concat_export_template(char *str)
 {
 	int		eq_index;
 	char	*key_str;
 	char	*value_str;
 	char	*result;
 
-	eq_index = find_chr(*str, '=');
+	eq_index = find_chr(str, '=');
 	if (eq_index == 0)
-		return (ft_strdup(*str));
+		return (ft_strjoin("declare -x ", str));
 	else
 	{
 		value_str = ft_strdup("\"");
-		value_str = free_join(value_str, ft_strdup(*str + eq_index));
+		value_str = free_join(value_str, ft_strdup(str + eq_index + 1));
 		value_str = free_join(value_str, ft_strdup("\""));
-		key_str = ft_substr(*str, 0, eq_index);
+		key_str = ft_substr(str, 0, eq_index + 1);
 		key_str = free_join(key_str, value_str);
 		result = ft_strjoin("declare -x ", key_str);
 		free(key_str);

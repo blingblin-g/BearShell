@@ -154,7 +154,7 @@ int		is_valid_line(char **line);
 **
 */
 
-char	*concat_export_template(char **str);
+char	*concat_export_template(char *str);
 int		exports(char **argv);
 int		unsets(char **argv);
 

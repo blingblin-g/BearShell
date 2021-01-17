@@ -57,8 +57,7 @@ void	export_only(void)
 	i = 0;
 	while (i < size)
 	{
-		env[i] = ft_strjoin("declare -x ", haha->content);
-		// env[i] = concat_export_template(haha->content);
+		env[i] = concat_export_template(haha->content);
 		i++;
 		haha = haha->next;
 	}
