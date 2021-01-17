@@ -6,7 +6,7 @@
 #    By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/10 22:46:22 by sooyoon           #+#    #+#              #
-#    Updated: 2021/01/17 03:17:23 by sooyoon          ###   ########.fr        #
+#    Updated: 2021/01/17 13:38:18 by sooyoon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRCS	=	./srcs/get_next_line.c		\
 			./srcs/is_valid.c			\
 			./srcs/utils.c				\
 			./srcs/env.c				\
+			./srcs/exports.c			\
 			./srcs/search_env.c			\
 			./srcs/parsing_utils.c		\
 			./srcs/parsing_utils2.c		\

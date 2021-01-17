@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:35:42 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/16 21:50:16 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/17 13:59:04 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int		execute_builtin(char **argv)
 	if (!ft_strcmp(argv[0], "pwd"))
 		return (pwd());
 	if (!ft_strcmp(argv[0], "export"))
-		return (export(argv[1]));
+		return (exports(argv));
 	if (!ft_strcmp(argv[0], "unset"))
-		return (unset(argv[1]));
+		return (unsets(argv));
 	if (!ft_strcmp(argv[0], "cd"))
 		return (cd(argv[1]));
 	if (!ft_strcmp(argv[0], "env"))

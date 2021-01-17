@@ -6,7 +6,7 @@
 /*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 22:30:37 by sooyoon           #+#    #+#             */
-/*   Updated: 2021/01/17 00:17:39 by sooyoon          ###   ########.fr       */
+/*   Updated: 2021/01/17 13:58:23 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,14 @@ int		valid_path(char *path);
 int		valid_first_command(char c);
 int		valid_pipe(t_list *pipe_lst);
 int		is_valid_line(char **line);
+
+/*
+**
+*/
+
+char	*concat_export_template(char **str);
+int		exports(char **argv);
+int		unsets(char **argv);
 
 /*
 **  env

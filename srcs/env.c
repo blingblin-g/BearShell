@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:30:55 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/16 21:33:18 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/17 14:11:24 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	export_only(void)
 	while (i < size)
 	{
 		env[i] = ft_strjoin("declare -x ", haha->content);
+		// env[i] = concat_export_template(haha->content);
 		i++;
 		haha = haha->next;
 	}
@@ -71,23 +72,20 @@ int		export(char *argv)
 	t_list	*temp;
 	int		eq_index;
 
-	get_info()->exit_status = 0;
-	if (!argv)
-	{
-		export_only();
-		return (TRUE);
-	}
 	temp = get_info()->env_list;
 	eq_index = find_chr(argv, '=');
-	while (temp)
+	if (eq_index != 0)
 	{
-		if (!ft_strncmp(argv, temp->content, eq_index))
+		while (temp)
 		{
-			free(temp->content);
-			temp->content = ft_strdup(argv);
-			return (TRUE);
+			if (!ft_strncmp(argv, temp->content, eq_index + 1))
+			{
+				free(temp->content);
+				temp->content = ft_strdup(argv);
+				return (TRUE);
+			}
+			temp = temp->next;
 		}
-		temp = temp->next;
 	}
 	ft_lstadd_back(&get_info()->env_list, ft_lstnew(ft_strdup(argv)));
 	return (TRUE);
@@ -116,6 +114,17 @@ int		unset(char *argv)
 			free(tmp_node);
 			return (TRUE);
 		}
+		else if (!ft_strncmp(tmp_node->content, argv, len + 1))
+		{
+			if (pre_node == NULL)
+				get_info()->env_list = tmp_node->next;
+			else
+				pre_node->next = tmp_node->next;
+			free(tmp_node->content);
+			free(tmp_node);
+			return (TRUE);
+		}
+		
 		pre_node = tmp_node;
 		tmp_node = tmp_node->next;
 	}
