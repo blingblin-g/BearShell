@@ -53,7 +53,7 @@ int		echo(char **argv)
 		write(1, "\n", 1);
 		return (TRUE);
 	}
-	while (ft_strncmp(argv[1], "-n", 3) == 0)
+	while (argv[1] && ft_strncmp(argv[1], "-n", 3) == 0)
 	{
 		is_option = TRUE;
 		argv++;
