@@ -65,18 +65,37 @@ int		echo(char **argv)
 	return (TRUE);
 }
 
+int		is_only_num(char *str)
+{
+	while (str)
+	{
+		if (!ft_isdigit(*str))
+			return (FALSE);
+		str++;
+	}
+	return (TRUE);
+}
+
 int		builtin_exit(char **argv)
 {
 	size_t	size;
 
 	size = len(argv);
+	print_err("exit\n");
 	if (size == 1)
 		exit(get_info()->exit_status);
 	else if (size == 2)
-		exit((unsigned char)ft_atoi(argv[1]));
+	{
+		if (!is_only_num(argv[1]))
+		{
+			print_err("คʕ • ₒ•ʔค ❤❤❤ exit: numeric argument required\n");
+			exit(255);
+		}
+		else
+			exit((unsigned char)ft_atoi(argv[1]));
+	}
 	else
 	{
-		print_err("exit\n");
 		print_err("คʕ • ₒ•ʔค ❤❤❤ exit: too many arguments\n");
 		return (FALSE);
 	}
