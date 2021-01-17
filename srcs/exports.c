@@ -74,6 +74,8 @@ int		export(char *argv)
 
 	temp = get_info()->env_list;
 	eq_index = find_chr(argv, '=');
+	if (!is_identifier(argv[0]))
+		return (print_error(PARSING_ERR, NULL));
 	if (eq_index != 0)
 	{
 		while (temp)

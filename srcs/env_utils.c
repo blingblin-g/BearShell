@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   search_env.c                                       :+:      :+:    :+:   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:34:16 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/17 19:53:37 by sooyoon          ###   ########.fr       */
+/*   Updated: 2021/01/17 21:00:06 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,11 @@ char	**get_environ(void)
 		tmp_lst = tmp_lst->next;
 	}
 	return (environ);
+}
+
+int		is_identifier(char c)
+{
+	if (ft_isalpha(c) || c == '_')
+		return (TRUE);
+	return (FALSE);
 }

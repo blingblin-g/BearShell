@@ -6,7 +6,7 @@
 /*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 22:30:37 by sooyoon           #+#    #+#             */
-/*   Updated: 2021/01/17 13:58:23 by sooyoon          ###   ########.fr       */
+/*   Updated: 2021/01/17 20:57:57 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,12 +169,13 @@ int		export(char *argv);
 int		unset(char *argv);
 
 /*
-** search_env
+** env_utils
 */
 
 char	*get_env_item(char *key);
 t_list	*create_env_list(char **environ);
 char	**get_environ();
+int		is_identifier(char c);
 
 /*
 ** parsing_utils
