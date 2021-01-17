@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exports.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/18 02:20:26 by chlim             #+#    #+#             */
+/*   Updated: 2021/01/18 02:21:15 by chlim            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mini.h"
 
 char	*concat_export_template(char *str)
@@ -59,7 +71,7 @@ void	export_key(char *argv)
 		if (!ft_strncmp(argv, temp->content, size))
 		{
 			if (((char *)temp->content)[size] == '\0' ||
-			 ((char *)temp->content)[size] == '=')
+					((char *)temp->content)[size] == '=')
 				return ;
 		}
 		temp = temp->next;

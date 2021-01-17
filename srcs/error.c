@@ -6,13 +6,13 @@
 /*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:34:22 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/18 00:44:22 by sooyoon          ###   ########.fr       */
+/*   Updated: 2021/01/18 02:20:13 by chlim            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini.h"
 
-void	parsing_error()
+void	parsing_error(void)
 {
 	if (errno != 0)
 	{
@@ -28,7 +28,7 @@ void	parsing_error()
 	}
 }
 
-void	command_error()
+void	command_error(void)
 {
 	if (errno != 0 && errno != 14)
 	{
