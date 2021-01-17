@@ -6,7 +6,7 @@
 /*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 19:31:41 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/17 18:26:37 by sooyoon          ###   ########.fr       */
+/*   Updated: 2021/01/17 19:34:05 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,19 @@ int		pwd(void)
 int		cd(char *path)
 {
 	int		result;
+	int		is_free;
 
+	is_free = FALSE;
 	if (path == 0)
+	{
 		path = get_env_item("HOME");
+		is_free = TRUE;
+	}
 	else if (valid_path(path))
 	{
 		get_info()->exit_status = 1 << 8;
+		if (!is_free)
+			path = ft_strdup(path);
 		return (print_error(PATH_ERR, path));
 	}
 	result = !chdir(path);
@@ -40,6 +47,8 @@ int		cd(char *path)
 		get_info()->exit_status = 0;
 	else
 		get_info()->exit_status = 1 << 8;
+	if (is_free)
+		free(path);
 	return (result);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:34:22 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/16 21:34:23 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/17 19:30:48 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int		print_error(int type, char *path)
 		print_err(": ");
 		print_err(strerror(errno));
 		print_err("\n");
+		free(path);
 	}
 	else if (type == PARSING_ERR)
 	{
