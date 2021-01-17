@@ -47,6 +47,26 @@ void	export_only(void)
 	free_arr(env);
 }
 
+void	export_key(char *argv)
+{
+	t_list	*temp;
+	size_t	size;
+
+	temp = get_info()->env_list;
+	size = ft_strlen(argv);
+	while (temp)
+	{
+		if (!ft_strncmp(argv, temp->content, size))
+		{
+			if (((char *)temp->content)[size] == '\0' ||
+			 ((char *)temp->content)[size] == '=')
+				return ;
+		}
+		temp = temp->next;
+	}
+	ft_lstadd_back(&get_info()->env_list, ft_lstnew(ft_strdup(argv)));
+}
+
 int		export(char *argv)
 {
 	t_list	*temp;
@@ -58,7 +78,7 @@ int		export(char *argv)
 	{
 		while (temp)
 		{
-			if (!ft_strncmp(argv, temp->content, eq_index + 1))
+			if (!ft_strncmp(argv, temp->content, eq_index))
 			{
 				free(temp->content);
 				temp->content = ft_strdup(argv);
@@ -66,8 +86,10 @@ int		export(char *argv)
 			}
 			temp = temp->next;
 		}
+		ft_lstadd_back(&get_info()->env_list, ft_lstnew(ft_strdup(argv)));
 	}
-	ft_lstadd_back(&get_info()->env_list, ft_lstnew(ft_strdup(argv)));
+	else
+		export_key(argv);
 	return (TRUE);
 }
 
