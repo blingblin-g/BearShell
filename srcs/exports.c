@@ -72,10 +72,10 @@ int		export(char *argv)
 	t_list	*temp;
 	int		eq_index;
 
-	temp = get_info()->env_list;
-	eq_index = find_chr(argv, '=');
 	if (!is_identifier(argv[0]))
 		return (print_error(PARSING_ERR, NULL));
+	temp = get_info()->env_list;
+	eq_index = find_chr(argv, '=');
 	if (eq_index != 0)
 	{
 		while (temp)

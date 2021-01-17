@@ -6,7 +6,7 @@
 /*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:30:55 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/17 17:18:55 by sooyoon          ###   ########.fr       */
+/*   Updated: 2021/01/17 22:09:37 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,19 +66,17 @@ int		unset(char *argv)
 	t_list	*pre_node;
 	size_t	len;
 
+	if (!is_identifier(argv[0]))
+		return (print_error(PARSING_ERR, NULL));
 	get_info()->exit_status = 0;
 	len = ft_strlen(argv);
 	pre_node = NULL;
 	tmp_node = get_info()->env_list;
 	while (tmp_node)
 	{
-		if (!ft_strncmp(tmp_node->content, argv, len) &&
-		((char *)tmp_node->content)[len] == '=')
-		{
-			unset_iter(pre_node, tmp_node);
-			return (TRUE);
-		}
-		else if (!ft_strncmp(tmp_node->content, argv, len + 1))
+		if ((!ft_strncmp(tmp_node->content, argv, len) &&
+		((char *)tmp_node->content)[len] == '=') ||
+		!ft_strncmp(tmp_node->content, argv, len + 1))
 		{
 			unset_iter(pre_node, tmp_node);
 			return (TRUE);
