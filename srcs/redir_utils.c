@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:36:11 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/16 21:36:12 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/18 00:24:01 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,15 @@ int		check_continuous(char *str)
 		str++;
 	}
 	return (SUCCESS);
+}
+
+int		is_redir(char *str)
+{
+	if (!ft_strcmp(str, ">"))
+		return (TRUE);
+	else if (!ft_strcmp(str, ">>"))
+		return (TRUE);
+	else if (!ft_strcmp(str, "<"))
+		return (TRUE);
+	return (FALSE);
 }

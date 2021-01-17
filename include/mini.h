@@ -6,7 +6,7 @@
 /*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 22:30:37 by sooyoon           #+#    #+#             */
-/*   Updated: 2021/01/17 20:57:57 by sooyoon          ###   ########.fr       */
+/*   Updated: 2021/01/18 00:09:57 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,6 +283,7 @@ t_exec	*redir_process(t_parse *pars, t_list *pipe_lst);
 int		is_redir_pipe(char ch);
 int		find_multi_redir(char *text);
 int		check_continuous(char *str);
+int		is_redir(char *str);
 
 /*
 ** pipe

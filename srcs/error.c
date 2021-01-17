@@ -6,7 +6,7 @@
 /*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:34:22 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/17 23:12:36 by sooyoon          ###   ########.fr       */
+/*   Updated: 2021/01/18 00:44:22 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ void	parsing_error()
 {
 	if (errno != 0)
 	{
-		fprintf(stderr, "%s\n", strerror(errno));
+		print_err("คʕ •̀ o•́ʔค ❤❤❤ ");
+		print_err(strerror(errno));
+		print_err("\n");
 		get_info()->exit_status = 1 << 8;
 	}
 	else
@@ -28,9 +30,11 @@ void	parsing_error()
 
 void	command_error()
 {
-	if (errno != 0)
+	if (errno != 0 && errno != 14)
 	{
-		fprintf(stderr, "%s\n", strerror(errno));
+		print_err("คʕ •̀ o•́ʔค ❤❤❤ ");
+		print_err(strerror(errno));
+		print_err("\n");
 		get_info()->exit_status = 1 << 8;
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:35:02 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/17 22:37:55 by sooyoon          ###   ########.fr       */
+/*   Updated: 2021/01/18 00:45:46 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,13 @@ int		create_exec_iter(t_parse *pars, t_exec *exec_info, t_list **redir_lst)
 				return (ERROR);
 		*redir_lst = (*redir_lst)->next;
 	}
-	exec_info->argv[exec_info->argv_idx] = res;
-	exec_info->argv_idx++;
+	if (!is_redir(res))
+	{
+		exec_info->argv[exec_info->argv_idx] = res;
+		exec_info->argv_idx++;
+	}
+	else
+		free(res);
 	if ((*redir_lst))
 		*redir_lst = (*redir_lst)->next;
 	return (SUCCESS);
