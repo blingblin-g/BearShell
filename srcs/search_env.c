@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   search_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chlim <chlim@student.42seoul.kr>           +#+  +:+       +#+        */
+/*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:34:16 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/16 21:40:22 by chlim            ###   ########.fr       */
+/*   Updated: 2021/01/17 19:53:37 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 char	*get_env_item(char *key)
 {
 	int		i;
-	char	**arr;
+	int		eq_index;
+	char	*arr[2];
 	char	*value;
 	t_list	*env_lst;
 
@@ -24,13 +25,16 @@ char	*get_env_item(char *key)
 	value = ft_strdup("");
 	while (env_lst)
 	{
-		arr = ft_split(env_lst->content, '=');
+		eq_index = find_chr(env_lst->content, '=');
+		arr[0] = ft_substr(env_lst->content, 0, eq_index);
+		arr[1] = ft_strdup(env_lst->content + eq_index + 1);
 		if (!ft_strncmp(arr[0], key, ft_strlen(key) + 1))
 		{
 			free(value);
 			value = ft_strdup(arr[1]);
 		}
-		free_arr(arr);
+		free(arr[0]);
+		free(arr[1]);
 		env_lst = env_lst->next;
 	}
 	return (value);
