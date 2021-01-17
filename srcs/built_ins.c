@@ -6,7 +6,7 @@
 /*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 19:31:41 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/17 19:34:05 by sooyoon          ###   ########.fr       */
+/*   Updated: 2021/01/17 20:19:07 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,9 @@ int		echo(char **argv)
 
 int		is_only_num(char *str)
 {
-	while (str)
+	if (str[0] == '+' || str[0] == '-')
+		str++;
+	while (*str)
 	{
 		if (!ft_isdigit(*str))
 			return (FALSE);
@@ -95,8 +97,7 @@ int		builtin_exit(char **argv)
 		exit(get_info()->exit_status);
 	else if (size == 2)
 	{
-		if (!(argv[1][0] == '-' || argv[1][0] == '+' ||
-		ft_isdigit(argv[1][0])) && !is_only_num(argv[1] + 1))
+		if (is_only_num(argv[1]) == FALSE)
 		{
 			print_err("คʕ • ₒ•ʔค ❤❤❤ exit: numeric argument required\n");
 			exit(255);
