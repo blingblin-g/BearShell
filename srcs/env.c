@@ -6,7 +6,7 @@
 /*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 21:30:55 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/17 14:11:24 by sooyoon          ###   ########.fr       */
+/*   Updated: 2021/01/17 17:18:55 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,15 @@
 
 int		env(void)
 {
-	ft_lstiter(get_info()->env_list, print_str);
+	t_list	*tmp;
+
+	tmp = get_info()->env_list;
+	while (tmp)
+	{
+		if (find_chr(tmp->content, '=') != 0)
+			print_str(tmp->content);
+		tmp = tmp->next;
+	}
 	get_info()->exit_status = 0;
 	return (TRUE);
 }
