@@ -42,52 +42,14 @@ void	sort_env_arr(char **arr)
 	}
 }
 
-void	export_only(void)
+void	unset_iter(t_list *pre_node, t_list *tmp_node)
 {
-	int		i;
-	int		size;
-	char	**env;
-	t_list	*haha;
-
-	size = ft_lstsize(get_info()->env_list);
-	if (!(env = (char **)malloc(sizeof(char *) * (size + 1))))
-		return ;
-	env[size] = 0;
-	haha = get_info()->env_list;
-	i = 0;
-	while (i < size)
-	{
-		env[i] = concat_export_template(haha->content);
-		i++;
-		haha = haha->next;
-	}
-	sort_env_arr(env);
-	println_arr(env);
-	free_arr(env);
-}
-
-int		export(char *argv)
-{
-	t_list	*temp;
-	int		eq_index;
-
-	temp = get_info()->env_list;
-	eq_index = find_chr(argv, '=');
-	if (eq_index != 0)
-	{
-		while (temp)
-		{
-			if (!ft_strncmp(argv, temp->content, eq_index + 1))
-			{
-				free(temp->content);
-				temp->content = ft_strdup(argv);
-				return (TRUE);
-			}
-			temp = temp->next;
-		}
-	}
-	ft_lstadd_back(&get_info()->env_list, ft_lstnew(ft_strdup(argv)));
-	return (TRUE);
+	if (pre_node == NULL)
+		get_info()->env_list = tmp_node->next;
+	else
+		pre_node->next = tmp_node->next;
+	free(tmp_node->content);
+	free(tmp_node);
 }
 
 int		unset(char *argv)
@@ -105,27 +67,29 @@ int		unset(char *argv)
 		if (!ft_strncmp(tmp_node->content, argv, len) &&
 		((char *)tmp_node->content)[len] == '=')
 		{
-			if (pre_node == NULL)
-				get_info()->env_list = tmp_node->next;
-			else
-				pre_node->next = tmp_node->next;
-			free(tmp_node->content);
-			free(tmp_node);
+			unset_iter(pre_node, tmp_node);
 			return (TRUE);
 		}
 		else if (!ft_strncmp(tmp_node->content, argv, len + 1))
 		{
-			if (pre_node == NULL)
-				get_info()->env_list = tmp_node->next;
-			else
-				pre_node->next = tmp_node->next;
-			free(tmp_node->content);
-			free(tmp_node);
+			unset_iter(pre_node, tmp_node);
 			return (TRUE);
 		}
-		
 		pre_node = tmp_node;
 		tmp_node = tmp_node->next;
+	}
+	return (TRUE);
+}
+
+int		unsets(char **argv)
+{
+	int		i;
+
+	i = 1;
+	while (argv[i])
+	{
+		unset(argv[i]);
+		i++;
 	}
 	return (TRUE);
 }
