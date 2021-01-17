@@ -6,7 +6,7 @@
 /*   By: sooyoon <sooyoon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/16 19:31:41 by chlim             #+#    #+#             */
-/*   Updated: 2021/01/17 20:19:07 by sooyoon          ###   ########.fr       */
+/*   Updated: 2021/01/17 20:34:15 by sooyoon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ int		is_only_num(char *str)
 {
 	if (str[0] == '+' || str[0] == '-')
 		str++;
+	if (*str == 0)
+		return (FALSE);
 	while (*str)
 	{
 		if (!ft_isdigit(*str))
