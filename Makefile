@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME	=	minishell
+NAME	=	bearshell
 CC		=	gcc
 INC		=	-I ./include -I ./libft #-g -fsanitize=address
 LIB		=	-L ./libft -lft
