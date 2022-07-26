@@ -1,5 +1,40 @@
-# MiniShell
-42seoul team project named "Survivor"
+# BearShell
+team project named "Survivor"
+
+We wanted to use prettier shell.
+
+So we can now use 'bear shell'!
+
+```bash
+คʕ • ﻌ•ʔค ❤❤❤
+```
+
+# How to run
+
+### compile
+```bash
+make all
+```
+
+### run
+```bash
+./minishell
+```
+
+### clean
+```bash
+make clean
+```
+
+### re-compile
+```bash
+make re
+```
+
+### clean all
+```bash
+make fclean
+```
 
 
 # ground rule
