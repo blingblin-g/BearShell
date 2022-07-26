@@ -1,5 +1,32 @@
 # MiniShell
-42seoul team project named "Survivor"
+team project named "Survivor"
+
+# How to run
+
+### compile
+```bash
+make all
+```
+
+### run
+```bash
+./minishell
+```
+
+### clean
+```bash
+make clean
+```
+
+### re-compile
+```bash
+make re
+```
+
+### clean all
+```bash
+make fclean
+```
 
 
 # ground rule
