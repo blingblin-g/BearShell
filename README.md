@@ -1,5 +1,13 @@
-# MiniShell
+# BearShell
 team project named "Survivor"
+
+We wanted to use prettier shell.
+
+So we can now use 'bear shell'!
+
+```bash
+คʕ • ﻌ•ʔค ❤❤❤
+```
 
 # How to run
 
